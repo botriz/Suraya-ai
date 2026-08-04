@@ -1,0 +1,40 @@
+/* styles.css — پایه‌ای برای نمایش RTL و فونت فارسی */
+:root{
+  --bg:#f7f9fc;
+  --card:#ffffff;
+  --accent:#0d6efd;
+  --muted:#6c757d;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:'Vazirmatn', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background:var(--bg);
+  color:#111827;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.5;
+  direction:rtl;
+  text-align:right;
+}
+.container{
+  max-width:720px;
+  margin:6vh auto;
+  background:var(--card);
+  padding:2rem;
+  border-radius:12px;
+  box-shadow:0 6px 18px rgba(15,23,42,0.08);
+}
+h1{
+  margin:0 0 0.5rem 0;
+  font-size:1.75rem;
+}
+.lead{
+  margin:0 0 1rem 0;
+  color:var(--muted);
+}
+@media (max-width:520px){
+  .container{margin:4vh 1rem;padding:1rem}
+  h1{font-size:1.25rem}
+}
