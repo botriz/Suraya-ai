@@ -1,11 +1,13 @@
 <script src="suraya-core.js"></script>
 <script>
-  // ساخت یک هستهٔ فردی
+  // ساخت یک هسته فردی
   const seed = SurayaPersonalCore.createUnit();
+
+  // تبدیل هسته به فرد دیجیتال
   const person = SurayaPersonalCore.evolveToPerson(seed);
 
-  // ساخت یک خانوادهٔ دیجیتال
-  const family = SurayaFamilyCore.createFamily("خانوادهٔ ثریا");
+  // ساخت یک خانواده دیجیتال
+  const family = SurayaFamilyCore.createFamily("خانواده ثریا");
 
   // افزودن فرد به خانواده
   SurayaFamilyCore.addMember(family, person);
@@ -13,4 +15,5 @@
   console.log("فرد:", person);
   console.log("خانواده:", family);
 </script>
+
 <script src="world-3d.js"></script>
