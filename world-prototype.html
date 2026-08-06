@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>پروتوتایپ جهان — ثریا</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body{direction:rtl}
+    #scene-container{width:100%;height:360px;background:#eef3fb;border-radius:8px;overflow:hidden}
+    .controls{display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:1rem}
+    .card{background:#fff;padding:1rem;border-radius:8px;box-shadow:0 6px 18px rgba(15,23,42,0.06)}
+    .muted{color:#6c757d}
+    button{background:var(--accent);color:#fff;border:none;padding:0.5rem 1rem;border-radius:6px;cursor:pointer}
+    input{padding:0.4rem;border-radius:6px;border:1px solid #ddd}
+    pre{max-height:180px;overflow:auto;background:#f8fafc;padding:0.5rem;border-radius:6px}
+  </style>
+</head>
+<body>
+  <header class="container">
+    <h1>دموی جهان زنده — ثریا</h1>
+    <p class="muted">این نسخهٔ اولیهٔ پروتوتایپ است. هدف: نمایش مکانیک سادهٔ اقتصاد درون بازی و تعامل با جهان.</p>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <div id="scene-container"></div>
+      <div class="controls">
+        <div>
+          <button id="work-btn">کار در مزرعه (+10 DNY)</button>
+        </div>
+        <div>
+          <strong>موجودی:</strong> <span id="balance">0</span> DNY
+        </div>
+        <div>
+          <button id="mint-btn">(Admin) Mint 1000</button>
+        </div>
+      </div>
+
+      <h3>تاریخچهٔ تراکنش‌ها</h3>
+      <pre id="history">هیچ تراکنشی ثبت نشده است.</pre>
+    </section>
+
+    <section class="card" style="margin-top:1rem">
+      <h3>راهنما</h3>
+      <ol>
+        <li>در این نسخهٔ اولیه همه چیز محلی (localStorage) است و تراکنش‌ها بر روی مرورگر ذخیره می‌شوند.</li>
+        <li>برای ورود سریع، از حالت مهمان (guest) استفاده می‌شود؛ در آینده احراز هویت و سرور اضافه خواهد شد.</li>
+        <li>این دمو برای تست منطق اقتصاد و تعاملات طراحی شده است — هنوز on-chain نیست.</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="container">
+    <p class="muted">© 2026 ثریا — Prototype</p>
+  </footer>
+
+  <!-- Three.js from CDN -->
+  <script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
+  <script src="/client-ledger.js"></script>
+  <script>
+    // Scene setup
+    const container = document.getElementById('scene-container');
+    const scene = new THREE.Scene();
+    const width = container.clientWidth;
+    const height = 360;
+    const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000);
+    camera.position.set(0, 6, 10);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(width, height);
+    renderer.setClearColor(0xf0f6ff);
+    container.appendChild(renderer.domElement);
+
+    // Light
+    const hemi = new THREE.HemisphereLight(0xffffff, 0x444444, 1.0);
+    hemi.position.set(0, 20, 0);
+    scene.add(hemi);
+    const dir = new THREE.DirectionalLight(0xffffff, 0.8);
+    dir.position.set(-3, 10, -10);
+    scene.add(dir);
+
+    // Ground
+    const groundGeo = new THREE.PlaneGeometry(20, 20);
+    const groundMat = new THREE.MeshStandardMaterial({ color: 0x9acd32 });
+    const ground = new THREE.Mesh(groundGeo, groundMat);
+    ground.rotation.x = -Math.PI / 2;
+    scene.add(ground);
+
+    // Simple house (box) and farm (rows)
+    const houseGeo = new THREE.BoxGeometry(2, 2, 2);
+    const houseMat = new THREE.MeshStandardMaterial({ color: 0xf2d2b6 });
+    const house = new THREE.Mesh(houseGeo, houseMat);
+    house.position.set(-4, 1, -2);
+    scene.add(house);
+
+    const farmGroup = new THREE.Group();
+    const rowGeo = new THREE.BoxGeometry(8, 0.2, 0.4);
+    const rowMat = new THREE.MeshStandardMaterial({ color: 0x8b5a2b });
+    for (let i = -3; i <= 3; i += 1.2) {
+      const row = new THREE.Mesh(rowGeo, rowMat);
+      row.position.set(2, 0.1, i);
+      farmGroup.add(row);
+    }
+    scene.add(farmGroup);
+
+    // Simple animation
+    function animate() {
+      requestAnimationFrame(animate);
+      house.rotation.y += 0.003;
+      farmGroup.rotation.y += 0.001;
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Resize handling
+    window.addEventListener('resize', () => {
+      const w = container.clientWidth;
+      renderer.setSize(w, height);
+      camera.aspect = w / height;
+      camera.updateProjectionMatrix();
+    });
+
+    // Ledger hooks
+    const workBtn = document.getElementById('work-btn');
+    const mintBtn = document.getElementById('mint-btn');
+    const balanceEl = document.getElementById('balance');
+    const historyEl = document.getElementById('history');
+
+    function refreshUI() {
+      balanceEl.textContent = Ledger.getBalance();
+      const hist = Ledger.getHistory();
+      if (!hist || hist.length === 0) {
+        historyEl.textContent = 'هیچ تراکنشی ثبت نشده است.';
+      } else {
+        historyEl.textContent = hist.map(h => `${h.timestamp} | ${h.type} | ${h.amount} DNY | ${h.note}`).reverse().join('\n');
+      }
+    }
+
+    workBtn.addEventListener('click', () => {
+      // simple cooldown implemented client-side
+      if (!Ledger.canWork()) {
+        alert('کمی صبر کن، باید 5 ثانیه بین کارها فاصله بیفته (محدودیت محلی).');
+        return;
+      }
+      Ledger.addTransaction({ type: 'reward', amount: 10, note: 'کار در مزرعه' });
+      Ledger.updateLastWorkTimestamp();
+      refreshUI();
+    });
+
+    mintBtn.addEventListener('click', () => {
+      const pass = prompt('رمز admin را وارد کنید:');
+      if (pass === Ledger.getAdminPassword()) {
+        Ledger.mint(1000, 'admin mint');
+        refreshUI();
+        alert('1000 DNY به کیف admin اضافه شد (محلی).');
+      } else {
+        alert('رمز نادرست');
+      }
+    });
+
+    // initialize ledger and UI
+    Ledger.init();
+    refreshUI();
+  </script>
+</body>
+</html>
