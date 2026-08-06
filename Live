@@ -1,0 +1,14 @@
+const SurayaEvents = {
+    log: [],
+
+    add(event) {
+        const item = {
+            id: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(),
+            time: new Date().toLocaleString(),
+            event
+        };
+        this.log.push(item);
+        console.log("رویداد:", item);
+        return item;
+    }
+};
