@@ -1,0 +1,48 @@
+name: Upload video to YouTube (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      video_path:
+        description: 'Path to video file in the repo (relative)'
+        required: true
+        default: 'uploads/video.mp4'
+      title:
+        description: 'Video title'
+        required: true
+        default: 'Suraya Video'
+      description:
+        description: 'Video description'
+        required: false
+        default: 'Uploaded from Suraya prototype.'
+      privacy:
+        description: 'Privacy status: public, unlisted or private'
+        required: true
+        default: 'unlisted'
+      tags:
+        description: 'Comma separated tags'
+        required: false
+        default: ''
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          npm install googleapis@105
+
+      - name: Run upload script
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+        run: |
+          node scripts/upload-video.js "${{ github.event.inputs.video_path }}" "${{ github.event.inputs.title }}" "${{ github.event.inputs.description }}" "${{ github.event.inputs.privacy }}" "${{ github.event.inputs.tags }}"
