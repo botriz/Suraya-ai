@@ -5,27 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>درباره — ثریا</title>
 
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="./favicon.png" type="image/png">
+
+  <meta name="description" content="دربارهٔ پروژهٔ ثریا: چشم‌انداز، اهداف و تیم. یک مرکز تولید محتوای فارسی مبتنی بر هوش مصنوعی.">
+  <meta property="og:locale" content="fa_IR">
+  <meta property="og:type" content="website">
   <meta property="og:title" content="درباره — ثریا">
   <meta property="og:description" content="دربارهٔ پروژهٔ ثریا: چشم‌انداز، اهداف و تیم.">
-  <meta property="og:image" content="/favicon.svg">
+  <meta property="og:image" content="./favicon.svg">
+  <meta name="twitter:card" content="summary_large_image">
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css">
+
+  <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
+  <a class="skip-link" href="#content">برو به محتوا</a>
+
   <header class="container">
-    <nav class="nav">
-      <a href="/">خانه</a>
-      <a href="/about.html">درباره</a>
-      <a href="/contact.html">تماس</a>
-      <a href="/blog/">بلاگ</a>
+    <nav class="nav" aria-label="ناوبری اصلی">
+      <ul>
+        <li><a href="./">خانه</a></li>
+        <li><a href="./about.html" aria-current="page">درباره</a></li>
+        <li><a href="./contact.html">تماس</a></li>
+        <li><a href="./blog/">بلاگ</a></li>
+      </ul>
     </nav>
   </header>
 
-  <main class="container">
+  <main id="content" class="container">
     <h1>دربارهٔ ثریا</h1>
-    <p class="lead">ثریا یک مرکز تولید محتوای فارسی مبتنی بر هوش مصنوعی است. هدف ما فراهم آوردن ابزارها و محتوای باکیفیت برای کاربران فارسی‌زبان است.</p>
+    <p class="lead">ثریا یک مرکز تولید محتوای فارسی مبتنی بر هوش مصنوعی است. هدف ما فراهم آوردن ابزارها و محتوای باکیفیت برای نویسندگان، تولیدکنندگان محتوا و توسعه‌دهندگان فارسی‌زبان است.</p>
 
     <section>
       <h2>چشم‌انداز</h2>
@@ -34,7 +47,7 @@
 
     <section>
       <h2>تماس با ما</h2>
-      <p>جهت همکاری یا پرسش، لطفاً به صفحهٔ تماس مراجعه کنید.</p>
+      <p>برای همکاری یا پرسش، لطفاً به صفحهٔ تماس مراجعه کنید.</p>
     </section>
   </main>
 
