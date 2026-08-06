@@ -112,5 +112,18 @@
   console.log("هستهٔ اولیه:", seed);
   console.log("فرد دیجیتال:", person);
 </script>
+   <script src="suraya-core.js"></script>
+<script>
+  const seed = SurayaPersonalCore.createUnit();
+  const person = SurayaPersonalCore.evolveToPerson(seed);
+
+  const family = SurayaFamilyCore.createFamily("خانوادهٔ ثریا");
+  SurayaFamilyCore.addMember(family, person);
+
+  console.log("فرد:", person);
+  console.log("خانواده:", family);
+</script>
+</body>
+</html> 
 </body>
 </html>
