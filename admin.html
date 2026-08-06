@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>پنل ادمین — ثریا</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .container{max-width:900px;margin:4vh auto;padding:1.5rem}
+    .card{background:#fff;padding:1rem;border-radius:8px;box-shadow:0 6px 18px rgba(15,23,42,0.06);margin-bottom:1rem}
+    button{background:var(--accent);color:#fff;border:none;padding:0.5rem 1rem;border-radius:6px;cursor:pointer}
+    input,select{padding:0.4rem;border-radius:6px;border:1px solid #ddd}
+    #yt-embed{width:100%;height:360px;border-radius:8px;overflow:hidden}
+    pre{background:#f8fafc;padding:0.5rem;border-radius:6px}
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>داشبورد مدیریت — ثریا</h1>
+    <p class="muted">از این صفحه می‌توانید وضعیت اقتصاد محلی (پروتوتایپ)، تنظیمات انتشار و اتصال به کانال یوتیوب را مدیریت کنید.</p>
+
+    <section class="card">
+      <h2>زیرساخت پروتوتایپ</h2>
+      <p>این پنل فعلاً یک رابط محلی است (localStorage). تراکنش‌ها و مبالغ در مرورگر ذخیره می‌شوند. برای ذخیرهٔ دائمی نیاز به backend داریم.</p>
+      <p><a href="/world-prototype.html">باز کردن دموی جهان</a></p>
+      <div>
+        <button id="export-txs">خروجی تراکنش‌ها (JSON)</button>
+        <button id="clear-txs">پاک‌سازی تراکنش‌ها (نک: غیرقابل بازگشت)</button>
+      </div>
+      <pre id="tx-output">بارگذاری...</pre>
+    </section>
+
+    <section class="card">
+      <h2>اتصال یوتیوب (خواندن آمار)</h2>
+      <p>برای خواندن اطلاعات کانال (مثلاً تعداد مشترکین) می‌توانید API Key گوگل را وارد کنید. برای بارگذاری ویدئو نیاز به OAuth2 و توکن‌های امن است (در بخش دستورالعمل توضیح داده شده).</p>
+      <label>API Key (فقط برای خواندن دیتا):</label>
+      <input id="yt-api-key" placeholder="اینجا API Key وارد شود">
+      <label>Channel ID:</label>
+      <input id="yt-channel-id" placeholder="مثال: UC_x5XG1OV2P6uZZ5FSM9Ttw">
+      <div style="margin-top:0.5rem">
+        <button id="fetch-yt">دریافت آمار کانال</button>
+      </div>
+      <div id="yt-stats" style="margin-top:0.5rem">آمار کانال اینجا نمایش داده می‌شود.</div>
+    </section>
+
+    <section class="card">
+      <h2>نمایش ویدئو/عضویت</h2>
+      <p>اینجا می‌توانید ویدئوی کانال یا دکمهٔ Subscribe را در سایت نمایش دهید.</p>
+      <label>Video ID (برای نمایش ویدئو):</label>
+      <input id="yt-video-id" placeholder="مثال: dQw4w9WgXcQ">
+      <div style="margin-top:0.5rem">
+        <button id="embed-video">نمایش ویدئو</button>
+      </div>
+      <div id="yt-embed" style="margin-top:0.5rem">ویدئو اینجا نمایش داده می‌شود.</div>
+    </section>
+
+    <section class="card">
+      <h2>اتوماتیک‌سازی انتشار ویدئو</h2>
+      <p>برای آپلود خودکار ویدئوها به یوتیوب نیاز به OAuth2 و توکن‌هایی دارید که باید در GitHub Secrets ذخیره شوند. ما یک قالب GitHub Action و اسکریپت upload-video.js آماده کردیم. دستورالعمل کامل در فایل <code>docs/YOUTUBE.md</code>.</p>
+      <p>نکته: من نمی‌توانم بدون دسترسی شما و بدون توکن‌های امن روی کانال شما آپلود انجام دهم؛ اما همهٔ ابزارها و workflow آماده است تا پس از قرار دادن secrets، آپلود خودکار انجام شود.</p>
+    </section>
+
+    <section class="card">
+      <h2>عامل دیجیتال (ادمین مجازی)</h2>
+      <p>یک نمایندهٔ دیجیتال (agent) در پروتوتایپ اضافه شده که می‌تواند پیام‌های تبلیغاتی، برنامهٔ پست و وظایف ارتقا را تولید کند. این agent فعلاً یک شیء JS در پروژه است و می‌تواند برای تولید متن و زمان‌بندی پیشنهادها استفاده شود.</p>
+      <p>در آینده این agent را به یک سرویس backend وصل می‌کنیم تا به‌طور خودکار محتوا بسازد یا به شبکه‌های اجتماعی ارسال کند (با توکن‌های امن).</p>
+    </section>
+
+  </main>
+
+  <script src="/client-ledger.js"></script>
+  <script src="/youtube-integration.js"></script>
+  <script>
+    // admin UI wiring
+    const txOut = document.getElementById('tx-output');
+    const exportBtn = document.getElementById('export-txs');
+    const clearBtn = document.getElementById('clear-txs');
+
+    function refreshTxOutput(){
+      const hist = Ledger.getHistory();
+      txOut.textContent = JSON.stringify(hist, null, 2);
+    }
+    exportBtn.addEventListener('click', () => { refreshTxOutput(); navigator.clipboard.writeText(txOut.textContent); alert('تراکنش‌ها کپی شد'); });
+    clearBtn.addEventListener('click', () => { if(confirm('آیا از پاک‌سازی مطمئنی؟ این کار غیرقابل بازگشت است.')){ localStorage.removeItem('suraya_ledger_v1'); Ledger.init(); refreshTxOutput(); alert('پاک شد'); } });
+
+    // YouTube fetch
+    document.getElementById('fetch-yt').addEventListener('click', async () => {
+      const key = document.getElementById('yt-api-key').value.trim();
+      const ch = document.getElementById('yt-channel-id').value.trim();
+      if(!key || !ch) return alert('لطفاً API Key و Channel ID را وارد کنید');
+      document.getElementById('yt-stats').textContent = 'در حال دریافت...';
+      try{
+        const stats = await YouTubeIntegration.fetchChannelStats(key, ch);
+        document.getElementById('yt-stats').innerHTML = `
+          <strong>${stats.title}</strong><br>
+          Subscribers: ${stats.subscriberCount}<br>
+          Views: ${stats.viewCount}<br>
+          Videos: ${stats.videoCount}
+        `;
+      }catch(e){ document.getElementById('yt-stats').textContent = 'خطا در دریافت آمار: ' + e.message }
+    });
+
+    // embed video
+    document.getElementById('embed-video').addEventListener('click', () => {
+      const id = document.getElementById('yt-video-id').value.trim();
+      const container = document.getElementById('yt-embed');
+      if(!id) return alert('Video ID را وارد کنید');
+      container.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${id}" frameborder="0" allowfullscreen></iframe>`;
+    });
+
+    // init
+    Ledger.init();
+    refreshTxOutput();
+  </script>
+</body>
+</html>
