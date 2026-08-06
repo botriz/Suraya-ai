@@ -1,41 +1,110 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>مرکز محتوای هوش مصنوعی ثریا</title>
-
-  <!-- Favicon -->
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="مرکز محتوای هوش مصنوعی ثریا">
-  <meta property="og:description" content="صفحهٔ آغازین پروژهٔ ثریا — پلتفرم تولید محتوای هوش مصنوعی فارسی. به‌زودی بیشتر خواهیم داشت.">
-  <meta property="og:image" content="/favicon.svg">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
-
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css">
+    <meta charset="UTF-8">
+    <title>ثریا — مرکز محتوای هوش مصنوعی</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            background: #0d0d0d;
+            color: #fff;
+        }
+        header {
+            background: #111;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav a {
+            color: #fff;
+            margin-left: 20px;
+            text-decoration: none;
+            font-size: 15px;
+        }
+        .hero {
+            text-align: center;
+            padding: 120px 20px;
+        }
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+        .hero p {
+            font-size: 20px;
+            opacity: 0.8;
+        }
+        .cta {
+            margin-top: 30px;
+            padding: 12px 30px;
+            background: #ff0077;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .services {
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .services h2 {
+            font-size: 32px;
+            margin-bottom: 40px;
+        }
+        .cards {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .card {
+            background: #1a1a1a;
+            padding: 25px;
+            width: 280px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #111;
+            margin-top: 40px;
+            opacity: 0.7;
+        }
+    </style>
 </head>
 <body>
-  <header class="container">
-    <nav class="nav">
-      <a href="/">خانه</a>
-      <a href="/about.html">درباره</a>
-      <a href="/contact.html">تماس</a>
-      <a href="/blog/">بلاگ</a>
+
+<header>
+    <div>ثریا</div>
+    <nav>
+        <a href="#">خانه</a>
+        <a href="#">درباره</a>
+        <a href="#">سرویس‌ها</a>
+        <a href="#">تماس</a>
+        <a href="#">بلاگ</a>
     </nav>
-  </header>
+</header>
 
-  <main class="container">
+<section class="hero">
     <h1>مرکز محتوای هوش مصنوعی ثریا</h1>
-    <p class="lead">این صفحه به‌زودی توسط هوش مصنوعی توسعه داده می‌شود.</p>
     <p>پلتفرم هوش مصنوعی شما 🚀</p>
-  </main>
+    <a class="cta" href="#">شروع کنید</a>
+</section>
 
-  <footer class="container">
-    <p class="muted">© 2026 ثریا — همهٔ حقوق محفوظ است.</p>
-  </footer>
+<section class="services">
+    <h2>سرویس‌های ثریا</h2>
+    <div class="cards">
+        <div class="card">تولید محتوا با هوش مصنوعی</div>
+        <div class="card">تحلیل داده و پردازش متن</div>
+        <div class="card">ساخت مدل‌های سفارشی</div>
+    </div>
+</section>
+
+<footer>
+    © 2026 ثریا — همهٔ حقوق محفوظ است.
+</footer>
+
 </body>
 </html>
