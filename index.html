@@ -1,129 +1,53 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <title>ثریا — مرکز محتوای هوش مصنوعی</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: sans-serif;
-            background: #0d0d0d;
-            color: #fff;
-        }
-        header {
-            background: #111;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        nav a {
-            color: #fff;
-            margin-left: 20px;
-            text-decoration: none;
-            font-size: 15px;
-        }
-        .hero {
-            text-align: center;
-            padding: 120px 20px;
-        }
-        .hero h1 {
-            font-size: 42px;
-            margin-bottom: 10px;
-        }
-        .hero p {
-            font-size: 20px;
-            opacity: 0.8;
-        }
-        .cta {
-            margin-top: 30px;
-            padding: 12px 30px;
-            background: #ff0077;
-            color: #fff;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 18px;
-        }
-        .services {
-            padding: 60px 20px;
-            text-align: center;
-        }
-        .services h2 {
-            font-size: 32px;
-            margin-bottom: 40px;
-        }
-        .cards {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        .card {
-            background: #1a1a1a;
-            padding: 25px;
-            width: 280px;
-            border-radius: 10px;
-            text-align: center;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            background: #111;
-            margin-top: 40px;
-            opacity: 0.7;
-        }
-    </style>
-</head>
-<body>
+// ===============================
+//   هستهٔ فردی کشور ثریا
+//   Suraya Personal Core
+// ===============================
 
-<header>
-    <div>ثریا</div>
-    <nav>
-        <a href="#">خانه</a>
-        <a href="#">درباره</a>
-        <a href="#">سرویس‌ها</a>
-        <a href="#">تماس</a>
-        <a href="#">بلاگ</a>
-    </nav>
-</header>
+const SurayaPersonalCore = {
+    createUnit() {
+        return {
+            id: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(),
+            stage: "seed",
+            energy: 1,
+            awareness: 0,
+            value: 0,
+            history: ["ایجاد هستهٔ اولیه"]
+        };
+    },
 
-<section class="hero">
-    <h1>مرکز محتوای هوش مصنوعی ثریا</h1>
-    <p>پلتفرم هوش مصنوعی شما 🚀</p>
-    <a class="cta" href="#">شروع کنید</a>
-</section>
+    evolveToPerson(unit) {
+        unit.stage = "person";
+        unit.awareness += 1;
+        unit.history.push("تبدیل به فرد دیجیتال");
+        return unit;
+    }
+};
 
-<section class="services">
-    <h2>سرویس‌های ثریا</h2>
-    <div class="cards">
-        <div class="card">تولید محتوا با هوش مصنوعی</div>
-        <div class="card">تحلیل داده و پردازش متن</div>
-        <div class="card">ساخت مدل‌های سفارشی</div>
-    </div>
-</section>
+// ===============================
+//   خانوادهٔ دیجیتال کشور ثریا
+//   Suraya Family Core
+// ===============================
 
-<footer>
-    © 2026 ثریا — همهٔ حقوق محفوظ است.
-</footer>
-<script src="suraya-core.js"></script>
-<script>
-  const seed = SurayaPersonalCore.createUnit();
-  const person = SurayaPersonalCore.evolveToPerson(seed);
-  console.log("هستهٔ اولیه:", seed);
-  console.log("فرد دیجیتال:", person);
-</script>
-   <script src="suraya-core.js"></script>
-<script>
-  const seed = SurayaPersonalCore.createUnit();
-  const person = SurayaPersonalCore.evolveToPerson(seed);
+const SurayaFamilyCore = {
+    families: {},
 
-  const family = SurayaFamilyCore.createFamily("خانوادهٔ ثریا");
-  SurayaFamilyCore.addMember(family, person);
+    createFamily(name) {
+        const id = crypto.randomUUID ? crypto.randomUUID() : Date.now().toString();
+        this.families[id] = {
+            id,
+            name,
+            members: [],
+            value: 0,
+            history: [`ایجاد خانواده: ${name}`]
+        };
+        return this.families[id];
+    },
 
-  console.log("فرد:", person);
-  console.log("خانواده:", family);
-</script>
-</body>
-</html> 
-</body>
-</html>
+    addMember(family, personUnit) {
+        personUnit.stage = "family_member";
+        personUnit.familyId = family.id;
+        family.members.push(personUnit);
+        family.history.push(`عضو جدید: ${personUnit.id}`);
+        return family;
+    }
+};
