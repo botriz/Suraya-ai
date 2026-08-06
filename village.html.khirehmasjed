@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>دهکده اولیه ثریا</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>دهکده اولیه ثریا</h1>
+  <div id="village-info"></div>
+
+  <script src="suraya-core.js"></script>
+  <script>
+    // ساخت چند فرد
+    const seed1 = SurayaPersonalCore.createUnit();
+    const person1 = SurayaPersonalCore.evolveToPerson(seed1);
+
+    const seed2 = SurayaPersonalCore.createUnit();
+    const person2 = SurayaPersonalCore.evolveToPerson(seed2);
+
+    // ساخت یک خانواده
+    const family = SurayaFamilyCore.createFamily("خانواده ثریا");
+    SurayaFamilyCore.addMember(family, person1);
+    SurayaFamilyCore.addMember(family, person2);
+
+    // دهکده = مجموعه‌ای از خانواده‌ها
+    const village = {
+      name: "دهکده اولیه ثریا",
+      families: [family]
+    };
+
+    console.log("دهکده:", village);
+
+    const div = document.getElementById("village-info");
+    div.innerHTML = `
+      <p>نام دهکده: ${village.name}</p>
+      <p>تعداد خانواده‌ها: ${village.families.length}</p>
+      <p>نام اولین خانواده: ${village.families[0].name}</p>
+      <p>تعداد اعضای خانواده: ${village.families[0].members.length}</p>
+    `;
+  </script>
+</body>
+</html>
