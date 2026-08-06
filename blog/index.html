@@ -5,25 +5,66 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>بلاگ — ثریا</title>
 
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <!-- Fallback-friendly favicons (use relative paths so pages work from /blog/ and from a site root) -->
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../favicon.png" type="image/png">
+
+  <!-- SEO & Social -->
+  <meta name="description" content="مقالات، به‌روزرسانی‌ها و اخبار دربارهٔ ثریا.">
+  <meta property="og:locale" content="fa_IR">
+  <meta property="og:type" content="website">
   <meta property="og:title" content="بلاگ — ثریا">
   <meta property="og:description" content="مقالات، به‌روزرسانی‌ها و اخبار دربارهٔ ثریا.">
-  <meta property="og:image" content="/favicon.svg">
+  <meta property="og:image" content="../favicon.svg">
+  <meta name="twitter:card" content="summary_large_image">
 
+  <!-- Performance: preload / preconnect for Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css">
+
+  <!-- Use relative stylesheet path so this file works when served from a subpath (e.g. GitHub Pages repo) -->
+  <link rel="stylesheet" href="../styles.css">
+
+  <style>
+    /* Small, local improvements so the page is usable even if styles.css is missing */
+    .skip-link {
+      position: absolute;
+      left: -999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .skip-link:focus {
+      left: 1rem;
+      top: 1rem;
+      width: auto;
+      height: auto;
+      background: #fff;
+      padding: 0.5rem 1rem;
+      z-index: 1000;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    /* Ensure rtl text doesn't overflow in narrow viewports */
+    body { word-break: break-word; }
+  </style>
 </head>
 <body>
+  <a class="skip-link" href="#content">برو به محتوا</a>
+
   <header class="container">
-    <nav class="nav">
-      <a href="/">خانه</a>
-      <a href="/about.html">درباره</a>
-      <a href="/contact.html">تماس</a>
-      <a href="/blog/">بلاگ</a>
+    <nav class="nav" aria-label="ناوبری اصلی">
+      <ul style="list-style:none;padding:0;margin:0;display:flex;gap:1rem;flex-wrap:wrap;">
+        <li><a href="../">خانه</a></li>
+        <li><a href="../about.html">درباره</a></li>
+        <li><a href="../contact.html">تماس</a></li>
+        <li><a href="./" aria-current="page">بلاگ</a></li>
+      </ul>
     </nav>
   </header>
 
-  <main class="container">
+  <main id="content" class="container">
     <h1>بلاگ</h1>
     <p class="lead">مقالات آینده و به‌روزرسانی‌ها در اینجا منتشر خواهند شد.</p>
 
