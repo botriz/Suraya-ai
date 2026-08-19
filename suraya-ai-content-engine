@@ -11,3 +11,4 @@ package.json
     "axios": "^1.6.0"
   }
 }
+npm install
