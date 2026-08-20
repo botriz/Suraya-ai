@@ -1,0 +1,387 @@
+// فایل: suraya-admin-setup.js
+// فقط این فایل را بساز، کل متن را کپی کن، بعد: node suraya-admin-setup.js
+
+import fs from "fs";
+
+fs.mkdirSync("public", { recursive: true });
+
+// پنل مدیریتی کامل
+fs.writeFileSync(
+  "public/admin.html",
+  `
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8" />
+  <title>پنل مدیریت Suraya AI</title>
+  <style>
+    body { background:#020617; color:#e5e7eb; font-family:sans-serif; margin:0; display:flex; height:100vh; }
+    .sidebar { width:260px; background:#0f172a; padding:16px; box-sizing:border-box; }
+    .sidebar h2 { margin:0 0 16px 0; font-size:18px; }
+    .sidebar button { width:100%; margin-bottom:8px; padding:8px; border:none; border-radius:6px; background:#1d4ed8; color:#fff; cursor:pointer; font-size:13px; }
+    .sidebar button:hover { background:#2563eb; }
+    .main { flex:1; padding:16px; box-sizing:border-box; overflow:auto; }
+    h3 { margin-top:0; }
+    input, select, textarea { width:100%; margin:6px 0 10px 0; padding:8px; border-radius:6px; border:none; font-size:13px; box-sizing:border-box; }
+    textarea { min-height:80px; }
+    .card { background:#0b1120; padding:12px; border-radius:10px; margin-bottom:12px; }
+    .row { display:flex; gap:12px; }
+    .row > div { flex:1; }
+    table { width:100%; border-collapse:collapse; margin-top:8px; font-size:12px; }
+    th, td { border:1px solid #1f2937; padding:6px; text-align:right; }
+    th { background:#111827; }
+    .badge { display:inline-block; padding:2px 6px; border-radius:999px; font-size:11px; background:#1f2937; }
+    .success { color:#22c55e; }
+    .error { color:#ef4444; }
+    .log { font-size:11px; background:#020617; padding:8px; border-radius:8px; margin-top:8px; max-height:160px; overflow:auto; }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>مدیریت Suraya</h2>
+    <button onclick="showSection('plans')">پلن‌ها و اشتراک</button>
+    <button onclick="showSection('users')">کاربران و کیف‌پول</button>
+    <button onclick="showSection('content')">تولید محتوا</button>
+    <button onclick="showSection('social')">انتشار خودکار</button>
+    <button onclick="showSection('security')">امنیت و ضد سوءاستفاده</button>
+    <button onclick="showSection('logs')">گزارش‌ها و تراکنش‌ها</button>
+  </div>
+
+  <div class="main">
+    <div id="plans" class="section">
+      <h3>پلن‌ها و اشتراک</h3>
+      <div class="card">
+        <div class="row">
+          <div>
+            <label>شناسه پلن</label>
+            <input id="planId" placeholder="مثلاً: basic, pro, ultra" />
+          </div>
+          <div>
+            <label>نام پلن</label>
+            <input id="planName" placeholder="نام نمایشی پلن" />
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label>قیمت (ریال)</label>
+            <input id="planPrice" type="number" placeholder="مثلاً: 50000" />
+          </div>
+          <div>
+            <label>سقف تولید محتوا در روز</label>
+            <input id="planDailyLimit" type="number" placeholder="مثلاً: 5" />
+          </div>
+          <div>
+            <label>سقف انتشار خودکار در روز</label>
+            <input id="planSocialLimit" type="number" placeholder="مثلاً: 1" />
+          </div>
+        </div>
+        <button onclick="savePlan()">ثبت / به‌روزرسانی پلن</button>
+        <div id="plansStatus" class="log"></div>
+      </div>
+      <div class="card">
+        <h4>پلن‌های فعلی</h4>
+        <button onclick="loadPlans()">بارگذاری پلن‌ها</button>
+        <div id="plansList" class="log"></div>
+      </div>
+    </div>
+
+    <div id="users" class="section" style="display:none;">
+      <h3>کاربران و کیف‌پول</h3>
+      <div class="card">
+        <div class="row">
+          <div>
+            <label>شناسه کاربر (userId)</label>
+            <input id="userId" placeholder="مثلاً: user_123" />
+          </div>
+          <div>
+            <label>مبلغ شارژ کیف‌پول</label>
+            <input id="topupAmount" type="number" placeholder="مثلاً: 100000" />
+          </div>
+        </div>
+        <button onclick="topupWallet()">شارژ کیف‌پول</button>
+        <div id="walletStatus" class="log"></div>
+      </div>
+      <div class="card">
+        <h4>خرید پلن برای کاربر</h4>
+        <div class="row">
+          <div>
+            <label>شناسه کاربر</label>
+            <input id="subUserId" placeholder="userId" />
+          </div>
+          <div>
+            <label>شناسه پلن</label>
+            <input id="subPlanId" placeholder="planId" />
+          </div>
+        </div>
+        <button onclick="subscribePlan()">خرید پلن</button>
+        <div id="subStatus" class="log"></div>
+      </div>
+      <div class="card">
+        <h4>وضعیت کاربر</h4>
+        <input id="statusUserId" placeholder="userId" />
+        <button onclick="loadUserStatus()">نمایش وضعیت</button>
+        <div id="userStatus" class="log"></div>
+      </div>
+    </div>
+
+    <div id="content" class="section" style="display:none;">
+      <h3>تولید محتوا (برای تست و کنترل)</h3>
+      <div class="card">
+        <div class="row">
+          <div>
+            <label>شناسه کاربر</label>
+            <input id="contentUserId" placeholder="userId" />
+          </div>
+          <div>
+            <label>موضوع محتوا</label>
+            <input id="contentTopic" placeholder="موضوع ویدیو / پست" />
+          </div>
+        </div>
+        <button onclick="testGenerateText()">تست تولید متن</button>
+        <div id="contentTextResult" class="log"></div>
+      </div>
+      <div class="card">
+        <h4>تست تولید تصویر</h4>
+        <input id="contentImagePrompt" placeholder="توضیح تصویر" />
+        <button onclick="testGenerateImage()">تست تولید تصویر</button>
+        <div id="contentImageResult" class="log"></div>
+      </div>
+    </div>
+
+    <div id="social" class="section" style="display:none;">
+      <h3>انتشار خودکار در شبکه‌های اجتماعی</h3>
+      <div class="card">
+        <h4>تلگرام</h4>
+        <input id="tgUserId" placeholder="userId" />
+        <input id="tgChatId" placeholder="chat_id کانال / گروه" />
+        <textarea id="tgText" placeholder="متن پیام"></textarea>
+        <button onclick="publishTelegram()">انتشار در تلگرام</button>
+        <div id="tgStatus" class="log"></div>
+      </div>
+      <div class="card">
+        <h4>اینستاگرام</h4>
+        <input id="igUserId" placeholder="userId" />
+        <input id="igPageId" placeholder="pageId / instagram business" />
+        <input id="igMediaUrl" placeholder="لینک تصویر / ویدیو" />
+        <textarea id="igCaption" placeholder="کپشن"></textarea>
+        <button onclick="publishInstagram()">انتشار در اینستاگرام</button>
+        <div id="igStatus" class="log"></div>
+      </div>
+      <div class="card">
+        <h4>یوتیوب</h4>
+        <input id="ytUserId" placeholder="userId" />
+        <input id="ytTitle" placeholder="عنوان ویدیو" />
+        <textarea id="ytDesc" placeholder="توضیحات"></textarea>
+        <input id="ytVideoUrl" placeholder="لینک ویدیو برای آپلود" />
+        <button onclick="publishYouTube()">انتشار در یوتیوب</button>
+        <div id="ytStatus" class="log"></div>
+      </div>
+      <div class="card">
+        <h4>تیک‌تاک</h4>
+        <input id="ttUserId" placeholder="userId" />
+        <input id="ttVideoUrl" placeholder="لینک ویدیو" />
+        <textarea id="ttCaption" placeholder="کپشن"></textarea>
+        <button onclick="publishTikTok()">انتشار در تیک‌تاک</button>
+        <div id="ttStatus" class="log"></div>
+      </div>
+      <div class="card">
+        <h4>پینترست</h4>
+        <input id="ptUserId" placeholder="userId" />
+        <input id="ptBoardId" placeholder="boardId" />
+        <input id="ptMediaUrl" placeholder="لینک تصویر" />
+        <textarea id="ptNote" placeholder="توضیح پین"></textarea>
+        <button onclick="publishPinterest()">انتشار در پینترست</button>
+        <div id="ptStatus" class="log"></div>
+      </div>
+    </div>
+
+    <div id="security" class="section" style="display:none;">
+      <h3>امنیت و ضد سوءاستفاده</h3>
+      <div class="card">
+        <p>در این نسخه، تمام درخواست‌ها از طریق سرور کنترل می‌شوند، سقف روزانه برای تولید محتوا و انتشار خودکار اعمال می‌شود، و هر استفاده در تراکنش‌ها ثبت می‌گردد.</p>
+        <p>برای سخت‌تر کردن سوءاستفاده، می‌توان Rate Limit، قفل موقت کاربر، و بررسی الگوهای مشکوک را در سرور اضافه کرد.</p>
+      </div>
+    </div>
+
+    <div id="logs" class="section" style="display:none;">
+      <h3>گزارش‌ها و تراکنش‌ها</h3>
+      <div class="card">
+        <button onclick="loadTransactions()">بارگذاری تراکنش‌ها</button>
+        <div id="txList" class="log"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = "";
+
+    function showSection(id) {
+      document.querySelectorAll(".section").forEach(s => s.style.display = "none");
+      document.getElementById(id).style.display = "block";
+    }
+
+    async function api(path, body) {
+      const res = await fetch(API_BASE + path, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body || {})
+      });
+      return res.json();
+    }
+
+    async function savePlan() {
+      const id = document.getElementById("planId").value.trim();
+      const name = document.getElementById("planName").value.trim();
+      const price = Number(document.getElementById("planPrice").value);
+      const daily = Number(document.getElementById("planDailyLimit").value);
+      const social = Number(document.getElementById("planSocialLimit").value);
+
+      try {
+        const res = await api("/admin/plans/save", { id, name, price, dailyLimit: daily, socialLimit: social });
+        document.getElementById("plansStatus").textContent = JSON.stringify(res, null, 2);
+      } catch (e) {
+        document.getElementById("plansStatus").textContent = e.toString();
+      }
+    }
+
+    async function loadPlans() {
+      try {
+        const res = await api("/admin/plans/list", {});
+        document.getElementById("plansList").textContent = JSON.stringify(res, null, 2);
+      } catch (e) {
+        document.getElementById("plansList").textContent = e.toString();
+      }
+    }
+
+    async function topupWallet() {
+      const userId = document.getElementById("userId").value.trim();
+      const amount = Number(document.getElementById("topupAmount").value);
+      try {
+        const res = await api("/wallet/topup", { userId, amount });
+        document.getElementById("walletStatus").textContent = JSON.stringify(res, null, 2);
+      } catch (e) {
+        document.getElementById("walletStatus").textContent = e.toString();
+      }
+    }
+
+    async function subscribePlan() {
+      const userId = document.getElementById("subUserId").value.trim();
+      const planId = document.getElementById("subPlanId").value.trim();
+      try {
+        const res = await api("/plans/subscribe", { userId, planId });
+        document.getElementById("subStatus").textContent = JSON.stringify(res, null, 2);
+      } catch (e) {
+        document.getElementById("subStatus").textContent = e.toString();
+      }
+    }
+
+    async function loadUserStatus() {
+      const userId = document.getElementById("statusUserId").value.trim();
+      try {
+        const res = await api("/user/status", { userId });
+        document.getElementById("userStatus").textContent = JSON.stringify(res, null, 2);
+      } catch (e) {
+        document.getElementById("userStatus").textContent = e.toString();
+      }
+    }
+
+    async function testGenerateText() {
+      const userId = document.getElementById("contentUserId").value.trim();
+      const topic = document.getElementById("contentTopic").value.trim();
+      try {
+        const res = await api("/generate-text", { userId, topic });
+        document.getElementById("contentTextResult").textContent = JSON.stringify(res, null, 2);
+      } catch (e) {
+        document.getElementById("contentTextResult").textContent = e.toString();
+      }
+    }
+
+    async function testGenerateImage() {
+      const userId = document.getElementById("contentUserId").value.trim();
+      const prompt = document.getElementById("contentImagePrompt").value.trim();
+      try {
+        const res = await api("/generate-image", { userId, prompt });
+        document.getElementById("contentImageResult").textContent = JSON.stringify(res, null, 2);
+      } catch (e) {
+        document.getElementById("contentImageResult").textContent = e.toString();
+      }
+    }
+
+    async function publishTelegram() {
+      const userId = document.getElementById("tgUserId").value.trim();
+      const chatId = document.getElementById("tgChatId").value.trim();
+      const text = document.getElementById("tgText").value.trim();
+      try {
+        const res = await api("/publish/telegram", { userId, chatId, text });
+        document.getElementById("tgStatus").textContent = JSON.stringify(res, null, 2);
+      } catch (e) {
+        document.getElementById("tgStatus").textContent = e.toString();
+      }
+    }
+
+    async function publishInstagram() {
+      const userId = document.getElementById("igUserId").value.trim();
+      const pageId = document.getElementById("igPageId").value.trim();
+      const mediaUrl = document.getElementById("igMediaUrl").value.trim();
+      const caption = document.getElementById("igCaption").value.trim();
+      try {
+        const res = await api("/publish/instagram", { userId, pageId, mediaUrl, caption });
+        document.getElementById("igStatus").textContent = JSON.stringify(res, null, 2);
+      } catch (e) {
+        document.getElementById("igStatus").textContent = e.toString();
+      }
+    }
+
+    async function publishYouTube() {
+      const userId = document.getElementById("ytUserId").value.trim();
+      const title = document.getElementById("ytTitle").value.trim();
+      const desc = document.getElementById("ytDesc").value.trim();
+      const videoUrl = document.getElementById("ytVideoUrl").value.trim();
+      try {
+        const res = await api("/publish/youtube", { userId, title, desc, videoUrl });
+        document.getElementById("ytStatus").textContent = JSON.stringify(res, null, 2);
+      } catch (e) {
+        document.getElementById("ytStatus").textContent = e.toString();
+      }
+    }
+
+    async function publishTikTok() {
+      const userId = document.getElementById("ttUserId").value.trim();
+      const caption = document.getElementById("ttCaption").value.trim();
+      const videoUrl = document.getElementById("ttVideoUrl").value.trim();
+      try {
+        const res = await api("/publish/tiktok", { userId, caption, videoUrl });
+        document.getElementById("ttStatus").textContent = JSON.stringify(res, null, 2);
+      } catch (e) {
+        document.getElementById("ttStatus").textContent = e.toString();
+      }
+    }
+
+    async function publishPinterest() {
+      const userId = document.getElementById("ptUserId").value.trim();
+      const boardId = document.getElementById("ptBoardId").value.trim();
+      const mediaUrl = document.getElementById("ptMediaUrl").value.trim();
+      const note = document.getElementById("ptNote").value.trim();
+      try {
+        const res = await api("/publish/pinterest", { userId, boardId, mediaUrl, note });
+        document.getElementById("ptStatus").textContent = JSON.stringify(res, null, 2);
+      } catch (e) {
+        document.getElementById("ptStatus").textContent = e.toString();
+      }
+    }
+
+    async function loadTransactions() {
+      try {
+        const res = await api("/admin/transactions/list", {});
+        document.getElementById("txList").textContent = JSON.stringify(res, null, 2);
+      } catch (e) {
+        document.getElementById("txList").textContent = e.toString();
+      }
+    }
+  </script>
+</body>
+</html>
+`
+);
+
+console.log("پنل مدیریتی Suraya ساخته شد. فقط مطمئن شو سرور روی /admin/* و /publish/* و /generate-* تنظیم شده باشد و سپس admin.html را باز کن.");
