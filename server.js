@@ -27,3 +27,15 @@ app.post("/admin/suraya/unlock", (req, res) => {
   const core = surayaDynamic(rawKeyBuffer);
   res.json(core);
 });
+import express from "express";
+import { surayaBoot } from "./suraya-hook.js";
+
+const app = express();
+
+const core = surayaBoot("./savior-key-image.jpg");
+
+app.get("/suraya/core", (req, res) => {
+  res.json(core);
+});
+
+app.listen(3000);
