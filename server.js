@@ -20,3 +20,10 @@ app.post("/generate-text", async (req, res) => {
 app.listen(3000, () => {
   console.log("Suraya AI Text Engine running on port 3000");
 });
+import { surayaDynamic } from "./suraya-hook-dynamic.js";
+
+app.post("/admin/suraya/unlock", (req, res) => {
+  const rawKeyBuffer = req.file.buffer;
+  const core = surayaDynamic(rawKeyBuffer);
+  res.json(core);
+});
