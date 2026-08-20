@@ -1,0 +1,13 @@
+import express from "express";
+import { surayaBoot } from "./suraya-hook.js";
+import { behaviorRoute } from "./behavior-route.js";
+import { licenseRoute } from "./license-route.js";
+
+const app = express();
+
+surayaBoot("./savior-key-image.jpg");
+
+behaviorRoute(app);
+licenseRoute(app);
+
+app.listen(3000);
