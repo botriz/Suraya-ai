@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>PulDağ – موتور مالی و درآمد سورایا</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #0a0f1c;
+      color: #e5e7eb;
+      direction: rtl;
+    }
+    header {
+      padding: 14px 18px;
+      background: #111827;
+      border-bottom: 1px solid #1f2937;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+      color: #f3f4f6;
+    }
+    header .subtitle {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+    header .brand {
+      font-size: 13px;
+      color: #a5b4fc;
+    }
+    main {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    section {
+      border-radius: 12px;
+      border: 1px solid #1f2937;
+      background: #0f172a;
+      padding: 12px;
+    }
+    section h2 {
+      margin: 0 0 10px 0;
+      font-size: 15px;
+      color: #e5e7eb;
+    }
+    label {
+      font-size: 12px;
+      display: block;
+      margin-bottom: 4px;
+    }
+    input, textarea, select, button {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #374151;
+      background: #1e293b;
+      color: #e5e7eb;
+      padding: 8px;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+    textarea { resize: vertical; }
+    button {
+      cursor: pointer;
+      background: #2563eb;
+      border: none;
+      font-weight: 600;
+    }
+    button.secondary {
+      background: #111827;
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .col {
+      flex: 1;
+      min-width: 240px;
+    }
+    .small {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+    #log {
+      height: 200px;
+      overflow-y: auto;
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      padding: 8px;
+      background: #1e293b;
+      font-size: 12px;
+    }
+    .msg-user { color: #22c55e; margin-bottom: 4px; }
+    .msg-ai { color: #60a5fa; margin-bottom: 4px; }
+    #status-global {
+      font-size: 12px;
+      color: #22c55e;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>PulDağ</h1>
+    <div class="subtitle">موتور مالی، درآمد، بیت‌کوین و ارز ANA</div>
+  </div>
+  <div>
+    <div class="brand">AnaGöyün · ارز مادر: ANA</div>
+    <div class="subtitle">مالک: احمد</div>
+  </div>
+</header>
+
+<main>
+
+  <!-- اتصال به سایت و هسته‌ها -->
+  <section>
+    <h2>اتصال به سایت و هسته‌های جهان</h2>
+    <div class="row">
+      <div class="col">
+        <label>آدرس API سایت سورایا:</label>
+        <input id="api-base" placeholder="https://botriz.github.io/api">
+      </div>
+      <div class="col">
+        <label>کلید مالک (AnaGöyün):</label>
+        <input id="api-key" placeholder="کلید امن مالک">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label>آدرس KökAğ (هستهٔ پایه):</label>
+        <input id="core-main" placeholder="https://your-core.com/api/kokag">
+      </div>
+      <div class="col">
+        <label>آدرس UlduzÇıraq (هستهٔ پیشرفته):</label>
+        <input id="core-super" placeholder="https://your-core.com/api/ulduzchiraq">
+      </div>
+    </div>
+    <button id="test-link">تست اتصال</button>
+    <div id="link-status" class="small"></div>
+  </section>
+
+  <!-- تنظیمات مالی -->
+  <section>
+    <h2>تنظیمات مالی و کیف‌پول‌ها</h2>
+    <div class="row">
+      <div class="col">
+        <label>کیف‌پول بیت‌کوین:</label>
+        <input id="btc-wallet" placeholder="آدرس BTC مالک">
+      </div>
+      <div class="col">
+        <label>کیف‌پول ANA:</label>
+        <input id="ana-wallet" placeholder="آدرس ANA مالک">
+      </div>
+    </div>
+    <label>منابع درآمد:</label>
+    <textarea id="income-sources" rows="3" placeholder="ads, services, missions, academy, donations"></textarea>
+    <label>حالت تبدیل درآمد:</label>
+    <select id="finance-mode">
+      <option value="manual">تبدیل با تأیید احمد</option>
+      <option value="semi-auto">نیمه‌خودکار</option>
+      <option value="auto">خودکار کامل</option>
+    </select>
+    <label>سقف تبدیل روزانه (BTC):</label>
+    <input id="daily-limit" type="number" step="0.0001" placeholder="مثلاً 0.01">
+    <button id="save-finance">ثبت تنظیمات مالی</button>
+    <div id="finance-status" class="small"></div>
+  </section>
+
+  <!-- سیستم پاداش و استخراج -->
+  <section>
+    <h2>سیستم پاداش و استخراج ارز ANA</h2>
+    <label>مدل استخراج:</label>
+    <select id="mining-model">
+      <option value="activity">بر اساس فعالیت کاربران</option>
+      <option value="missions">بر اساس مأموریت‌ها</option>
+      <option value="compute">بر اساس قدرت گوشی‌ها</option>
+      <option value="hybrid">ترکیبی</option>
+    </select>
+    <label>پروفایل استخراج:</label>
+    <textarea id="mining-profile" rows="4" placeholder='{
+  "reward_per_task": "0.5 ANA",
+  "reward_per_compute": "0.01 ANA",
+  "max_daily_reward": "10 ANA"
+}'></textarea>
+    <button id="save-mining">ثبت تنظیمات استخراج</button>
+    <div id="mining-status" class="small"></div>
+  </section>
+
+  <!-- شبکهٔ قدرت گوشی‌ها -->
+  <section>
+    <h2>GüçHalqa – شبکهٔ قدرت گوشی‌ها</h2>
+    <label>سیاست استفاده از دستگاه‌ها:</label>
+    <textarea id="device-policy" rows="4" placeholder='{
+  "voluntary": true,
+  "transparent": true,
+  "no_personal_data": true,
+  "reward": "ANA"
+}'></textarea>
+    <label>نوع وظایف محاسباتی:</label>
+    <select id="task-type">
+      <option value="small">کوچک</option>
+      <option value="medium">متوسط</option>
+      <option value="large">بزرگ</option>
+    </select>
+    <button id="save-device">ثبت سیاست شبکهٔ قدرت</button>
+    <div id="device-status" class="small"></div>
+  </section>
+
+  <!-- هوش مالی -->
+  <section>
+    <h2>UlduzÇıraq – هوش مالی مطیع مالک</h2>
+    <div id="log"></div>
+    <textarea id="chat-input" rows="2" placeholder="دستور مالی خود را بنویس..."></textarea>
+    <button id="send-chat">ارسال دستور</button>
+    <div id="status-global"></div>
+  </section>
+
+</main>
+
+<footer>
+  PulDağ – موتور مالی جهان سورایا · ارز مادر ANA · مالک: احمد
+</footer>
+
+<script>
+  function setStatus(id, msg) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = msg;
+  }
+
+  // اتصال
+  document.getElementById('test-link').onclick = function () {
+    const base = document.getElementById('api-base').value.trim();
+    const key = document.getElementById('api-key').value.trim();
+    if (!base || !key) {
+      setStatus('link-status', 'آدرس API و کلید مالک لازم است.');
+      return;
+    }
+    setStatus('link-status', 'اتصال نمایشی انجام شد. نسخهٔ واقعی باید به AnaGöyün وصل شود.');
+  };
+
+  // مالی
+  document.getElementById('save-finance').onclick = function () {
+    const btc = document.getElementById('btc-wallet').value.trim();
+    const ana = document.getElementById('ana-wallet').value.trim();
+    if (!btc || !ana) {
+      setStatus('finance-status', 'کیف‌پول‌ها لازم هستند.');
+      return;
+    }
+    setStatus('finance-status', 'تنظیمات مالی ذخیره شد.');
+  };
+
+  // استخراج
+  document.getElementById('save-mining').onclick = function () {
+    const profile = document.getElementById('mining-profile').value.trim();
+    if (!profile) {
+      setStatus('mining-status', 'پروفایل استخراج لازم است.');
+      return;
+    }
+    setStatus('mining-status', 'تنظیمات استخراج ذخیره شد.');
+  };
+
+  // شبکهٔ قدرت
+  document.getElementById('save-device').onclick = function () {
+    const policy = document.getElementById('device-policy').value.trim();
+    if (!policy) {
+      setStatus('device-status', 'سیاست لازم است.');
+      return;
+    }
+    setStatus('device-status', 'سیاست شبکهٔ قدرت ذخیره شد.');
+  };
+
+  // چت هوش
+  document.getElementById('send-chat').onclick = function () {
+    const text = document.getElementById('chat-input').value.trim();
+    if (!text) return;
+    const log = document.getElementById('log');
+    const userMsg = document.createElement('div');
+    userMsg.className = 'msg-user';
+    userMsg.textContent = 'احمد: ' + text;
+    log.appendChild(userMsg);
+    document.getElementById('chat-input').value = '';
+
+    setStatus('status-global', 'در حال پردازش دستور مالی...');
+
+    setTimeout(function () {
+      const aiMsg = document.createElement('div');
+      aiMsg.className = 'msg-ai';
+      aiMsg.textContent = 'UlduzÇıraq: دستور مالی پردازش شد. در نسخهٔ واقعی، عملیات روی PulDağ و ANA انجام می‌شود.';
+      log.appendChild(aiMsg);
+      log.scrollTop = log.scrollHeight;
+      setStatus('status-global', '');
+    }, 800);
+  };
+</script>
+
+</body>
+      </html>
