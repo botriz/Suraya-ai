@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YaziChay-Supercore | موتور تولید و مدیریت محتوای شبکه‌ای</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+:root{--bg:#0b0f19;--card:#121826;--border:#1e293b;--primary:#3b82f6;--primary-hover:#2563eb;--text:#e2e8f0;--muted:#94a3b8;--success:#10b981;--warning:#f59e0b;--danger:#ef4444;--radius:12px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Vazirmatn',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.7}
+.container{max-width:1200px;margin:0 auto;padding:24px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+header h1{font-size:1.6rem;font-weight:700;background:linear-gradient(135deg,#3b82f6,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+header .badge{background:var(--primary);color:#fff;padding:4px 12px;border-radius:20px;font-size:0.75rem;font-weight:500}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+.card h2{font-size:1.1rem;margin-bottom:16px;color:#fff;display:flex;align-items:center;gap:8px}
+.card h2 span{font-size:1.3rem}
+label{display:block;font-size:0.85rem;color:var(--muted);margin-bottom:6px}
+input,select,textarea{width:100%;background:#0f172a;border:1px solid var(--border);border-radius:8px;padding:12px 14px;color:var(--text);font-family:inherit;font-size:0.95rem;transition:border 0.2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)}
+textarea{min-height:120px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+button{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:12px 20px;font-family:inherit;font-size:0.95rem;font-weight:500;cursor:pointer;transition:background 0.2s;display:inline-flex;align-items:center;gap:8px}
+button:hover{background:var(--primary-hover)}
+button.secondary{background:#1e293b;border:1px solid var(--border)}
+button.secondary:hover{background:#334155}
+button.success{background:var(--success)}
+button.full{width:100%;justify-content:center;margin-top:8px}
+.output-box{background:#0f172a;border:1px solid var(--border);border-radius:8px;padding:16px;min-height:180px;white-space:pre-wrap;font-size:0.9rem;line-height:1.8;position:relative}
+.output-box .copy-btn{position:absolute;top:10px;left:10px;padding:6px 12px;font-size:0.8rem}
+.platform-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.platform-tabs button{padding:8px 14px;font-size:0.85rem;background:#1e293b}
+.platform-tabs button.active{background:var(--primary)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}
+.stat{background:#0f172a;border-radius:8px;padding:14px;text-align:center}
+.stat .num{font-size:1.4rem;font-weight:700;color:var(--primary)}
+.stat .label{font-size:0.75rem;color:var(--muted);margin-top:4px}
+.hidden{display:none}
+.tag{display:inline-block;background:#1e293b;padding:3px 10px;border-radius:20px;font-size:0.75rem;margin:2px}
+footer{margin-top:40px;text-align:center;color:var(--muted);font-size:0.8rem;padding-top:20px;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<div>
+<h1>YaziChay-Supercore</h1>
+<div style="font-size:0.85rem;color:var(--muted);margin-top:4px">موتور تولید و مدیریت محتوای شبکه‌ای • نسخه ۱.۰</div>
+</div>
+<div class="badge">سورَیَا • فعال</div>
+</header>
+
+<div class="grid">
+<!-- پنل ورودی -->
+<div class="card">
+<h2><span>⚙️</span> تنظیمات تولید</h2>
+
+<div class="row">
+<div>
+<label>موضوع اصلی</label>
+<input type="text" id="topic" placeholder="مثال: عدالت جهانی، علم سکو سوم، خدمت به انسانیت">
+</div>
+<div>
+<label>سبک محتوا</label>
+<select id="style">
+<option value="elmi">علمی و عمیق</option>
+<option value="angizeshi">انگیزشی و بیدارگر</option>
+<option value="tahlili">تحلیلی و استراتژیک</option>
+<option value="dastani">داستانی و روایی</option>
+<option value="amozeshi">آموزشی و کاربردی</option>
+<option value="payami">پیامی و کوتاه</option>
+</select>
+</div>
+</div>
+
+<div class="row">
+<div>
+<label>مخاطب هدف</label>
+<select id="audience">
+<option value="agah">مخاطب آگاه و جویای حقیقت</option>
+<option value="javan">جوانان جستجوگر</option>
+<option value="naman">نخبگان و اندیشمندان</option>
+<option value="omumi">عموم مردم</option>
+<option value="faal">فعالان شبکه‌های اجتماعی</option>
+</select>
+</div>
+<div>
+<label>زبان</label>
+<select id="lang">
+<option value="fa">فارسی</option>
+<option value="az">ترکی آذری</option>
+<option value="en">English</option>
+<option value="mix">ترکیبی (فارسی + انگلیسی)</option>
+</select>
+</div>
+</div>
+
+<div>
+<label>کلمات کلیدی / هشتگ‌های اجباری (با کاما جدا کن)</label>
+<input type="text" id="keywords" placeholder="سورَیَا, عدالت, علم, جهان هوشمند">
+</div>
+
+<div style="margin-top:16px">
+<label>توضیح اضافی یا زاویه خاص (اختیاری)</label>
+<textarea id="extra" placeholder="هر نکته‌ای که می‌خوای در محتوا لحاظ بشه..."></textarea>
+</div>
+
+<button class="full" onclick="generateContent()">تولید محتوا</button>
+<button class="full secondary" onclick="generateAllPlatforms()" style="margin-top:8px">تولید نسخه همه پلتفرم‌ها</button>
+</div>
+
+<!-- پنل خروجی -->
+<div class="card">
+<h2><span>📤</span> خروجی محتوا</h2>
+
+<div class="platform-tabs" id="tabs">
+<button class="active" data-p="general" onclick="switchPlatform('general')">عمومی</button>
+<button data-p="x" onclick="switchPlatform('x')">X</button>
+<button data-p="youtube" onclick="switchPlatform('youtube')">یوتیوب</button>
+<button data-p="telegram" onclick="switchPlatform('telegram')">تلگرام</button>
+<button data-p="instagram" onclick="switchPlatform('instagram')">اینستاگرام</button>
+<button data-p="tiktok" onclick="switchPlatform('tiktok')">تیک‌تاک</button>
+</div>
+
+<div class="output-box" id="output">
+محتوا اینجا نمایش داده می‌شود...
+<button class="copy-btn secondary" onclick="copyOutput()">کپی</button>
+</div>
+
+<div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+<button class="secondary" onclick="saveToLibrary()">ذخیره در کتابخانه</button>
+<button class="secondary" onclick="clearOutput()">پاک کردن</button>
+<button class
