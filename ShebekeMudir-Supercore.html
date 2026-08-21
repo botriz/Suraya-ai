@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShebekeMudir-Supercore | مدیریت واقعی شبکه‌ها و درآمد</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+:root{--bg:#070b14;--card:#0f1623;--border:#1e293b;--primary:#6366f1;--primary-hover:#4f46e5;--text:#e2e8f0;--muted:#94a3b8;--success:#10b981;--warning:#f59e0b;--danger:#ef4444;--radius:12px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Vazirmatn',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+.container{max-width:1280px;margin:0 auto;padding:20px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+header h1{font-size:1.5rem;font-weight:700;background:linear-gradient(135deg,#6366f1,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.badge{background:var(--primary);color:#fff;padding:4px 12px;border-radius:20px;font-size:0.75rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:950px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.card h2{font-size:1.05rem;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+label{display:block;font-size:0.82rem;color:var(--muted);margin-bottom:5px}
+input,select,textarea{width:100%;background:#0a101f;border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:inherit;font-size:0.9rem}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)}
+textarea{min-height:90px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+button{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:10px 16px;font-family:inherit;font-size:0.9rem;font-weight:500;cursor:pointer;transition:0.2s}
+button:hover{background:var(--primary-hover)}
+button.secondary{background:#1e293b;border:1px solid var(--border)}
+button.success{background:var(--success)}
+button.danger{background:var(--danger)}
+button.full{width:100%;margin-top:8px}
+.table{width:100%;border-collapse:collapse;font-size:0.85rem}
+.table th,.table td{padding:10px 8px;border-bottom:1px solid var(--border);text-align:right}
+.table th{color:var(--muted);font-weight:500}
+.status{padding:3px 10px;border-radius:20px;font-size:0.75rem}
+.status.done{background:#064e3b;color:#34d399}
+.status.wait{background:#78350f;color:#fbbf24}
+.status.draft{background:#1e293b;color:#94a3b8}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.stat{background:#0a101f;border-radius:8px;padding:12px;text-align:center}
+.stat .num{font-size:1.3rem;font-weight:700;color:var(--primary)}
+.stat .label{font-size:0.72rem;color:var(--muted);margin-top:2px}
+.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.tabs button{padding:7px 12px;font-size:0.8rem;background:#1e293b}
+.tabs button.active{background:var(--primary)}
+.list{max-height:280px;overflow-y:auto}
+.item{background:#0a101f;border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.item .info{flex:1}
+.item .title{font-weight:500;font-size:0.9rem}
+.item .meta{font-size:0.75rem;color:var(--muted);margin-top:2px}
+footer{margin-top:32px;text-align:center;color:var(--muted);font-size:0.78rem;padding-top:16px;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<div>
+<h1>ShebekeMudir-Supercore</h1>
+<div style="font-size:0.82rem;color:var(--muted);margin-top:3px">مدیریت واقعی شبکه‌ها • درآمد • مخاطب • انتشار</div>
+</div>
+<div class="badge">سورَیَا • عملیاتی</div>
+</header>
+
+<div class="stats" id="stats">
+<div class="stat"><div class="num" id="s-content">0</div><div class="label">محتوای آماده</div></div>
+<div class="stat"><div class="num" id="s-published">0</div><div class="label">منتشرشده</div></div>
+<div class="stat"><div class="num" id="s-income">0</div><div class="label">درآمد ثبت‌شده</div></div>
+<div class="stat"><div class="num" id="s-audience">0</div><div class="label">مخاطب جذب‌شده</div></div>
+</div>
+
+<div class="grid">
+<!-- ثبت محتوا و انتشار -->
+<div class="card">
+<h2>📅 ثبت و زمان‌بندی محتوا</h2>
+<div class="row">
+<div>
+<label>عنوان / موضوع</label>
+<input type="text" id="c-title" placeholder="عنوان محتوا">
+</div>
+<div>
+<label>پلتفرم</label>
+<select id="c-platform">
+<option value="x">X</option>
+<option value="youtube">یوتیوب</option>
+<option value="telegram">تلگرام</option>
+<option value="instagram">اینستاگرام</option>
+<option value="tiktok">تیک‌تاک</option>
+<option value="multi">چندپلتفرمی</option>
+</select>
+</div>
+</div>
+<div class="row">
+<div>
+<label>وضعیت</label>
+<select id="c-status">
+<option value="draft">پیش‌نویس</option>
+<option value="wait">آماده انتشار</option>
+<option value="done">منتشر شده</option>
+</select>
+</div>
+<div>
+<label>تاریخ انتشار برنامه‌ریزی‌شده</label>
+<input type="date" id="c-date">
+</div>
+</div>
+<label>لینک یا متن کوتاه</label>
+<textarea id="c-link" placeholder="لینک پست یا خلاصه محتوا"></textarea>
+<button class="full" onclick="addContent()">ثبت محتوا</button>
+</div>
+
+<!-- ثبت درآمد -->
+<div class="card">
+<h2>💰 ثبت درآمد واقعی</h2>
+<div class="row">
+<div>
+<label>منبع درآمد</label>
+<select id="i-source">
+<option value="youtube">یوتیوب (تبلیغات/عضویت)</option>
+<option value="x">X (اشتراک/اسپانسر)</option>
+<option value="telegram">تلگرام (فروش/کانال)</option>
+<option value="instagram">اینستاگرام</option>
+<option value="sponsor">اسپانسر مستقیم</option>
+<option value="other">سایر</option>
+</select>
+</div>
+<div>
+<label>مبلغ (تومان یا واحد)</label>
+<input type="number" id="i-amount" placeholder="مبلغ">
+</div>
+</div>
+<div class="row">
+<div>
+<label>تاریخ</label>
+<input type="date" id="i-date">
+</div>
+<div>
+<label>توضیح</label>
+<input type="text" id="i-note" placeholder="توضیح کوتاه">
+</div>
+</div>
+<button class="full success" onclick="addIncome()">ثبت درآمد</button>
+</div>
+</div>
+
+<div class="grid" style="margin-top:20px">
+<!-- لیست محتوا -->
+<div class="card">
+<h2>📋 لیست محتوا</h2>
+<div class="tabs">
+<button class="active" data-f="all" onclick="filterContent('all')">همه</button>
+<button data-f="wait" onclick="filterContent('wait')">آماده</button>
+<button data-f="done" onclick="filterContent('done')">منتشرشده</button>
+<button data-f="draft" onclick="filterContent('draft')">پیش‌نویس</button>
+</div>
+<div class="list" id="content-list"></div>
+</div>
+
+<!-- لیست درآمد + مخاطب -->
+<div class="card">
+<h2>📈 درآمد و مخاطب</h2>
+<div class="tabs">
+<button class="active" data-t="income" onclick="switchTab('income')">درآمد</button>
+<button data-t="audience" onclick="switchTab('audience')">مخاطب</button>
+</div>
+<div id="income-panel">
+<div class="list" id="income-list"></div>
+</div>
+<div id="audience-panel" class="hidden">
+<div class="row">
+<div>
+<label>نام / شناسه مخاطب</label>
+<input type="text" id="a-name" placeholder="نام یا آیدی">
+</div>
+<div>
+<label>منبع جذب</label>
+<select id="a-source">
+<option value="x">X</option>
+<option value="youtube">یوتیوب</option>
+<option value="telegram">تلگرام</option>
+<option value="instagram">اینستاگرام</option>
+<option value="other">سایر</option>
+</select>
+</div>
+</div>
+<label>یادداشت</label>
+<input type="text" id="a-note" placeholder="نکته مهم درباره مخاطب">
+<button class="full" onclick="addAudience()">ثبت مخاطب</button>
+<div class="list" id="audience-list" style="margin-top:12px"></div>
+</div>
+</div>
+</div>
+
+<footer>
+ShebekeMudir-Supercore • ابزار عملیاتی واقعی برای تبدیل محتوا به درآمد و مخاطب • اکوسیستم سورَیَا
+</footer>
+</div>
+
+<script>
+const DB = {
+  contents: JSON.parse(localStorage.getItem
