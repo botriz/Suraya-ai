@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>PulDünya – هستهٔ مالی جهانی سورایا</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #020617;
+      color: #e5e7eb;
+      direction: rtl;
+    }
+    header {
+      padding: 14px 18px;
+      background: #0f172a;
+      border-bottom: 1px solid #1f2937;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+      color: #f9fafb;
+    }
+    header .subtitle {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+    header .brand {
+      font-size: 13px;
+      color: #a5b4fc;
+    }
+    main {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    section {
+      border-radius: 12px;
+      border: 1px solid #1f2937;
+      background: #030712;
+      padding: 12px;
+    }
+    section h2 {
+      margin: 0 0 10px 0;
+      font-size: 15px;
+      color: #e5e7eb;
+    }
+    label {
+      font-size: 12px;
+      display: block;
+      margin-bottom: 4px;
+    }
+    input, textarea, select, button {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #374151;
+      background: #020617;
+      color: #e5e7eb;
+      padding: 8px;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+    textarea { resize: vertical; }
+    button {
+      cursor: pointer;
+      background: #2563eb;
+      border: none;
+      font-weight: 600;
+    }
+    button.secondary {
+      background: #111827;
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .col {
+      flex: 1;
+      min-width: 240px;
+    }
+    .small {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+    #log {
+      height: 220px;
+      overflow-y: auto;
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      padding: 8px;
+      background: #020617;
+      font-size: 12px;
+    }
+    .msg-user { color: #22c55e; margin-bottom: 4px; }
+    .msg-ai { color: #60a5fa; margin-bottom: 4px; }
+    #status-global {
+      font-size: 12px;
+      color: #22c55e;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>PulDünya</h1>
+    <div class="subtitle">هستهٔ مالی جهانی، حساب‌ها، ارزها و اتصال به شبکهٔ جهانی</div>
+  </div>
+  <div>
+    <div class="brand">AnaGöyün · ارز مادر: ANA · مدیر: احمد</div>
+    <div class="subtitle">۱۰٪ سهم سیستم مادر (قابل تنظیم)</div>
+  </div>
+</header>
+
+<main>
+
+  <!-- اتصال به هسته‌ها و شبکه‌های مالی -->
+  <section>
+    <h2>اتصال به هسته‌ها و شبکه‌های مالی جهان</h2>
+    <div class="row">
+      <div class="col">
+        <label>آدرس API هستهٔ مادر AnaGöyün:</label>
+        <input id="api-ana" placeholder="https://your-core.com/api/anagoyun">
+      </div>
+      <div class="col">
+        <label>آدرس API PulDağ (درآمد داخلی):</label>
+        <input id="api-pul" placeholder="https://your-core.com/api/puldag">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label>آدرس درگاه‌های مالی جهانی (مثلاً صرافی‌ها):</label>
+        <input id="api-global" placeholder="لیست یا آدرس تجمیعی API مالی جهانی">
+      </div>
+      <div class="col">
+        <label>کلیدهای اتصال به شبکه‌های مالی (JSON):</label>
+        <textarea id="keys-global" rows="3" placeholder='{
+  "exchange_1": "KEY...",
+  "exchange_2": "KEY...",
+  "wallet_provider": "KEY..."
+}'></textarea>
+      </div>
+    </div>
+    <button id="save-global-link">ثبت اتصال مالی جهانی</button>
+    <div id="global-link-status" class="small"></div>
+  </section>
+
+  <!-- تنظیمات حساب مادر و سهم ۱۰٪ -->
+  <section>
+    <h2>حساب مادر و سهم سیستم</h2>
+    <div class="row">
+      <div class="col">
+        <label>آدرس کیف‌پول مادر (ANA / BTC / چندارزی):</label>
+        <input id="mother-wallet" placeholder="آدرس کیف‌پول مادر (مدیر)">
+      </div>
+      <div class="col">
+        <label>درصد سهم سیستم مادر:</label>
+        <input id="mother-share" type="number" step="0.1" placeholder="مثلاً 10">
+      </div>
+    </div>
+    <label>سیاست سهم سیستم:</label>
+    <textarea id="mother-policy" rows="4" placeholder='{
+  "default_share": 10,
+  "min_share": 0,
+  "max_share": 25,
+  "change_only_by_owner": true
+}'></textarea>
+    <button id="save-mother-config">ثبت تنظیمات حساب مادر</button>
+    <div id="mother-status" class="small"></div>
+  </section>
+
+  <!-- ثبت کاربر، احراز هویت و اتصال به دستگاه -->
+  <section>
+    <h2>ثبت کاربر، احراز هویت و اتصال به دستگاه</h2>
+    <div class="row">
+      <div class="col">
+        <label>نام کامل کاربر:</label>
+        <input id="user-name" placeholder="نام و نام خانوادگی">
+      </div>
+      <div class="col">
+        <label>شماره ملی / شناسهٔ هویتی:</label>
+        <input id="user-id" placeholder="کد ملی یا شناسهٔ رسمی">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label>شماره تلفن همراه (ثبت در شبکه):</label>
+        <input id="user-phone" placeholder="شماره موبایل">
+      </div>
+      <div class="col">
+        <label>شناسهٔ دستگاه (Device ID):</label>
+        <input id="device-id" placeholder="شناسهٔ یکتا دستگاه">
+      </div>
+    </div>
+    <label>منطقهٔ مکانی (کشور / شهر):</label>
+    <input id="user-location" placeholder="مثلاً Iran / Tabriz">
+    <label>اطلاعات تکمیلی احراز هویت (JSON):</label>
+    <textarea id="user-kyc" rows="4" placeholder='{
+  "id_document_type": "passport",
+  "id_document_number": "XXXX",
+  "verified": false
+}'></textarea>
+    <button id="register-user">ثبت کاربر و اتصال به دستگاه</button>
+    <div id="user-status" class="small"></div>
+  </section>
+
+  <!-- کیف‌پول چندارزی و عملیات مالی کاربر -->
+  <section>
+    <h2>کیف‌پول چندارزی و عملیات مالی کاربر</h2>
+    <div class="row">
+      <div class="col">
+        <label>ارزهای فعال برای کاربر:</label>
+        <textarea id="user-currencies" rows="3" placeholder='["ANA","BTC","ETH","USDT","LOCAL_FIAT"]'></textarea>
+      </div>
+      <div class="col">
+        <label>سیاست ذخیره و برداشت:</label>
+        <textarea id="wallet-policy" rows="3" placeholder='{
+  "allow_withdraw": true,
+  "allow_deposit": true,
+  "allow_internal_trade": true,
+  "allow_external_trade": true
+}'></textarea>
+      </div>
+    </div>
+    <label>درخواست عملیات مالی (نمایشی):</label>
+    <textarea id="wallet-operation" rows="3" placeholder='{
+  "type": "withdraw",
+  "currency": "ANA",
+  "amount": 10,
+  "target": "external_wallet_address"
+}'></textarea>
+    <button id="process-operation">پردازش نمایشی عملیات مالی</button>
+    <div id="wallet-status" class="small"></div>
+  </section>
+
+  <!-- محاسبهٔ سهم کاربر و سهم سیستم مادر -->
+  <section>
+    <h2>محاسبهٔ سهم کاربر و سهم سیستم مادر</h2>
+    <label>درآمد خام کاربر (مثلاً از مأموریت‌ها / محتوا / محاسبات):</label>
+    <input id="raw-income" type="number" step="0.0001" placeholder="مثلاً 100">
+    <button id="calc-share">محاسبهٔ سهم‌ها</button>
+    <div id="share-result" class="small"></div>
+  </section>
+
+  <!-- هوش مالی PulDünya -->
+  <section>
+    <h2>هوش مالی PulDünya – چت و فرماندهی</h2>
+    <div id="log"></div>
+    <textarea id="chat-input" rows="2" placeholder="دستور مالی، سیاست یا سؤال خود را بنویس..."></textarea>
+    <button id="send-chat">ارسال به هوش مالی</button>
+    <div id="status-global"></div>
+  </section>
+
+</main>
+
+<footer>
+  PulDünya – هستهٔ مالی جهانی سورایا · همهٔ حساب‌ها، ارزها و سهم‌ها به AnaGöyün و حساب مادر متصل‌اند.
+</footer>
+
+<script>
+  function setStatus(id, msg) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = msg;
+  }
+
+  // اتصال مالی جهانی
+  document.getElementById('save-global-link').onclick = function () {
+    const ana = document.getElementById('api-ana').value.trim();
+    const pul = document.getElementById('api-pul').value.trim();
+    const global = document.getElementById('api-global').value.trim();
+    const keys = document.getElementById('keys-global').value.trim();
+    if (!ana || !pul || !global || !keys) {
+      setStatus('global-link-status', 'همهٔ فیلدهای اتصال مالی جهانی لازم است.');
+      return;
+    }
+    setStatus('global-link-status', 'اتصال مالی جهانی در رابط ذخیره شد. نسخهٔ واقعی باید این تنظیمات را در بک‌اند امن ذخیره کند.');
+  };
+
+  // حساب مادر
+  document.getElementById('save-mother-config').onclick = function () {
+    const wallet = document.getElementById('mother-wallet').value.trim();
+    const share = document.getElementById('mother-share').value.trim();
+    const policy = document.getElementById('mother-policy').value.trim();
+    if (!wallet || !share || !policy) {
+      setStatus('mother-status', 'آدرس کیف‌پول مادر، درصد سهم و سیاست لازم است.');
+      return;
+    }
+    setStatus('mother-status', 'تنظیمات حساب مادر ذخیره شد. نسخهٔ واقعی باید فقط توسط مدیر قابل تغییر باشد.');
+  };
+
+  // ثبت کاربر و اتصال به دستگاه
+  document.getElementById('register-user').onclick = function () {
+    const name = document.getElementById('user-name').value.trim();
+    const uid = document.getElementById('user-id').value.trim();
+    const phone = document.getElementById('user-phone').value.trim();
+    const device = document.getElementById('device-id').value.trim();
+    const loc = document.getElementById('user-location').value.trim();
+    const kyc = document.getElementById('user-kyc').value.trim();
+    if (!name || !uid || !phone || !device || !loc || !kyc) {
+      setStatus('user-status', 'همهٔ فیلدهای هویت و دستگاه لازم است.');
+      return;
+    }
+    setStatus('user-status', 'ثبت کاربر و اتصال به دستگاه در رابط انجام شد. نسخهٔ واقعی باید در بک‌اند ذخیره و هر دستگاه را به یک حساب محدود کند.');
+  };
+
+  // عملیات کیف‌پول
+  document.getElementById('process-operation').onclick = function () {
+    const op = document.getElementById('wallet-operation').value.trim();
+    if (!op) {
+      setStatus('wallet-status', 'درخواست عملیات مالی لازم است.');
+      return;
+    }
+    setStatus('wallet-status', 'عملیات مالی به‌صورت نمایشی پردازش شد. نسخهٔ واقعی باید به شبکهٔ مالی داخلی و جهانی متصل شود.');
+  };
+
+  // محاسبهٔ سهم‌ها
+  document.getElementById('calc-share').onclick = function () {
+    const raw = parseFloat(document.getElementById('raw-income').value.trim());
+    const share = parseFloat(document.getElementById('mother-share').value.trim());
+    if (isNaN(raw) || isNaN(share)) {
+      setStatus('share-result', 'درآمد خام و درصد سهم سیستم لازم است.');
+      return;
+    }
+    const motherPart = raw * (share / 100);
+    const userPart = raw - motherPart;
+    setStatus('share-result', 'درآمد خام: ' + raw + ' | سهم سیستم مادر: ' + motherPart + ' | سهم کاربر: ' + userPart);
+  };
+
+  // چت هوش مالی
+  document.getElementById('send-chat').onclick = function () {
+    const text = document.getElementById('chat-input').value.trim();
+    if (!text) return;
+    const log = document.getElementById('log');
+    const userMsg = document.createElement('div');
+    userMsg.className = 'msg-user';
+    userMsg.textContent = 'احمد: ' + text;
+    log.appendChild(userMsg);
+    document.getElementById('chat-input').value = '';
+
+    setStatus('status-global', 'در حال پردازش دستور مالی...');
+
+    setTimeout(function () {
+      const aiMsg = document.createElement('div');
+      aiMsg.className = 'msg-ai';
+      aiMsg.textContent =
+        'هوش مالی PulDünya: این پاسخ نمایشی است. نسخهٔ واقعی باید دستور را در بک‌اند اجرا کند، سهم کاربر و سیستم را محاسبه کند و تراکنش را به کیف‌پول‌های متصل در شبکهٔ داخلی و جهانی ارسال کند.';
+      log.appendChild(aiMsg);
+      log.scrollTop = log.scrollHeight;
+      setStatus('status-global', '');
+    }, 900);
+  };
+</script>
+
+</body>
+      </html>
