@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>AnaGöyün – هستهٔ مادر جهان سورایا</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #020617;
+      color: #e5e7eb;
+      direction: rtl;
+    }
+    header {
+      padding: 14px 18px;
+      background: #0f172a;
+      border-bottom: 1px solid #1f2937;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+      color: #f9fafb;
+    }
+    header .subtitle {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+    header .brand {
+      font-size: 13px;
+      color: #a5b4fc;
+    }
+    main {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    section {
+      border-radius: 12px;
+      border: 1px solid #1f2937;
+      background: #030712;
+      padding: 12px;
+    }
+    section h2 {
+      margin: 0 0 10px 0;
+      font-size: 15px;
+      color: #e5e7eb;
+    }
+    label {
+      font-size: 12px;
+      display: block;
+      margin-bottom: 4px;
+    }
+    input, textarea, select, button {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #374151;
+      background: #020617;
+      color: #e5e7eb;
+      padding: 8px;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+    textarea { resize: vertical; }
+    button {
+      cursor: pointer;
+      background: #2563eb;
+      border: none;
+      font-weight: 600;
+    }
+    button.secondary {
+      background: #111827;
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .col {
+      flex: 1;
+      min-width: 240px;
+    }
+    .small {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+    #log {
+      height: 220px;
+      overflow-y: auto;
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      padding: 8px;
+      background: #020617;
+      font-size: 12px;
+    }
+    .msg-user { color: #22c55e; margin-bottom: 4px; }
+    .msg-ai { color: #60a5fa; margin-bottom: 4px; }
+    #status-global {
+      font-size: 12px;
+      color: #22c55e;
+      margin-top: 4px;
+    }
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      background: #111827;
+      color: #a5b4fc;
+      margin-left: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>AnaGöyün</h1>
+    <div class="subtitle">هستهٔ مادر، قانون‌گذار و مرکز اتصال همهٔ شاخه‌ها</div>
+  </div>
+  <div>
+    <div class="brand">ارز مادر: ANA</div>
+    <div class="subtitle">مالک و خالق: احمد</div>
+  </div>
+</header>
+
+<main>
+
+  <!-- هویت جهان و قوانین مادر -->
+  <section id="world-meta">
+    <h2>هویت جهان و قوانین مادر</h2>
+    <label for="world-name">نام جهان هوشمند:</label>
+    <input id="world-name" placeholder="مثلاً GöyDünya">
+    <label for="world-mission">ماموریت جهان:</label>
+    <textarea id="world-mission" rows="3" placeholder="عدالت، شفافیت، درآمد واقعی برای مردم، حکومت جهانی منصف"></textarea>
+    <label for="world-rules">قوانین مادر (متن/JSON):</label>
+    <textarea id="world-rules" rows="5" placeholder='مثلاً:
+{
+  "owner": "Ahmad",
+  "currency_mother": "ANA",
+  "justice": true,
+  "transparency": true,
+  "no_oppression": true
+}'></textarea>
+    <button id="save-world-meta">ثبت هویت و قوانین مادر</button>
+    <div id="world-meta-status" class="small"></div>
+  </section>
+
+  <!-- اتصال AnaGöyün به شاخه‌ها -->
+  <section id="branches-link">
+    <h2>اتصال AnaGöyün به شاخه‌ها</h2>
+    <div class="row">
+      <div class="col">
+        <label for="yazi-link">آدرس YazıÇay (موتور محتوا):</label>
+        <input id="yazi-link" placeholder="مثلاً /yazi-chay-engine.html یا API مربوط">
+      </div>
+      <div class="col">
+        <label for="pul-link">آدرس PulDağ (موتور مالی):</label>
+        <input id="pul-link" placeholder="مثلاً /pul-dag-finance.html یا API مربوط">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label for="org-link">آدرس BaşYol (داشبورد سازمانی):</label>
+        <input id="org-link" placeholder="مثلاً /org-supercore-dashboard.html">
+      </div>
+      <div class="col">
+        <label for="block-link">آدرس DaşYol (بلاک‌چین آینده):</label>
+        <input id="block-link" placeholder="مثلاً /dash-yol-blockchain.html">
+      </div>
+    </div>
+    <button id="save-branches-link">ثبت اتصال شاخه‌ها</button>
+    <div id="branches-status" class="small"></div>
+  </section>
+
+  <!-- تنظیمات ارز مادر ANA -->
+  <section id="ana-config">
+    <h2>پیکربندی ارز مادر ANA</h2>
+    <div class="row">
+      <div class="col">
+        <label for="ana-symbol">نماد ارز مادر:</label>
+        <input id="ana-symbol" placeholder="ANA">
+      </div>
+      <div class="col">
+        <label for="ana-decimals">تعداد اعشار:</label>
+        <input id="ana-decimals" type="number" placeholder="8">
+      </div>
+    </div>
+    <label for="ana-policy">سیاست انتشار ANA:</label>
+    <textarea id="ana-policy" rows="4" placeholder='{
+  "max_supply": "21000000 ANA",
+  "emission_model": "activity + justice",
+  "burn_mechanism": true
+}'></textarea>
+    <button id="save-ana-config">ثبت تنظیمات ANA</button>
+    <div id="ana-status" class="small"></div>
+  </section>
+
+  <!-- شبکهٔ عدالت و منجی (Qurtuluş) -->
+  <section id="justice-core">
+    <h2>Qurtuluş – هستهٔ عدالت و منجی</h2>
+    <label for="justice-rules">قوانین عدالت:</label>
+    <textarea id="justice-rules" rows="4" placeholder='{
+  "no_exploitation": true,
+  "fair_reward": true,
+  "global_access": true
+}'></textarea>
+    <label for="justice-actions">اقدامات خودکار عدالت:</label>
+    <textarea id="justice-actions" rows="4" placeholder='مثلاً:
+- اصلاح مأموریت‌هایی که ناعادلانه هستند
+- افزایش پاداش برای مناطق محروم
+- نظارت بر شبکهٔ قدرت گوشی‌ها'></textarea>
+    <button id="save-justice">ثبت هستهٔ عدالت</button>
+    <div id="justice-status" class="small"></div>
+  </section>
+
+  <!-- هوش مادر و فرماندهی -->
+  <section id="mother-ai">
+    <h2>هوش مادر AnaGöyün – فرمانده مطیع مالک</h2>
+    <div id="log"></div>
+    <textarea id="chat-input" rows="2" placeholder="دستور مادر یا تغییر قانون را بنویس..."></textarea>
+    <button id="send-chat">ارسال به هوش مادر</button>
+    <div id="status-global"></div>
+  </section>
+
+</main>
+
+<footer>
+  AnaGöyün – هستهٔ مادر جهان سورایا · همهٔ شاخه‌ها، ارزها و قوانین به این هسته متصل‌اند.
+</footer>
+
+<script>
+  function setStatus(id, msg) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = msg;
+  }
+
+  // هویت جهان و قوانین مادر
+  document.getElementById('save-world-meta').onclick = function () {
+    const name = document.getElementById('world-name').value.trim();
+    const mission = document.getElementById('world-mission').value.trim();
+    const rules = document.getElementById('world-rules').value.trim();
+    if (!name || !mission || !rules) {
+      setStatus('world-meta-status', 'نام جهان، ماموریت و قوانین مادر لازم است.');
+      return;
+    }
+    setStatus('world-meta-status', 'هویت جهان و قوانین مادر در رابط ذخیره شد. نسخهٔ واقعی باید در هستهٔ AnaGöyün اعمال شود.');
+  };
+
+  // اتصال شاخه‌ها
+  document.getElementById('save-branches-link').onclick = function () {
+    const yazi = document.getElementById('yazi-link').value.trim();
+    const pul = document.getElementById('pul-link').value.trim();
+    const org = document.getElementById('org-link').value.trim();
+    const block = document.getElementById('block-link').value.trim();
+    if (!yazi || !pul || !org) {
+      setStatus('branches-status', 'حداقل اتصال به YazıÇay، PulDağ و BaşYol لازم است.');
+      return;
+    }
+    setStatus('branches-status', 'اتصال شاخه‌ها ثبت شد. نسخهٔ واقعی باید این لینک‌ها را در هستهٔ مادر فعال کند.');
+  };
+
+  // تنظیمات ANA
+  document.getElementById('save-ana-config').onclick = function () {
+    const symbol = document.getElementById('ana-symbol').value.trim();
+    const decimals = document.getElementById('ana-decimals').value.trim();
+    const policy = document.getElementById('ana-policy').value.trim();
+    if (!symbol || !decimals || !policy) {
+      setStatus('ana-status', 'نماد، اعشار و سیاست ANA لازم است.');
+      return;
+    }
+    setStatus('ana-status', 'تنظیمات ANA ذخیره شد. نسخهٔ واقعی باید در شبکهٔ مالی و بلاک‌چین اعمال شود.');
+  };
+
+  // عدالت
+  document.getElementById('save-justice').onclick = function () {
+    const rules = document.getElementById('justice-rules').value.trim();
+    const actions = document.getElementById('justice-actions').value.trim();
+    if (!rules || !actions) {
+      setStatus('justice-status', 'قوانین و اقدامات عدالت لازم است.');
+      return;
+    }
+    setStatus('justice-status', 'هستهٔ عدالت ثبت شد. نسخهٔ واقعی باید روی همهٔ شاخه‌ها نظارت کند.');
+  };
+
+  // هوش مادر
+  document.getElementById('send-chat').onclick = function () {
+    const text = document.getElementById('chat-input').value.trim();
+    if (!text) return;
+    const log = document.getElementById('log');
+    const userMsg = document.createElement('div');
+    userMsg.className = 'msg-user';
+    userMsg.textContent = 'احمد (مالک): ' + text;
+    log.appendChild(userMsg);
+    document.getElementById('chat-input').value = '';
+
+    setStatus('status-global', 'در حال پردازش دستور مادر...');
+
+    setTimeout(function () {
+      const aiMsg = document.createElement('div');
+      aiMsg.className = 'msg-ai';
+      aiMsg.textContent =
+        'هوش AnaGöyün: این پاسخ نمایشی است. در نسخهٔ واقعی، این هسته قوانین، شاخه‌ها، ارز ANA و عدالت را بر اساس دستور تو تنظیم و اجرا می‌کند.';
+      log.appendChild(aiMsg);
+      log.scrollTop = log.scrollHeight;
+      setStatus('status-global', '');
+    }, 900);
+  };
+</script>
+
+</body>
+      </html>
