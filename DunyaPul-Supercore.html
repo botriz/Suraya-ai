@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DunyaPul-Supercore | شبکه مالی جهانی + ساخت دنیای دیجیتال</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+:root{--bg:#04060c;--card:#0a0e18;--border:#141b2a;--primary:#06b6d4;--primary-hover:#0891b2;--text:#e2e8f0;--muted:#94a3b8;--success:#10b981;--warning:#f59e0b;--danger:#ef4444;--radius:12px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Vazirmatn',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+.container{max-width:1300px;margin:0 auto;padding:20px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+header h1{font-size:1.35rem;font-weight:700;background:linear-gradient(135deg,#06b6d4,#8b5cf6,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.badge{background:linear-gradient(135deg,#06b6d4,#0891b2);color:#fff;padding:4px 12px;border-radius:20px;font-size:0.72rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:950px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+.card h2{font-size:1rem;margin-bottom:12px;display:flex;align-items:center;gap:7px}
+label{display:block;font-size:0.8rem;color:var(--muted);margin-bottom:4px}
+input,select,textarea{width:100%;background:#060a12;border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:inherit;font-size:0.88rem}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)}
+textarea{min-height:80px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+button{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:10px 16px;font-family:inherit;font-size:0.88rem;font-weight:500;cursor:pointer;transition:0.2s}
+button:hover{background:var(--primary-hover)}
+button.secondary{background:#141b2a;border:1px solid var(--border)}
+button.success{background:var(--success)}
+button.full{width:100%;margin-top:6px}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px}
+@media(max-width:800px){.stats{grid-template-columns:repeat(3,1fr)}}
+.stat{background:#060a12;border-radius:8px;padding:12px;text-align:center}
+.stat .num{font-size:1.2rem;font-weight:700;color:var(--primary)}
+.stat .label{font-size:0.68rem;color:var(--muted);margin-top:2px}
+.list{max-height:240px;overflow-y:auto}
+.item{background:#060a12;border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:6px}
+.item .title{font-weight:500;font-size:0.88rem}
+.item .meta{font-size:0.72rem;color:var(--muted);margin-top:2px}
+.tag{display:inline-block;background:#141b2a;padding:2px 8px;border-radius:10px;font-size:0.68rem;margin-left:4px}
+.fullwidth{grid-column:1/-1}
+footer{margin-top:26px;text-align:center;color:var(--muted);font-size:0.72rem;padding-top:12px;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<div>
+<h1>DunyaPul-Supercore</h1>
+<div style="font-size:0.78rem;color:var(--muted);margin-top:2px">شبکه مالی چندزبانه • فیات + کریپتو + ارز داخلی • ساخت دنیای دیجیتال</div>
+</div>
+<div class="badge">سورَیَا • مالی</div>
+</header>
+
+<div class="stats">
+<div class="stat"><div class="num" id="s-suraya">0</div><div class="label">سورَیَا استخراج‌شده</div></div>
+<div class="stat"><div class="num" id="s-actions">0</div><div class="label">عملیات ثبت‌شده</div></div>
+<div class="stat"><div class="num" id="s-world">0</div><div class="label">عناصر دنیا ساخته‌شده</div></div>
+<div class="stat"><div class="num" id="s-fiat">0</div><div class="label">اتصال فیات</div></
