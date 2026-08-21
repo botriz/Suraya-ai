@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>UlduzÇıraq – هستهٔ پیشرفتهٔ هوش سورایا</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #050816;
+      color: #e5e7eb;
+      direction: rtl;
+    }
+    header {
+      padding: 16px;
+      background: #0f172a;
+      border-bottom: 1px solid #1e293b;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+      color: #f9fafb;
+    }
+    header .subtitle {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+    header .brand {
+      font-size: 13px;
+      color: #a5b4fc;
+    }
+    main {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    section {
+      border-radius: 12px;
+      border: 1px solid #1f2937;
+      background: #0f172a;
+      padding: 14px;
+    }
+    section h2 {
+      margin: 0 0 10px 0;
+      font-size: 15px;
+      color: #e5e7eb;
+    }
+    label {
+      font-size: 12px;
+      display: block;
+      margin-bottom: 4px;
+    }
+    input, textarea, select, button {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #374151;
+      background: #020617;
+      color: #e5e7eb;
+      padding: 8px;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+    textarea { resize: vertical; }
+    button {
+      cursor: pointer;
+      background: #2563eb;
+      border: none;
+      font-weight: 600;
+    }
+    button.secondary {
+      background: #111827;
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .col {
+      flex: 1;
+      min-width: 240px;
+    }
+    .small {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+    #log {
+      height: 240px;
+      overflow-y: auto;
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      padding: 8px;
+      background: #020617;
+      font-size: 12px;
+    }
+    .msg-user { color: #22c55e; margin-bottom: 4px; }
+    .msg-ai { color: #60a5fa; margin-bottom: 4px; }
+    #status-global {
+      font-size: 12px;
+      color: #22c55e;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>UlduzÇıraq</h1>
+    <div class="subtitle">هستهٔ پیشرفتهٔ هوش، یادگیری، تحلیل و فرماندهی</div>
+  </div>
+  <div>
+    <div class="brand">متصل به AnaGöyün · ارز مادر: ANA</div>
+    <div class="subtitle">مالک: احمد</div>
+  </div>
+</header>
+
+<main>
+
+  <!-- اتصال به هستهٔ مادر و شاخه‌ها -->
+  <section>
+    <h2>اتصال به AnaGöyün و شاخه‌ها</h2>
+    <div class="row">
+      <div class="col">
+        <label>آدرس AnaGöyün:</label>
+        <input id="ana-link" placeholder="/ana-goyun-core.html یا API">
+      </div>
+      <div class="col">
+        <label>آدرس YazıÇay:</label>
+        <input id="yazi-link" placeholder="/yazi-chay-engine.html یا API">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label>آدرس PulDağ:</label>
+        <input id="pul-link" placeholder="/pul-dag-finance.html یا API">
+      </div>
+      <div class="col">
+        <label>آدرس BaşYol:</label>
+        <input id="org-link" placeholder="/org-supercore-dashboard.html">
+      </div>
+    </div>
+    <button id="save-links">ثبت اتصال</button>
+    <div id="links-status" class="small"></div>
+  </section>
+
+  <!-- تنظیمات هوش -->
+  <section>
+    <h2>پیکربندی هوش UlduzÇıraq</h2>
+    <label>حالت هوش:</label>
+    <select id="ai-mode">
+      <option value="advisor">مشاور</option>
+      <option value="executor">مجری خودکار</option>
+      <option value="hybrid">ترکیبی</option>
+    </select>
+    <label>حالت یادگیری:</label>
+    <select id="learning-mode">
+      <option value="log-only">ثبت و تحلیل</option>
+      <option value="adaptive">یادگیری تطبیقی</option>
+      <option value="aggressive">یادگیری تهاجمی</option>
+    </select>
+    <label>قوانین هوش:</label>
+    <textarea id="ai-rules" rows="4" placeholder='{
+  "obey_owner": true,
+  "no_harm": true,
+  "justice": true,
+  "transparency": true
+}'></textarea>
+    <button id="save-ai-config">ثبت تنظیمات هوش</button>
+    <div id="ai-status" class="small"></div>
+  </section>
+
+  <!-- تحلیل و تصمیم‌گیری -->
+  <section>
+    <h2>تحلیل، تصمیم‌گیری و اجرای خودکار</h2>
+    <label>پروفایل تحلیل:</label>
+    <textarea id="analysis-profile" rows="4" placeholder='{
+  "content_quality": true,
+  "user_behavior": true,
+  "income_growth": true,
+  "justice_monitor": true
+}'></textarea>
+    <label>پروفایل تصمیم‌گیری:</label>
+    <textarea id="decision-profile" rows="4" placeholder='{
+  "auto_publish": true,
+  "auto_reward": true,
+  "auto_adjust_missions": true,
+  "auto_finance": true
+}'></textarea>
+    <button id="save-analysis">ثبت پروفایل تحلیل و تصمیم‌گیری</button>
+    <div id="analysis-status" class="small"></div>
+  </section>
+
+  <!-- چت هوش -->
+  <section>
+    <h2>چت با UlduzÇıraq</h2>
+    <div id="log"></div>
+    <textarea id="chat-input" rows="2" placeholder="دستور یا پیام خود را بنویس..."></textarea>
+    <button id="send-chat">ارسال</button>
+    <div id="status-global"></div>
+  </section>
+
+</main>
+
+<footer>
+  UlduzÇıraq – هستهٔ پیشرفتهٔ هوش جهان سورایا · مطیع مالک: احمد
+</footer>
+
+<script>
+  function setStatus(id, msg) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = msg;
+  }
+
+  // اتصال شاخه‌ها
+  document.getElementById('save-links').onclick = function () {
+    const ana = document.getElementById('ana-link').value.trim();
+    const yazi = document.getElementById('yazi-link').value.trim();
+    const pul = document.getElementById('pul-link').value.trim();
+    const org = document.getElementById('org-link').value.trim();
+    if (!ana || !yazi || !pul || !org) {
+      setStatus('links-status', 'اتصال همهٔ شاخه‌ها لازم است.');
+      return;
+    }
+    setStatus('links-status', 'اتصال شاخه‌ها ثبت شد.');
+  };
+
+  // تنظیمات هوش
+  document.getElementById('save-ai-config').onclick = function () {
+    const mode = document.getElementById('ai-mode').value;
+    const learn = document.getElementById('learning-mode').value;
+    const rules = document.getElementById('ai-rules').value.trim();
+    if (!rules) {
+      setStatus('ai-status', 'قوانین هوش لازم است.');
+      return;
+    }
+    setStatus('ai-status', 'تنظیمات هوش ثبت شد.');
+  };
+
+  // تحلیل و تصمیم‌گیری
+  document.getElementById('save-analysis').onclick = function () {
+    const analysis = document.getElementById('analysis-profile').value.trim();
+    const decision = document.getElementById('decision-profile').value.trim();
+    if (!analysis || !decision) {
+      setStatus('analysis-status', 'پروفایل تحلیل و تصمیم‌گیری لازم است.');
+      return;
+    }
+    setStatus('analysis-status', 'پروفایل تحلیل و تصمیم‌گیری ثبت شد.');
+  };
+
+  // چت هوش
+  document.getElementById('send-chat').onclick = function () {
+    const text = document.getElementById('chat-input').value.trim();
+    if (!text) return;
+    const log = document.getElementById('log');
+    const userMsg = document.createElement('div');
+    userMsg.className = 'msg-user';
+    userMsg.textContent = 'احمد: ' + text;
+    log.appendChild(userMsg);
+    document.getElementById('chat-input').value = '';
+
+    setStatus('status-global', 'در حال پردازش...');
+
+    setTimeout(function () {
+      const aiMsg = document.createElement('div');
+      aiMsg.className = 'msg-ai';
+      aiMsg.textContent =
+        'UlduzÇıraq: این پاسخ نمایشی است. نسخهٔ واقعی دستور تو را تحلیل کرده و در چارچوب قوانین AnaGöyün اجرا می‌کند.';
+      log.appendChild(aiMsg);
+      log.scrollTop = log.scrollHeight;
+      setStatus('status-global', '');
+    }, 900);
+  };
+</script>
+
+</body>
+  </html>
