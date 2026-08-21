@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>YazıÇay – موتور هوش و درآمد سورایا</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #020617;
+      color: #e5e7eb;
+      direction: rtl;
+    }
+    header {
+      padding: 12px 16px;
+      background: #0f172a;
+      border-bottom: 1px solid #1e293b;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 18px;
+    }
+    header .subtitle {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+    header .brand {
+      font-size: 12px;
+      color: #a5b4fc;
+    }
+    main {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    section {
+      border-radius: 10px;
+      border: 1px solid #1f2937;
+      background: #030712;
+      padding: 10px;
+    }
+    section h2 {
+      margin: 0 0 8px 0;
+      font-size: 14px;
+      color: #e5e7eb;
+    }
+    label {
+      font-size: 11px;
+      display: block;
+      margin-bottom: 4px;
+    }
+    input, textarea, select, button {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #374151;
+      background: #020617;
+      color: #e5e7eb;
+      padding: 7px;
+      font-size: 11px;
+      margin-bottom: 6px;
+    }
+    textarea { resize: vertical; }
+    button {
+      cursor: pointer;
+      background: #2563eb;
+      border: none;
+      font-weight: 600;
+    }
+    button.secondary {
+      background: #111827;
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .col {
+      flex: 1;
+      min-width: 220px;
+    }
+    .small {
+      font-size: 10px;
+      color: #9ca3af;
+    }
+    #chat-log {
+      height: 180px;
+      overflow-y: auto;
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      padding: 8px;
+      background: #020617;
+      font-size: 11px;
+    }
+    .msg-user { color: #22c55e; margin-bottom: 4px; }
+    .msg-ai { color: #60a5fa; margin-bottom: 4px; }
+    #status-global {
+      font-size: 11px;
+      color: #22c55e;
+      margin-top: 4px;
+    }
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      background: #111827;
+      color: #a5b4fc;
+      margin-left: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>YazıÇay Motor</h1>
+    <div class="subtitle">موتور هوش، محتوا و درآمد – متصل به جهان سورایا</div>
+  </div>
+  <div>
+    <div class="brand">AnaGöyün · ارز مادر: ANA</div>
+    <div class="subtitle">مالک: احمد</div>
+  </div>
+</header>
+
+<main>
+
+  <!-- تنظیمات اتصال به سایت و شبکه -->
+  <section id="link-core">
+    <h2>اتصال به سایت و هسته‌های جهان</h2>
+    <div class="row">
+      <div class="col">
+        <label for="api-base">آدرس پایهٔ API سایت سورایا:</label>
+        <input id="api-base" placeholder="مثلاً https://botriz.github.io/api">
+      </div>
+      <div class="col">
+        <label for="api-key">کلید دسترسی (AnaGöyün):</label>
+        <input id="api-key" placeholder="کلید امن مالک">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label for="core-main">آدرس KökAğ (هستهٔ پایه):</label>
+        <input id="core-main" placeholder="مثلاً https://your-core.com/api/kokag">
+      </div>
+      <div class="col">
+        <label for="core-super">آدرس UlduzÇıraq (هستهٔ پیشرفته):</label>
+        <input id="core-super" placeholder="مثلاً https://your-core.com/api/ulduzchiraq">
+      </div>
+    </div>
+    <label for="network-mode">حالت اتصال شبکه‌ای:</label>
+    <select id="network-mode">
+      <option value="observe">فقط نظارت و پیشنهاد</option>
+      <option value="assist">نیمه‌خودکار</option>
+      <option value="full">خودکار کامل در چارچوب قوانین احمد</option>
+    </select>
+    <button id="test-link">تست اتصال جهان</button>
+    <div id="link-status" class="small"></div>
+  </section>
+
+  <!-- موتور تولید محتوا و مأموریت‌ها -->
+  <section id="content-engine">
+    <h2>YazıÇay – موتور محتوا و مأموریت‌ها</h2>
+    <div class="row">
+      <div class="col">
+        <label for="daily-posts">تعداد محتوای روزانه:</label>
+        <input id="daily-posts" type="number" placeholder="مثلاً 5">
+      </div>
+      <div class="col">
+        <label for="target-sections">بخش‌های هدف در سایت:</label>
+        <input id="target-sections" placeholder="مثلاً blog, missions, academy">
+      </div>
+    </div>
+    <label for="mission-profile">پروفایل مأموریت‌ها (متن/JSON):</label>
+    <textarea id="mission-profile" rows="4" placeholder='مثلاً:
+{
+  "tasks": [
+    {"code": "YAZ-1", "type": "content", "reward": "YAZ", "difficulty": "low"},
+    {"code": "YAZ-2", "type": "analysis", "reward": "ANA", "difficulty": "medium"}
+  ]
+}'></textarea>
+    <button id="save-content-config">ثبت تنظیمات موتور محتوا</button>
+    <div id="content-status" class="small"></div>
+  </section>
+
+  <!-- موتور مالی و ارز مادر -->
+  <section id="finance-engine">
+    <h2>PulDağ – موتور مالی و ارز مادر</h2>
+    <div class="row">
+      <div class="col">
+        <label for="btc-address">آدرس کیف‌پول بیت‌کوین:</label>
+        <input id="btc-address" placeholder="آدرس کیف‌پول بیت‌کوین مالک">
+      </div>
+      <div class="col">
+        <label for="ana-wallet">آدرس کیف‌پول ارز ANA:</label>
+        <input id="ana-wallet" placeholder="کیف‌پول ارز مادر در شبکهٔ داخلی">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label for="finance-mode">حالت تبدیل درآمد:</label>
+        <select id="finance-mode">
+          <option value="manual">تبدیل با تأیید احمد</option>
+          <option value="semi-auto">نیمه‌خودکار (سقف روزانه)</option>
+          <option value="auto">خودکار در چارچوب قوانین</option>
+        </select>
+      </div>
+      <div class="col">
+        <label for="daily-limit">سقف تبدیل روزانه (BTC):</label>
+        <input id="daily-limit" type="number" step="0.0001" placeholder="مثلاً 0.01">
+      </div>
+    </div>
+    <label for="income-sources">منابع درآمد (تبلیغات، سرویس‌ها، مأموریت‌ها):</label>
+    <textarea id="income-sources" rows="3" placeholder="مثلاً: ads, services, missions, donations"></textarea>
+    <button id="save-finance-config">ثبت تنظیمات مالی</button>
+    <div id="finance-status" class="small"></div>
+  </section>
+
+  <!-- هوش مرکزی، چت و یادگیری -->
+  <section id="ai-core">
+    <h2>UlduzÇıraq – هوش مرکزی مطیع مالک</h2>
+    <div class="row">
+      <div class="col">
+        <label>چت متنی با هوش:</label>
+        <div id="chat-log"></div>
+        <textarea id="chat-input" rows="2" placeholder="دستور یا پیام خود را بنویس..."></textarea>
+        <button id="send-chat">ارسال به هوش</button>
+      </div>
+      <div class="col">
+        <label for="ai-mode">حالت پاسخ‌دهی هوش:</label>
+        <select id="ai-mode">
+          <option value="advisor">مشاور و پیشنهاددهنده</option>
+          <option value="executor">مجری خودکار در چارچوب قوانین</option>
+          <option value="hybrid">ترکیبی (مشاوره + اجرا)</option>
+        </select>
+        <label for="learning-mode">حالت یادگیری:</label>
+        <select id="learning-mode">
+          <option value="log-only">فقط ثبت و تحلیل</option>
+          <option value="adaptive">یادگیری تطبیقی</option>
+          <option value="aggressive">یادگیری تهاجمی (نیاز به نظارت)</option>
+        </select>
+        <label for="owner-sig">امضای مالک (احمد):</label>
+        <input id="owner-sig" placeholder="کد/توکن مالک برای تأیید دستورات حساس">
+        <div class="small">
+          همهٔ تصمیم‌های حساس باید با امضای مالک و قوانین AnaGöyün هم‌خوان باشند.
+        </div>
+      </div>
+    </div>
+    <div id="status-global"></div>
+  </section>
+
+  <!-- تنظیمات استفاده از قدرت گوشی‌های مردم -->
+  <section id="device-network">
+    <h2>GüçHalqa – شبکهٔ قدرت گوشی‌ها</h2>
+    <label for="device-policy">سیاست استفاده از دستگاه‌ها:</label>
+    <textarea id="device-policy" rows="4" placeholder='مثلاً:
+- استفاده داوطلبانه از توان پردازشی گوشی‌ها
+- پاداش به صورت ارز ANA و ارز شاخه‌ها
+- شفافیت کامل در مصرف منابع
+- عدم دسترسی به داده‌های شخصی کاربران'></textarea>
+    <div class="row">
+      <div class="col">
+        <label for="task-granularity">ریز بودن وظایف محاسباتی:</label>
+        <select id="task-granularity">
+          <option value="small">کوچک (مناسب موبایل ضعیف)</option>
+          <option value="medium">متوسط</option>
+          <option value="large">بزرگ (مناسب دستگاه‌های قوی)</option>
+        </select>
+      </div>
+      <div class="col">
+        <label for="reward-model">مدل پاداش:</label>
+        <select id="reward-model">
+          <option value="ana-only">فقط ANA</option>
+          <option value="branch-tokens">ارز شاخه‌ها + ANA</option>
+          <option value="mixed">ترکیبی با بیت‌کوین برای مأموریت‌های خاص</option>
+        </select>
+      </div>
+    </div>
+    <button id="save-device-config">ثبت سیاست شبکهٔ قدرت</button>
+    <div id="device-status" class="small"></div>
+  </section>
+
+</main>
+
+<footer>
+  YazıÇay – موتور هوش و درآمد جهان سورایا · همهٔ شاخه‌ها به AnaGöyün متصل می‌شوند.
+</footer>
+
+<script>
+  function setStatus(id, msg) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = msg;
+  }
+
+  // اتصال جهان
+  document.getElementById('test-link').onclick = function () {
+    const base = document.getElementById('api-base').value.trim();
+    const key = document.getElementById('api-key').value.trim();
+    if (!base || !key) {
+      setStatus('link-status', 'آدرس API و کلید مالک را وارد کن.');
+      return;
+    }
+    setStatus('link-status', 'تست نمایشی اتصال جهان. در نسخهٔ واقعی، درخواست به AnaGöyün و هسته‌ها ارسال می‌شود.');
+    // اینجا باید درخواست واقعی به بک‌اند ارسال شود.
+  };
+
+  // موتور محتوا
+  document.getElementById('save-content-config').onclick = function () {
+    const posts = document.getElementById('daily-posts').value.trim();
+    const sections = document.getElementById('target-sections').value.trim();
+    const missions = document.getElementById('mission-profile').value.trim();
+    if (!posts || !sections) {
+      setStatus('content-status', 'تعداد محتوا و بخش‌های هدف را وارد کن.');
+      return;
+    }
+    setStatus('content-status', 'تنظیمات موتور محتوا ذخیره شد. در نسخهٔ واقعی، به هستهٔ YazıÇay ارسال می‌شود.');
+    // اینجا باید تنظیمات به بک‌اند موتور محتوا ارسال شود.
+  };
+
+  // موتور مالی
+  document.getElementById('save-finance-config').onclick = function () {
+    const btc = document.getElementById('btc-address').value.trim();
+    const ana = document.getElementById('ana-wallet').value.trim();
+    const mode = document.getElementById('finance-mode').value;
+    const limit = document.getElementById('daily-limit').value.trim();
+    const sources = document.getElementById('income-sources').value.trim();
+    if (!btc || !ana) {
+      setStatus('finance-status', 'آدرس کیف‌پول بیت‌کوین و ANA را وارد کن.');
+      return;
+    }
+    setStatus('finance-status', 'تنظیمات مالی ذخیره شد. در نسخهٔ واقعی، به PulDağ و شبکهٔ مالی ارسال می‌شود.');
+    // اینجا باید تنظیمات مالی به بک‌اند ارسال شود.
+  };
+
+  // شبکهٔ قدرت گوشی‌ها
+  document.getElementById('save-device-config').onclick = function () {
+    const policy = document.getElementById('device-policy').value.trim();
+    const gran = document.getElementById('task-granularity').value;
+    const reward = document.getElementById('reward-model').value;
+    if (!policy) {
+      setStatus('device-status', 'سیاست استفاده از دستگاه‌ها را بنویس.');
+      return;
+    }
+    setStatus('device-status', 'سیاست شبکهٔ قدرت ذخیره شد. در نسخهٔ واقعی، به GüçHalqa و هسته‌ها ارسال می‌شود.');
+    // اینجا باید سیاست‌ها به بک‌اند ارسال شود.
+  };
+
+  // چت با هوش
+  document.getElementById('send-chat').onclick = function () {
+    const text = document.getElementById('chat-input').value.trim();
+    if (!text) return;
+    const log = document.getElementById('chat-log');
+    const mode = document.getElementById('ai-mode').value;
+    const learn = document.getElementById('learning-mode').value;
+    const sig = document.getElementById('owner-sig').value.trim();
+
+    const userMsg = document.createElement('div');
+    userMsg.className = 'msg-user';
+    userMsg.textContent = 'احمد: ' + text;
+    log.appendChild(userMsg);
+    document.getElementById('chat-input').value = '';
+
+    setStatus('status-global', 'در حال ارسال پیام به UlduzÇıraq (نمایشی). در نسخهٔ واقعی، پیام به هستهٔ هوش ارسال می‌شود.');
+
+    setTimeout(function () {
+      const aiMsg = document.createElement('div');
+      aiMsg.className = 'msg-ai';
+      let modeText = '';
+      if (mode === 'advisor') modeText = 'حالت مشاور';
+      else if (mode === 'executor') modeText = 'حالت مجری خودکار';
+      else modeText = 'حالت ترکیبی';
+      let learnText = '';
+      if (learn === 'log-only') learnText = 'یادگیری: فقط ثبت و تحلیل';
+      else if (learn === 'adaptive') learnText = 'یادگیری: تطبیقی';
+      else learnText = 'یادگیری: تهاجمی';
+      aiMsg.textContent =
+        'UlduzÇıraq (' + modeText + ', ' + learnText + '): پاسخ نمایشی. در نسخهٔ واقعی، اینجا پاسخ هوش بر اساس قوانین AnaGöyün و امضای مالک ' +
+        (sig ? '(' + sig + ')' : '') +
+        ' تولید می‌شود و می‌تواند مأموریت‌ها، محتوا و عملیات مالی را اجرا کند.';
+      log.appendChild(aiMsg);
+      log.scrollTop = log.scrollHeight;
+      setStatus('status-global', '');
+    }, 800);
+  };
+</script>
+
+</body>
+                                                              </html>
