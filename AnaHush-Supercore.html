@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AnaHush-Supercore | هوش مادر • فرماندهی مرکزی سورَیَا</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+:root{--bg:#05080f;--card:#0a0f1a;--border:#151c2c;--primary:#a855f7;--primary-hover:#9333ea;--text:#e2e8f0;--muted:#94a3b8;--success:#10b981;--warning:#f59e0b;--danger:#ef4444;--radius:12px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Vazirmatn',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+.container{max-width:1280px;margin:0 auto;padding:20px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+header h1{font-size:1.4rem;font-weight:700;background:linear-gradient(135deg,#a855f7,#ec4899,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.badge{background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;padding:5px 14px;border-radius:20px;font-size:0.75rem;font-weight:500}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.card h2{font-size:1.05rem;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+label{display:block;font-size:0.82rem;color:var(--muted);margin-bottom:5px}
+input,select,textarea{width:100%;background:#060a14;border:1px solid var(--border);border-radius:8px;padding:11px 13px;color:var(--text);font-family:inherit;font-size:0.9rem}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)}
+textarea{min-height:100px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+button{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:11px 18px;font-family:inherit;font-size:0.9rem;font-weight:500;cursor:pointer;transition:0.2s}
+button:hover{background:var(--primary-hover)}
+button.secondary{background:#151c2c;border:1px solid var(--border)}
+button.success{background:var(--success)}
+button.danger{background:var(--danger)}
+button.full{width:100%;margin-top:8px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat{background:#060a14;border-radius:10px;padding:14px;text-align:center}
+.stat .num{font-size:1.35rem;font-weight:700;color:var(--primary)}
+.stat .label{font-size:0.72rem;color:var(--muted);margin-top:3px}
+.log{background:#060a14;border:1px solid var(--border);border-radius:8px;padding:12px;max-height:220px;overflow-y:auto;font-size:0.82rem;line-height:1.7}
+.log-item{padding:6px 0;border-bottom:1px solid #151c2c}
+.log-item:last-child{border-bottom:none}
+.tag{display:inline-block;background:#151c2c;padding:2px 8px;border-radius:12px;font-size:0.7rem;margin-left:6px}
+.fullwidth{grid-column:1/-1}
+footer{margin-top:28px;text-align:center;color:var(--muted);font-size:0.75rem;padding-top:14px;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<div>
+<h1>AnaHush-Supercore</h1>
+<div style="font-size:0.8rem;color:var(--muted);margin-top:3px">هوش مادر • فرماندهی مرکزی • مدیریت کل اکوسیستم</div>
+</div>
+<div class="badge">آنا • فعال</div>
+</header>
+
+<div class="stats">
+<div class="stat"><div class="num" id="s-commands">0</div><div class="label">فرمان صادرشده</div></div>
+<div class="stat"><div class="num" id="s-modules">4</div><div class="label">ماژول متصل</div></div>
+<div class="stat"><div class="num" id="s-finance">0</div><div class="label">تراکنش مالی</div></div>
+<div class="stat"><div class="num" id="s-adapt">0</div><div class="label">م
