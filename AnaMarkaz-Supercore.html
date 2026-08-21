@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AnaMarkaz-Supercore | مرکز فرماندهی واحد و امن سورَیَا</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+:root{--bg:#030712;--card:#0a0f1c;--border:#1e293b;--primary:#7c3aed;--primary-hover:#6d28d9;--text:#e2e8f0;--muted:#94a3b8;--success:#10b981;--warning:#f59e0b;--danger:#ef4444;--radius:12px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Vazirmatn',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+.container{max-width:1400px;margin:0 auto;padding:20px}
+.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg)}
+.login-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:40px;width:100%;max-width:420px;text-align:center}
+.login-box h1{font-size:1.5rem;margin-bottom:8px;background:linear-gradient(135deg,#7c3aed,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.login-box p{color:var(--muted);font-size:0.9rem;margin-bottom:28px}
+.login-box input{width:100%;padding:14px;margin-bottom:16px;background:#060a14;border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:inherit;font-size:1rem;text-align:center}
+.login-box button{width:100%;padding:14px;background:var(--primary);color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:1rem;font-weight:600;cursor:pointer}
+.login-box button:hover{background:var(--primary-hover)}
+.hidden{display:none !important}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+header h1{font-size:1.4rem;font-weight:700;background:linear-gradient(135deg,#7c3aed,#ec4899,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.badge{background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;padding:5px 14px;border-radius:20px;font-size:0.75rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:1000px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.card h2{font-size:1.05rem;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+label{display:block;font-size:0.82rem;color:var(--muted);margin-bottom:5px}
+input,select,textarea{width:100%;background:#060a14;border:1px solid var(--border);border-radius:8px;padding:11px 13px;color:var(--text);font-family:inherit;font-size:0.9rem}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)}
+textarea{min-height:90px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+button{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:11px 18px;font-family:inherit;font-size:0.9rem;font-weight:500;cursor:pointer;transition:0.2s}
+button:hover{background:var(--primary-hover)}
+button.secondary{background:#1e293b;border:1px solid var(--border)}
+button.success{background:var(--success)}
+button.danger{background:var(--danger)}
+button.full{width:100%;margin-top:8px}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+@media(max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}}
+.stat{background:#060a14;border-radius:10px;padding:14px;text-align:center}
+.stat .num{font-size:1.3rem;font-weight:700;color:var(--primary)}
+.stat .label{font-size:0.72rem;color:var(--muted);margin-top:3px}
+.list{max-height:260px;overflow-y:auto}
+.item{background:#060a14;border:1px solid var(--border);border-radius:8px;padding:11px;margin-bottom:7px}
+.item .title{font-weight:500;font-size:0.9rem}
+.item .meta{font-size:0.75rem;color:var(--muted);margin-top:3px}
+.tag{display:inline-block;background:#1e293b;padding:2px 8px;border-radius:10px;font-size:0.
