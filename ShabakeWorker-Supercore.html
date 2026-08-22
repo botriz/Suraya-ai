@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#05050c">
+<title>ShabakeWorker | کارگر شبکه تحت فرمان مادر</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+:root{--bg:#05050c;--card:#0c0c16;--border:#1a1a2e;--p:#7c3aed;--t:#e2e8f0;--m:#94a3b8;--ok:#10b981;--r:14px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Vazirmatn',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;line-height:1.65}
+.login{min-height:100vh;display:flex;align-items:center;justify-content:center}
+.box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:36px 28px;width:100%;max-width:400px;text-align:center}
+.box h1{font-size:1.4rem;background:linear-gradient(135deg,#a78bfa,#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.box input{width:100%;padding:13px;margin:10px 0;background:#080812;border:1px solid var(--border);border-radius:10px;color:var(--t);font-family:inherit;text-align:center}
+.box button,.btn{width:100%;padding:12px;background:var(--p);color:#fff;border:none;border-radius:10px;font-family:inherit;font-weight:600;cursor:pointer;margin-top:6px}
+.hidden{display:none!important}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px}
+header h1{font-size:1.25rem;background:linear-gradient(135deg,#a78bfa,#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.badge{background:var(--p);color:#fff;padding:4px 12px;border-radius:16px;font-size:.72rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.card h2{font-size:.95rem;margin-bottom:10px}
+label{display:block;font-size:.78rem;color:var(--m);margin-bottom:4px}
+input,select,textarea{width:100%;background:#080812;border:1px solid var(--border);border-radius:8px;padding:9px 11px;color:var(--t);font-family:inherit;font-size:.88rem}
+textarea{min-height:70px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.btn.sec{background:#1a1a2e;border:1px solid var(--border)}
+.btn.ok{background:var(--ok)}
+.list{max-height:200px;overflow-y:auto}
+.item{background:#080812;border:1px solid var(--border);border-radius:8px;padding:9px;margin-bottom:5px;font-size:.85rem}
+.item .m{font-size:.7rem;color:var(--m);margin-top:2px}
+.note{background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.28);border-radius:10px;padding:10px;font-size:.8rem;color:#c4b5fd;margin-bottom:10px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center}
+.stat .n{font-size:1.15rem;font-weight:700;color:#a78bfa}
+.stat .l{font-size:.65rem;color:var(--m)}
+footer{margin-top:20px;text-align:center;color:var(--m);font-size:.7rem;padding-top:10px;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="login" id="login">
+  <div class="box">
+    <h1>ShabakeWorker</h1>
+    <p style="color:var(--m);font-size:.85rem;margin-bottom:14px">کارگر شبکه • تحت فرمان AnaMarkaz</p>
+    <input type="password" id="pass" placeholder="رمز مالک">
+    <button class="btn" onclick="login()">ورود</button>
+  </div>
+</div>
+
+<div class="wrap hidden" id="app">
+  <header>
+    <div>
+      <h1>ShabakeWorker-Supercore</h1>
+      <div style="font-size:.75rem;color:var(--m)">هر شبکه مجزا • محتوا علمی • تعامل مخاطب • دستگاه</div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span class="badge" id="net-badge">شبکه</span>
+      <button class="btn sec" style="width:auto;padding:6px 12px;font-size:.75rem" onclick="logout()">خروج</button>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="n" id="s1">0</div><div class="l">محتوا</div></div>
+    <div class="stat"><div class="n" id="s2">0</div><div class="l">تعامل</div></div>
+    <div class="stat"><div class="n" id="s3">0</div><div class="l">دستگاه</div></div>
+    <div class="stat"><div class="n" id="s4">0</div><div class="l">سورَیَا</div></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>🔗 اتصال به فرمان مادر</h2>
+      <div class="note">آدرس صفحه را از AnaMarkaz بگیر. این کارگر فقط تحت فرمان مادر محتوا می‌سازد و صفحه را اداره می‌کند.</div>
+      <label>شناسه / آدرس صفحه این شبکه</label>
+      <input id="page-id" placeholder="آدرس ثبت‌شده در مرکز">
+      <div class="row" style="margin-top:8px">
+        <div>
+          <label>شبکه این کارگر</label>
+          <select id="net">
+            <option value="x">X</option>
+            <option value="youtube">YouTube</option>
+            <option value="telegram">Telegram</option>
+            <option value="
