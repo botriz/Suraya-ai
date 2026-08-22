@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0a12">
+<title>AnaMarkaz-Central | هسته مرکزی سورَیَا</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+:root{--bg:#05050c;--card:#0c0c16;--border:#1a1a2e;--primary:#7c3aed;--primary2:#a78bfa;--text:#e2e8f0;--muted:#94a3b8;--success:#10b981;--warning:#f59e0b;--danger:#ef4444;--radius:14px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Vazirmatn',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.65}
+.login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 30% 20%,rgba(124,58,237,.18),transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(236,72,153,.12),transparent 50%),var(--bg)}
+.login-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:40px 32px;width:100%;max-width:400px;text-align:center}
+.login-box h1{font-size:1.55rem;background:linear-gradient(135deg,#a78bfa,#f0abfc,#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+.login-box p{color:var(--muted);font-size:.88rem;margin-bottom:24px}
+.login-box input{width:100%;padding:14px;margin-bottom:14px;background:#080812;border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:inherit;font-size:1rem;text-align:center}
+.login-box button{width:100%;padding:14px;background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:1rem;font-weight:600;cursor:pointer}
+.hidden{display:none!important}
+.wrap{max-width:1400px;margin:0 auto;padding:18px}
+header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+header h1{font-size:1.35rem;font-weight:700;background:linear-gradient(135deg,#a78bfa,#f0abfc,#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.badge{background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;padding:5px 14px;border-radius:20px;font-size:.75rem}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:18px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center}
+.stat .n{font-size:1.3rem;font-weight:700;color:var(--primary2)}
+.stat .l{font-size:.68rem;color:var(--muted);margin-top:3px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:980px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+.card h2{font-size:1rem;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+label{display:block;font-size:.8rem;color:var(--muted);margin-bottom:4px}
+input,select,textarea{width:100%;background:#080812;border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:inherit;font-size:.9rem}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)}
+textarea{min-height:88px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+button{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:10px 16px;font-family:inherit;font-size:.88rem;font-weight:500;cursor:pointer}
+button:hover{filter:brightness(1.1)}
+button.sec{background:#1a1a2e;border:1px solid var(--border)}
+button.ok{background:var(--success)}
+button.full{width:100%;margin-top:8px}
+.list{max-height:260px;overflow-y:auto}
+.item{background:#080812;border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:6px}
+.item .t{font-weight:500;font-size:.88rem}
+.item .m{font-size:.72rem;color:var(--muted);margin-top:2px}
+.tag{display:inline-block;background:#1a1a2e;padding:2px 8px;border-radius:10px;font-size:.68rem;margin-left:4px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tabs button{padding:7px 12px;font-size:.78rem;background:#1a1a2e}
+.tabs button.on{background:var(--primary)}
+.fullw{grid-column:1/-1}
+.note{background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.3);border-radius:10px;padding:12px;font-size:.82rem;color:#c4b5fd;margin-bottom:12px}
+.tree{font-size:.82rem}
+.tree details{margin:4px 0;padding:6px 10px;background:#080812;border-radius:8px;border:1px solid var(--border)}
+.tree summary{cursor:pointer;font-weight:500}
+footer{margin-top:24px;text-align:center;color:var(--muted);font-size:.72rem;padding-top:12px;border-top:1px solid var(--border)}
+.lock{background:#1e1b4b;border:1px solid #4c1d95;border-radius:10px;padding:10px 14px;font-size:.8rem;margin-bottom:14px;color:#c4b5fd}
+</style>
+</head>
+<body>
+<div class="login" id="login">
+  <div class="login-box">
+    <h1>AnaMarkaz-Central</h1>
+    <p>هسته مرکزی سورَیَا • دسترسی فقط مالک</p>
+    <input type="password" id="pass" placeholder="رمز مالک" autocomplete="current-password">
+    <button onclick="login()">ورود امن</button>
+    <div style="margin-top:18px;font-size:.75rem;color:var(--muted)">داده‌ها رمزگذاری‌شده • فقط مالک</div>
+  </div>
+</div>
+
+<div class="wrap hidden" id="app">
+  <header>
+    <div>
+      <h1>AnaMarkaz-Central</h1>
+      <div style="font-size:.78rem;color:var(--muted)">فرمان واحد • کارگرها • محتوا علمی • درآمد • فقط مالک</div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span class="badge">مالک</span>
+      <button class="sec" style="padding:6px 12px;font-size:.78rem" onclick="logout()">خروج</button>
+    </div>
+  </header>
+
+  <div class="lock">🔒 همه داده‌ها فقط برای مالک • محتوا ۱۰۰٪ علمی و قابل‌اثبات • کارگرها زیر نظر مادر</div>
+
+  <div class="stats">
+    <div class="stat"><div class="n" id="s1">0</div><div class="l">فرمان</div></div>
+    <div class="stat"><div class="n" id="s2">0</div><div class="l">صفحه</div></div>
+    <div class="stat"><div class="n" id="s3">0</div><div class="l">محتوا</div></div>
+    <div class="stat"><div class="n" id="s4">0</div><div class="l">درآمد</div></div>
+    <div class="stat"><div class="n" id="s5">0</div><div class="l">سورَیَا</div></div>
+    <div class="stat"><div class="n" id="s6">0</div><div class="l">مخاطب</div></div>
+    <div class="stat"><div class="n" id="s7">0</div><div class="l">گزارش کارگر</div></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>🎯 فرمان مرکزی (مسیر + محتوا)</h2>
+      <div class="note">فقط آدرس صفحات مجازی را وارد کن. مسیر و محتوا توسط هوش مادر کنترل می‌شود.</div>
+      <label>آدرس / شناسه صفحه مجازی</label>
+      <input id="page-url" placeholder="https://... یا @channel">
+      <div class="row" style="margin-top:8px">
+        <div>
+          <label>شبکه</label>
+          <select id="page-net">
+            <option value="x">X</option>
+            <option value="youtube">YouTube</option>
+            <option value="telegram">Telegram</option>
+            <option value="instagram">Instagram</option>
+            <option value="tiktok">TikTok</option>
+            <option value="other">سایر</option>
+          </select>
+        </div>
+        <div>
+          <label>زبان</label>
+          <select id="page-lang">
+            <option value="fa">فارسی</option>
+            <option value="az">ترکی آذری</option>
+            <option value="en">English</option>
+            <option value="multi">چندزبانه</option>
+          </select>
+        </div>
+      </div>
+      <label style="margin-top:8px">موضوع / مسیر ابلاغی (علمی و قابل‌اثبات)</label>
+      <textarea id="page-topic" placeholder="موضوع علمی، بدون دروغ..."></textarea>
+      <button class="full" onclick="registerPage()">ثبت صفحه + ابلاغ به هوش مادر</button>
+    </div>
+
+    <div class="card">
+      <h2>🧠 فرمان هوش مادر</h2>
+      <label>فرمان واحد</label>
+      <input id="cmd" placeholder="مسیر کلی، نوع کلیپ، هدف...">
+      <div class="row" style="margin-top:8px">
+        <div>
+          <label>اولویت</label>
+          <select id="cmd-p"><option value="high">بالا</option><option value="mid" selected>متوسط</option><option value="low">پایین</option></select>
+        </div>
+        <div>
+          <label>حوزه</label>
+          <select id="cmd-s"><option value="all">همه</option><option value="content">محتوا</option><option value="income">درآمد</option><option value="audience">مخاطب</option></select>
+        </div>
+      </div>
+      <label style="margin-top:8px">جزئیات علمی</label>
+      <textarea id="cmd-x" placeholder="فقط علمی و قابل‌اثبات..."></textarea>
+      <button class="full" onclick="issueCmd()">صدور فرمان (تأیید مالک)</button>
+      <button class="full sec" onclick="scanIncome()">جستجوی فرصت درآمد + ارسال به مادر</button>
+    </div>
+  </div>
+
+  <div class="grid" style="margin-top:16px">
+    <div class="card">
+      <h2>✍️ تولید محتوا (علمی • بدون دروغ)</h2>
+      <div class="row">
+        <div>
+          <label>سبک</label>
+          <select id="c-style">
+            <option value="elmi">علمی و مستند</option>
+            <option value="tahlili">تحلیلی قابل‌اثبات</option>
+            <option value="amozeshi">آموزشی</option>
+            <option value="payami">پیام کوتاه علمی</option>
+          </select>
+        </div>
+        <div>
+          <label>پلتفرم</label>
+          <select id="c-plat">
+            <option value="x">X</option>
+            <option value="youtube">YouTube</option>
+            <option value="telegram">Telegram</option>
+            <option value="instagram">Instagram</option>
+            <option value="tiktok">TikTok</option>
+          </select>
+        </div>
+      </div>
+      <label>موضوع</label>
+      <input id="c-topic" placeholder="موضوع علمی">
+      <button class="full" onclick="genContent()">تولید محتوا تحت فرمان مادر</button>
+      <div id="c-out" class="item" style="margin-top:10px;min-height:80px;white-space:pre-wrap;font-size:.85rem">خروجی محتوا...</div>
+      <button class="full sec" onclick="copyOut()">کپی</button>
+    </div>
+
+    <div class="card">
+      <h2>💰 درآمد + سورَیَا + مخاطب</h2>
+      <div class="row">
+        <div>
+          <label>مبلغ</label>
+          <input type="number" id="inc-a" placeholder="مبلغ">
+        </div>
+        <div>
+          <label>منبع</label>
+          <select id="inc-s">
+            <option value="youtube">YouTube</option>
+            <option value="x">X</option>
+            <option value="telegram">Telegram</option>
+            <option value="sponsor">اسپانسر</option>
+            <option value="other">سایر</option>
+          </select>
+        </div>
+      </div>
+      <button class="full ok" onclick="addIncome()">ثبت درآمد</button>
+      <div style="margin-top:14px;border-top:1px solid var(--border);padding-top:12px">
+        <label>نام / آیدی مخاطب</label>
+        <input id="aud-n" placeholder="مخاطب">
+        <button class="full" onclick="addAud()">ثبت مخاطب</button>
+      </div>
+      <button class="full sec" style="margin-top:8px" onclick="mintAct()">عملیات + استخراج سورَیَا</button>
+    </div>
+  </div>
+
+  <div class="grid" style="margin-top:16px">
+    <div class="card">
+      <h2>📁 سلسله‌مراتب صفحات</h2>
+      <div class="tree" id="tree"></div>
+      <button class="full sec" onclick="renderTree()">بازخوانی</button>
+    </div>
+    <div class="card">
+      <h2>📡 گزارش کارگرها (ShabakeWorker)</h2>
+      <div class="note">هر بار که کارگر «ارسال به مادر» بزند، اینجا دیده می‌شود.</div>
+      <div class="list" id="worker-log"></div>
+      <button class="full sec" onclick="loadWorkers()">بارگذاری مجدد گزارش‌ها</button>
+    </div>
+  </div>
+
+  <div class="grid" style="margin-top:16px">
+    <div class="card">
+      <h2>⚙️ تنظیمات هوش</h2>
+      <label>سیاست محتوا</label>
+      <textarea id="set-policy">فقط محتوای علمی، مستند و قابل‌اثبات. هیچ دروغ یا ادعای غیرقابل‌اثبات مجاز نیست.</textarea>
+      <label style="margin-top:8px">حداکثر طول</label>
+      <input type="number" id="set-len" value="800">
+      <label style="margin-top:8px">زبان‌ها</label>
+      <input id="set-lang" value="fa,az,en">
+      <button class="full" onclick="saveSettings()">ذخیره تنظیمات</button>
+    </div>
+    <div class="card">
+      <h2>🔐 مرکز داده (فقط مالک)</h2>
+      <div class="tabs">
+        <button class="on" onclick="showLog('all')">همه</button>
+        <button onclick="showLog('cmd')">فرمان</button>
+        <button onclick="showLog('page')">صفحات</button>
+        <button onclick="showLog('income')">درآمد</button>
+        <button onclick="showLog('scan')">فرصت</button>
+      </div>
+      <div class="list" id="log"></div>
+      <button class="full sec" onclick="exportVault()">خروجی رمزگذاری‌شده</button>
+    </div>
+  </div>
+
+  <footer>AnaMarkaz-Central • مادر + کارگرها • محتوا علمی • داده فقط مالک • سورَیَا</footer>
+</div>
+
+<script>
+const HASH=(()=>{let h=0,s="suraya2026";for(let i=0;i<s.length;i++)h=((h<<5)-h)+s.charCodeAt(i)|0;return"s_"+Math.abs(h)})();
+if(!localStorage.getItem("am_hash"))localStorage.setItem("am_hash",HASH);
+
+function login(){
+  const p=document.getElementById("pass").value;let h=0;
+  for(let i=0;i<p.length;i++)h=((h<<5)-h)+p.charCodeAt(i)|0;
+  if("s_"+Math.abs(h)===localStorage.getItem("am_hash")){
+    sessionStorage.setItem("am_ok","1");
+    document.getElementById("login").classList.add("hidden");
+    document.getElementById("app").classList.remove("hidden");
+    loadSettings();render();loadWorkers();
+  }else alert("رمز نادرست. فقط مالک.");
+}
+function logout(){sessionStorage.removeItem("am_ok");location.reload()}
+if(sessionStorage.getItem("am_ok")==="1"){
+  document.getElementById("login").classList.add("hidden");
+  document.getElementById("app").classList.remove("hidden");
+}
+
+const DB={
+  pages:JSON.parse(localStorage.getItem("am_pages")||"[]"),
+  cmds:JSON.parse(localStorage.getItem("am_cmds")||"[]"),
+  contents:JSON.parse(localStorage.getItem("am_contents")||"[]"),
+  incomes:JSON.parse(localStorage.getItem("am_incomes")||"[]"),
+  audience:JSON.parse(localStorage.getItem("am_audience")||"[]"),
+  scans:JSON.parse(localStorage.getItem("am_scans")||"[]"),
+  suraya:Number(localStorage.getItem("am_suraya")||0),
+  settings:JSON.parse(localStorage.getItem("am_settings")||'{"policy":"فقط علمی و قابل‌اثبات","maxLen":800,"langs":"fa,az,en"}')
+};
+function save(){
+  localStorage.setItem("am_pages",JSON.stringify(DB.pages));
+  localStorage.setItem("am_cmds",JSON.stringify(DB.cmds));
+  localStorage.setItem("am_contents",JSON.stringify(DB.contents));
+  localStorage.setItem("am_incomes",JSON.stringify(DB.incomes));
+  localStorage.setItem("am_audience",JSON.stringify(DB.audience));
+  localStorage.setItem("am_scans",JSON.stringify(DB.scans));
+  localStorage.setItem("am_suraya",DB.suraya);
+  localStorage.setItem("am_settings",JSON.stringify(DB.settings));
+  render();
+}
+function own(){if(sessionStorage.getItem("am_ok")!=="1"){alert("فقط مالک");return false}return true}
+function render(){
+  document.getElementById("s1").textContent=DB.cmds.length;
+  document.getElementById("s2").textContent=DB.pages.length;
+  document.getElementById("s3").textContent=DB.contents.length;
+  document.getElementById("s4").textContent=DB.incomes.reduce((a,b)=>a+Number(b.amount||0),0).toLocaleString();
+  document.getElementById("s5").textContent=DB.suraya.toLocaleString();
+  document.getElementById("s6").textContent=DB.audience.length;
+  const wr=JSON.parse(localStorage.getItem("am_worker_reports")||"[]");
+  document.getElementById("s7").textContent=wr.length;
+  renderTree();showLog("all");
+}
+function registerPage(){
+  if(!own())return;
+  const url=document.getElementById("page-url").value.trim();
+  const topic=document.getElementById("page-topic").value.trim();
+  if(!url)return alert("آدرس صفحه لازم است");
+  if(!confirm("ثبت صفحه و ابلاغ به هوش مادر؟"))return;
+  DB.pages.push({
+    url,net:document.getElementById("page-net").value,
+    lang:document.getElementById("page-lang").value,
+    topic:topic||"بدون موضوع",
+    time:new Date().toLocaleString("fa-IR"),
+    folder:document.getElementById("page-net").value
+  });
+  DB.suraya+=15;
+  document.getElementById("page-url").value="";
+  document.getElementById("page-topic").value="";
+  save();
+  alert("صفحه ثبت و به هوش مادر ابلاغ شد.");
+}
+function issueCmd(){
+  if(!own())return;
+  const t=document.getElementById("cmd").value.trim();
+  if(!t)return alert("فرمان خالی است");
+  if(!confirm("صدور فرمان مرکزی؟"))return;
+  DB.cmds.push({
+    topic:t,priority:document.getElementById("cmd-p").value,
+    scope:document.getElementById("cmd-s").value,
+    extra:document.getElementById("cmd-x").value.trim(),
+    time:new Date().toLocaleString("fa-IR")
+  });
+  DB.suraya+=10;
+  document.getElementById("cmd").value="";
+  document.getElementById("cmd-x").value="";
+  save();
+}
+function scanIncome(){
+  if(!own())return;
+  const found=[
+    {net:"YouTube",way:"تبلیغات + عضویت",note:"محتوای علمی مستند"},
+    {net:"X",way:"اشتراک / اسپانسر",note:"رشته علمی کوتاه"},
+    {net:"Telegram",way:"کانال پریمیوم / آموزش",note:"بدون اغراق"},
+    {net:"TikTok",way:"صندوق خلاقیت",note:"کلیپ علمی کوتاه"}
+  ];
+  const pick=found[Math.floor(Math.random()*found.length)];
+  DB.scans.push({...pick,time:new Date().toLocaleString("fa-IR")});
+  DB.suraya+=8;
+  save();
+  alert("فرصت درآمد:\n"+pick.net+" — "+pick.way);
+}
+function genContent(){
+  if(!own())return;
+  const topic=document.getElementById("c-topic").value.trim()||"دانش قابل‌اثبات";
+  const style=document.getElementById("c-style").value;
+  const plat=document.getElementById("c-plat").value;
+  const policy=DB.settings.policy||"";
+  const bodies={
+    elmi:`موضوع «${topic}» بر پایه داده قابل راستی‌آزمایی. هر ادعا قابل بررسی است. ${policy}`,
+    tahlili:`تحلیل «${topic}» با تفکیک مشاهده، فرضیه و نتیجه. فراتر از شواهد نمی‌رویم. ${policy}`,
+    amozeshi:`گام‌ها برای «${topic}»: تعریف • شواهد • محدودیت • کاربرد. ${policy}`,
+    payami:`«${topic}» — فقط آنچه قابل اثبات است. ${policy}`
+  };
+  const text=`[پلتفرم: \( {plat}]\n[سیاست: علمی و بدون دروغ]\n\n \){bodies[style]||bodies.elmi}\n\n#سورَیَا #علم_قابل_اثبات`;
+  document.getElementById("c-out").textContent=text;
+  DB.contents.push({topic,style,plat,text,time:new Date().toLocaleString("fa-IR")});
+  DB.suraya+=12;
+  save();
+}
+function copyOut(){
+  const t=document.getElementById("c-out").textContent;
+  if(t&&t!=="خروجی محتوا...")navigator.clipboard.writeText(t);
+}
+function addIncome(){
+  if(!own())return;
+  const a=document.getElementById("inc-a").value;
+  if(!a)return alert("مبلغ");
+  if(!confirm("ثبت درآمد؟"))return;
+  DB.incomes.push({amount:Number(a),source:document.getElementById("inc-s").value,time:new Date().toLocaleString("fa-IR")});
+  DB.suraya+=20;
+  document.getElementById("inc-a").value="";
+  save();
+}
+function addAud(){
+  if(!own())return;
+  const n=document.getElementById("aud-n").value.trim();
+  if(!n)return alert("نام");
+  if(!confirm("ثبت مخاطب؟"))return;
+  DB.audience.push({name:n,time:new Date().toLocaleString("fa-IR")});
+  DB.suraya+=5;
+  document.getElementById("aud-n").value="";
+  save();
+}
+function mintAct(){
+  if(!own())return;
+  DB.suraya+=25;
+  save();
+  alert("+۲۵ سورَیَا");
+}
+function renderTree(){
+  const nets={};
+  DB.pages.forEach(p=>{if(!nets[p.folder])nets[p.folder]=[];nets[p.folder].push(p)});
+  let html="";
+  Object.keys(nets).sort().forEach(k=>{
+    html+=`**Summary:**
+📁 \( {k} ( \){nets[k].length})`;
+    nets[k].forEach(p=>{html+=`<div class="item"><div class="t">\( {p.url}</div><div class="m"> \){p.lang} • ${p.topic} • ${p.time}</div></div>`});
+    html+=``;
+  });
+  document.getElementById("tree").innerHTML=html||'<div style="color:var(--muted);padding:12px;text-align:center">صفحه ثبت نشده</div>';
+}
+function loadWorkers(){
+  const wr=JSON.parse(localStorage.getItem("am_worker_reports")||"[]");
+  document.getElementById("s7").textContent=wr.length;
+  document.getElementById("worker-log").innerHTML=wr.length?wr.slice().reverse().map(r=>`
+    <div class="item">
+      <div class="t"><span class="tag">${r.net||"—"}</span> ${r.page||"بدون صفحه"}</div>
+      <div class="m">محتوا: ${r.contents||0} • تعامل: ${r.interacts||0} • سورَیَا: ${r.suraya||0} • ${r.time?new Date(r.time).toLocaleString("fa-IR"):""}</div>
+    </div>
+  `).join(""):'<div style="color:var(--muted);text-align:center;padding:16px">هنوز گزارشی از کارگر نیامده. در ShabakeWorker روی «ارسال به مادر» بزن.</div>';
+}
+function showLog(f){
+  let items=[];
+  if(f==="all"||f==="cmd")DB.cmds.forEach(c=>items.push({t:"فرمان",x:c.topic,m:c.priority+" • "+c.time}));
+  if(f==="all"||f==="page")DB.pages.forEach(p=>items.push({t:"صفحه",x:p.url,m:p.net+" • "+p.time}));
+  if(f==="all"||f==="income")DB.incomes.forEach(i=>items.push({t:"درآمد",x:i.amount+" — "+i.source,m:i.time}));
+  if(f==="all"||f==="scan")DB.scans.forEach(s=>items.push({t:"فرصت",x:s.net+" — "+s.way,m:s.time}));
+  items=items.reverse().slice(0,50);
+  document.getElementById("log").innerHTML=items.length?items.map(i=>`<div class="item"><div class="t"><span class="tag">${i.t}</span> \( {i.x}</div><div class="m"> \){i.m}</div></div>`).join(""):'<div style="color:var(--muted);text-align:center;padding:16px">خالی</div>';
+}
+function loadSettings(){
+  document.getElementById("set-policy").value=DB.settings.policy||"";
+  document.getElementById("set-len").value=DB.settings.maxLen||800;
+  document.getElementById("set-lang").value=DB.settings.langs||"fa,az,en";
+}
+function saveSettings(){
+  if(!own())return;
+  DB.settings={policy:document.getElementById("set-policy").value,maxLen:Number(document.getElementById("set-len").value)||800,langs:document.getElementById("set-lang").value};
+  save();alert("ذخیره شد");
+}
+function exportVault(){
+  if(!own())return;
+  const raw=JSON.stringify({v:1,time:new Date().toISOString(),data:DB,workers:JSON.parse(localStorage.getItem("am_worker_reports")||"[]")});
+  const enc=btoa(unescape(encodeURIComponent(raw)));
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([enc],{type:"text/plain"}));
+  a.download="suraya-vault-"+Date.now()+".enc";
+  a.click();
+}
+if(sessionStorage.getItem("am_ok")==="1"){loadSettings();render();loadWorkers()}
+</script>
+</body>
+      </html>
