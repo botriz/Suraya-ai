@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  chain:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: node -e "const {SurayaChain}=require('./core/blockchain'); const c=new SurayaChain(); console.log('Suraya chain ready', c.getStats()); setInterval(()=>{}, 1e9)"
+    ports:
+      - "8545:8545"
+    restart: unless-stopped
+
+  # در نسخه کامل: backend و frontend هم اضافه می‌شوند
