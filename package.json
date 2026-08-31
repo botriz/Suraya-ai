@@ -1,0 +1,18 @@
+---
+
+**package.json**
+
+```json
+{
+  "name": "suraya",
+  "version": "1.0.0",
+  "description": "Suraya Blockchain – Proof of Intelligence + Digital World",
+  "main": "core/blockchain.js",
+  "scripts": {
+    "start": "node -e \"const {SurayaChain,Transaction}=require('./core/blockchain'); const c=new SurayaChain({difficulty:1}); c.registerNode('n1'); c.registerNode('n2'); (async()=>{ const b=await c.mine('n1'); console.log('Block', b.index, b.hash.slice(0,16)+'...'); console.log(c.getStats()); })();\"",
+    "test": "node -e \"const {ProofOfIntelligence}=require('./core/blockchain'); const p=new ProofOfIntelligence(); p.updateMetrics('a',{validationAccuracy:95,responseTimeMs:40,predictionAccuracy:90,problemSolving:88,honesty:99,mentoring:70,innovation:60}); p.updateMetrics('b',{validationAccuracy:60,responseTimeMs:400,predictionAccuracy:50,problemSolving:40,honesty:70,mentoring:20,innovation:15}); console.log('A', p.calculate('a').toFixed(1), 'B', p.calculate('b').toFixed(1)); console.log('Proposer', p.selectProposer().nodeId);\""
+  },
+  "keywords": ["blockchain", "poi", "arza", "suraya"],
+  "license": "MIT",
+  "engines": { "node": ">=18" }
+}
