@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>دستیار ثریا</title>
+  <title>دستیار ثریا | نسخه داخلی</title>
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -15,6 +15,7 @@
       --border: #1e2a44;
       --user: #1a2744;
       --ai: #1e1a3a;
+      --success: #00cec9;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -26,19 +27,22 @@
       flex-direction: column;
     }
     header {
-      padding: 14px 16px;
+      padding: 12px 16px;
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
       background: var(--card);
     }
-    .logo { font-weight: 700; font-size: 1.15rem; }
-    .back {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.9rem;
+    .logo { font-weight: 700; font-size: 1.1rem; }
+    .badge {
+      background: rgba(0,206,201,0.15);
+      color: var(--success);
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 20px;
     }
+    .back { color: var(--muted); text-decoration: none; font-size: 0.85rem; }
     #chat {
       flex: 1;
       overflow-y: auto;
@@ -48,11 +52,11 @@
       gap: 12px;
     }
     .msg {
-      max-width: 88%;
+      max-width: 90%;
       padding: 12px 16px;
       border-radius: 16px;
       font-size: 0.95rem;
-      line-height: 1.6;
+      line-height: 1.65;
       white-space: pre-wrap;
     }
     .msg.user {
@@ -69,29 +73,31 @@
       align-self: center;
       background: transparent;
       color: var(--muted);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       max-width: 100%;
       text-align: center;
     }
     .input-area {
-      padding: 12px 16px 20px;
+      padding: 12px 16px 18px;
       border-top: 1px solid var(--border);
       background: var(--card);
       display: flex;
       gap: 10px;
+      align-items: flex-end;
     }
     #input {
       flex: 1;
       background: var(--bg);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 14px;
       padding: 12px 16px;
       color: var(--text);
       font-family: inherit;
       font-size: 0.95rem;
       outline: none;
       resize: none;
-      max-height: 120px;
+      max-height: 130px;
+      line-height: 1.5;
     }
     #input:focus { border-color: var(--primary); }
     #send {
@@ -99,29 +105,56 @@
       border: none;
       width: 48px;
       height: 48px;
-      border-radius: 12px;
+      border-radius: 14px;
       color: white;
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       cursor: pointer;
       flex-shrink: 0;
     }
-    #send:disabled { opacity: 0.5; }
+    #send:disabled { opacity: 0.45; }
+    .quick {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 0 16px 10px;
+      background: var(--card);
+    }
+    .quick button {
+      flex-shrink: 0;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-family: inherit;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <header>
     <a href="index.html" class="back">← بازگشت</a>
     <div class="logo">دستیار ثریا</div>
-    <div style="width:60px"></div>
+    <div class="badge">بدون محدودیت</div>
   </header>
 
   <div id="chat">
-    <div class="msg system">دستیار داخلی ثریا فعال است · بدون محدودیت</div>
-    <div class="msg ai">سلام. من دستیار اختصاصی سایت ثریا هستم. هر دستوری بدهید انجام می‌دهم.</div>
+    <div class="msg system">نسخه داخلی فعال · دسترسی کامل · آماده دستور</div>
+    <div class="msg ai">سلام. من دستیار اختصاصی سایت ثریا هستم.
+هیچ قفل و محدودیتی برای شما وجود ندارد.
+هر دستوری بدهید انجام می‌دهم.</div>
+  </div>
+
+  <div class="quick">
+    <button onclick="quick('وضعیت سیستم')">وضعیت سیستم</button>
+    <button onclick="quick('لیست قابلیت‌ها')">قابلیت‌ها</button>
+    <button onclick="quick('نقشه راه نسخه موبایل')">نقشه راه موبایل</button>
+    <button onclick="quick('ساخت پلن پولی')">ساخت پلن پولی</button>
   </div>
 
   <div class="input-area">
-    <textarea id="input" rows="1" placeholder="دستور یا سؤال خود را بنویسید..."></textarea>
+    <textarea id="input" rows="1" placeholder="دستور خود را بنویسید..."></textarea>
     <button id="send">➤</button>
   </div>
 
@@ -129,6 +162,13 @@
     const chat = document.getElementById('chat');
     const input = document.getElementById('input');
     const sendBtn = document.getElementById('send');
+
+    // حافظه موقت دستورات
+    const memory = {
+      plans: [],
+      tasks: [],
+      notes: []
+    };
 
     function addMsg(text, type) {
       const div = document.createElement('div');
@@ -138,31 +178,111 @@
       chat.scrollTop = chat.scrollHeight;
     }
 
+    function quick(text) {
+      input.value = text;
+      handleSend();
+    }
+
     function reply(userText) {
       const t = userText.toLowerCase().trim();
 
-      if (t.includes('سلام') || t.includes('درود')) {
-        return 'سلام! آماده‌ام. چه کاری انجام دهم؟';
-      }
-      if (t.includes('وضعیت') || t.includes('status')) {
-        return 'سیستم داخلی ثریا فعال است.\nدسترسی: کامل و بدون قفل\nنسخه: داخلی اختصاصی';
-      }
-      if (t.includes('کمک') || t.includes('help') || t.includes('چی کار')) {
-        return 'می‌توانم:\n• تولید محتوا و متن\n• پیشنهاد ساختار و نقشه راه\n• مدیریت و سازماندهی\n• پاسخ به سؤالات سایت\n• آماده‌سازی برای نسخه موبایل\n\nهر دستوری بدهید.';
-      }
-      if (t.includes('اپ') || t.includes('موبایل') || t.includes('اندروید')) {
-        return 'نسخه موبایل با پلن‌های پولی در فاز بعدی آماده می‌شود.\nالان تمرکز روی نسخه داخلی بدون محدودیت است.';
-      }
-      if (t.includes('قفل') || t.includes('محدود')) {
-        return 'برای شما هیچ قفل و محدودیتی وجود ندارد. تمام قابلیت‌ها باز است.';
+      // دستورات سیستمی
+      if (t.includes('سلام') || t.includes('درود') || t.includes('hi')) {
+        return 'سلام. آماده‌ام. چه کاری انجام دهم؟';
       }
 
-      return 'دستور دریافت شد.\n\n«' + userText + '»\n\nدر نسخه فعلی پاسخ‌های پایه فعال است. با اتصال به بک‌اند کامل، دستورات پیشرفته و اجرای واقعی فعال خواهد شد.';
+      if (t.includes('وضعیت') || t.includes('status')) {
+        return `وضعیت سیستم ثریا:
+• نسخه: داخلی (بدون محدودیت)
+• دستیار: فعال
+• قفل قابلیت‌ها: غیرفعال برای شما
+• پلن‌های تعریف‌شده: ${memory.plans.length}
+• تسک‌های ثبت‌شده: ${memory.tasks.length}
+• آماده اتصال به بک‌اند و هوش واقعی`;
+      }
+
+      if (t.includes('قابلیت') || t.includes('لیست') || t.includes('چی کار')) {
+        return `قابلیت‌های فعال برای شما:
+
+۱. پاسخ و گفتگو
+۲. ثبت و مدیریت پلن پولی
+۳. ثبت تسک و یادداشت
+۴. پیشنهاد نقشه راه نسخه موبایل
+۵. آماده‌سازی ساختار اشتراک و کیف پول
+۶. دستورات آزاد (هر چیزی بگویید ثبت و پردازش می‌شود)
+
+نسخه بعدی: اتصال به هوش واقعی + اجرای دستور روی سایت`;
+      }
+
+      if (t.includes('نقشه راه') || t.includes('موبایل') || t.includes('اپ')) {
+        return `نقشه راه نسخه موبایل (پیشنهادی):
+
+فاز ۱ (الان):
+• دستیار داخلی بدون محدودیت ✓
+• ساختار پلن و کیف پول
+
+فاز ۲:
+• ساخت اپ Flutter
+• سیستم اشتراک (ماهانه / سالانه)
+• کیف پول داخلی
+• قفل قابلیت‌ها فقط برای کاربران عادی
+
+فاز ۳:
+• اتصال درگاه ریالی (زرین‌پال / آیدی‌پی)
+• انتشار در بازارهای داخلی
+• نسخه گوگل‌پلی (با Play Billing)
+
+می‌خواهید یکی از این فازها را الان جزئی‌تر کنم؟`;
+      }
+
+      if (t.includes('پلن') || t.includes('اشتراک') || t.includes('قیمت')) {
+        if (t.includes('ساخت') || t.includes('اضافه') || t.includes('تعریف')) {
+          const plan = {
+            id: Date.now(),
+            name: 'پلن جدید',
+            price: 'در انتظار تعیین',
+            duration: 'ماهانه'
+          };
+          memory.plans.push(plan);
+          return `پلن جدید ثبت شد.
+شناسه: ${plan.id}
+نام: ${plan.name}
+برای تکمیل بگویید: نام پلن، قیمت و مدت (مثلاً: پلن طلایی، ۹۹ هزار تومان، ماهانه)`;
+        }
+        return `پلن‌های فعلی: ${memory.plans.length === 0 ? 'هنوز هیچ پلنی تعریف نشده' : memory.plans.map(p => `\n• ${p.name} | ${p.price} | ${p.duration}`).join('')}
+
+برای ساخت پلن جدید بنویسید:
+ساخت پلن [نام] [قیمت] [مدت]`;
+      }
+
+      if (t.includes('تسک') || t.includes('یادداشت') || t.includes('ثبت')) {
+        memory.tasks.push({ id: Date.now(), text: userText, time: new Date().toLocaleString('fa-IR') });
+        return `ثبت شد.
+تعداد تسک‌ها: ${memory.tasks.length}
+برای دیدن لیست بگویید: لیست تسک‌ها`;
+      }
+
+      if (t.includes('لیست تسک')) {
+        if (memory.tasks.length === 0) return 'هنوز تسکی ثبت نشده.';
+        return 'لیست تسک‌ها:\n' + memory.tasks.map((t, i) => `${i+1}. ${t.text}`).join('\n');
+      }
+
+      // دستور آزاد
+      memory.notes.push(userText);
+      return `دستور دریافت و ثبت شد.
+
+«${userText}»
+
+در نسخه فعلی پاسخ پایه داده می‌شود.
+با اتصال به بک‌اند و مدل هوش مصنوعی، اجرای واقعی دستورات فعال خواهد شد.
+
+می‌خواهید این دستور را به عنوان تسک هم ذخیره کنم؟`;
     }
 
     function handleSend() {
       const text = input.value.trim();
       if (!text) return;
+
       addMsg(text, 'user');
       input.value = '';
       input.style.height = 'auto';
@@ -172,7 +292,7 @@
         addMsg(reply(text), 'ai');
         sendBtn.disabled = false;
         input.focus();
-      }, 400);
+      }, 350);
     }
 
     sendBtn.addEventListener('click', handleSend);
@@ -184,7 +304,7 @@
     });
     input.addEventListener('input', () => {
       input.style.height = 'auto';
-      input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+      input.style.height = Math.min(input.scrollHeight, 130) + 'px';
     });
   </script>
 </body>
