@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>ثریا | دستیار هوشمند سایت</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card: #141b2d;
+      --primary: #6c5ce7;
+      --primary-hover: #5a4bd1;
+      --text: #e8eaf6;
+      --muted: #9aa3b8;
+      --success: #00cec9;
+      --border: #1e2a44;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+    .container { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #a29bfe, #74b9ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .badge {
+      background: rgba(108, 92, 231, 0.15);
+      color: #a29bfe;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    .hero {
+      text-align: center;
+      padding: 40px 0 48px;
+    }
+    .hero h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .hero p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 520px;
+      margin: 0 auto 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      text-decoration: none;
+    }
+    .btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-top: 40px;
+    }
+    @media (min-width: 640px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+      .hero h1 { font-size: 2.4rem; }
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card p { color: var(--muted); font-size: 0.95rem; }
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 32px;
+      justify-content: center;
+      color: var(--success);
+      font-size: 0.9rem;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    footer {
+      text-align: center;
+      padding: 40px 0 20px;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">ثریا</div>
+      <div class="badge">نسخه داخلی · بدون محدودیت</div>
+    </header>
+
+    <section class="hero">
+      <h1>دستیار هوشمند ثریا</h1>
+      <p>دستیار اختصاصی سایت شما — بدون قفل، بدون محدودیت، آماده انجام هر کاری که نیاز دارید.</p>
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <a href="assistant.html" class="btn">ورود به دستیار</a>
+        <a href="admin.html" class="btn btn-outline">پنل مدیریت</a>
+      </div>
+    </section>
+
+    <div class="grid">
+      <div class="card">
+        <h3>🧠 دستیار کامل</h3>
+        <p>تولید محتوا، تحلیل، پیشنهاد، مدیریت و اجرای دستورات بدون هیچ محدودیتی برای صاحب سایت.</p>
+      </div>
+      <div class="card">
+        <h3>🔓 دسترسی آزاد</h3>
+        <p>تمام قابلیت‌ها برای شما باز است. قفل و پلن پولی فقط برای نسخه عمومی و اپ موبایل فعال می‌شود.</p>
+      </div>
+      <div class="card">
+        <h3>📱 نسخه موبایل</h3>
+        <p>همین دستیار به صورت اپ قابل نصب با پلن‌های اشتراک آماده انتشار خواهد شد.</p>
+      </div>
+      <div class="card">
+        <h3>⚡ آماده توسعه</h3>
+        <p>ساختار تمیز و قابل گسترش برای اتصال به بلاکچین، جهان دیجیتال و قابلیت‌های پیشرفته بعدی.</p>
+      </div>
+    </div>
+
+    <div class="status">
+      <div class="dot"></div>
+      سیستم داخلی فعال است
+    </div>
+
+    <footer>
+      ثریا · دستیار هوشمند سایت · نسخه اختصاصی
+    </footer>
+  </div>
+</body>
+          </html>
