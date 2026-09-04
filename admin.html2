@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>پنل مدیریت ثریا</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card: #141b2d;
+      --primary: #6c5ce7;
+      --text: #e8eaf6;
+      --muted: #9aa3b8;
+      --border: #1e2a44;
+      --success: #00cec9;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 20px 16px;
+    }
+    .container { max-width: 640px; margin: 0 auto; }
+    h1 { font-size: 1.4rem; margin-bottom: 8px; }
+    .sub { color: var(--muted); margin-bottom: 28px; font-size: 0.9rem; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .card h3 { font-size: 1rem; margin-bottom: 12px; }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+    .row:last-child { border-bottom: none; }
+    .tag {
+      background: rgba(0, 206, 201, 0.15);
+      color: var(--success);
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+    }
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .back { display: inline-block; margin-bottom: 20px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="index.html" class="back">← بازگشت به صفحه اصلی</a>
+    <h1>پنل مدیریت</h1>
+    <p class="sub">دسترسی کامل · نسخه داخلی</p>
+
+    <div class="card">
+      <h3>وضعیت سیستم</h3>
+      <div class="row"><span>دستیار داخلی</span><span class="tag">فعال</span></div>
+      <div class="row"><span>قفل قابلیت‌ها</span><span class="tag">غیرفعال (برای شما)</span></div>
+      <div class="row"><span>نسخه موبایل</span><span>در انتظار فاز بعدی</span></div>
+    </div>
+
+    <div class="card">
+      <h3>دسترسی سریع</h3>
+      <div class="row"><span>صفحه دستیار</span><a href="assistant.html">ورود</a></div>
+      <div class="row"><span>صفحه اصلی</span><a href="index.html">مشاهده</a></div>
+    </div>
+
+    <div class="card">
+      <h3>نکته</h3>
+      <p style="color:var(--muted); font-size:0.9rem; line-height:1.7;">
+        این پنل نسخه داخلی است. تمام امکانات برای صاحب سایت باز است.
+        سیستم پلن پولی و قفل فقط در نسخه عمومی و اپ موبایل فعال می‌شود.
+      </p>
+    </div>
+  </div>
+</body>
+</html>
