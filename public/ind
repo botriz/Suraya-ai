@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>آتا ای‌آی | دستیار هوشمند</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #070b14;
+      --card: #111827;
+      --primary: #6366f1;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --border: #1e293b;
+      --success: #10b981;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+    }
+    .container { max-width: 480px; margin: 0 auto; padding: 16px; }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      margin-bottom: 20px;
+    }
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #818cf8, #22d3ee);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    input, button, select {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+    }
+    button {
+      background: var(--primary);
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:disabled { opacity: 0.5; }
+    .hidden { display: none; }
+    #chat-box {
+      height: 320px;
+      overflow-y: auto;
+      padding: 12px;
+      background: #0c1222;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .msg {
+      max-width: 85%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+    .msg.user { background: #1e3a5f; align-self: flex-start; }
+    .msg.ai { background: #1e1b4b; align-self: flex-end; }
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .tabs button {
+      flex: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+    }
+    .tabs button.active {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+    .status {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">آتا ای‌آی</div>
+      <div id="user-info" class="status">وارد نشده‌اید</div>
+    </header>
+
+    <!-- تب‌ها -->
+    <div class="tabs">
+      <button class="active" onclick="showTab('auth')">ورود / ثبت‌نام</button>
+      <button onclick="showTab('chat')">دستیار</button>
+      <button onclick="showTab('plans')">پلن‌ها</button>
+    </div>
+
+    <!-- بخش احراز هویت -->
+    <div id="tab-auth" class="card">
+      <h3 style="margin-bottom:14px">ورود یا ثبت‌نام</h3>
+      <input type="email" id="email" placeholder="ایمیل" />
+      <input type="password" id="password" placeholder="رمز عبور" />
+      <input type="text" id="name" placeholder="نام (فقط برای ثبت‌نام)" />
+      <button onclick="register()">ثبت‌نام</button>
+      <button onclick="login()">ورود</button>
+    </div>
+
+    <!-- بخش چت -->
+    <div id="tab-chat" class="card hidden">
+      <div class="status" id="limit-info">محدودیت‌ها بعد از ورود نمایش داده می‌شود</div>
+      <div id="chat-box"></div>
+      <input type="text" id="prompt" placeholder="درخواست خود را بنویسید..." />
+      <select id="service">
+        <option value="chat">گفتگو عمومی</option>
+        <option value="content">تولید محتوا</option>
+        <option value="code">کدنویسی</option>
+        <option value="article">مقاله</option>
+      </select>
+      <button onclick="sendRequest()">ارسال درخواست</button>
+    </div>
+
+    <!-- بخش پلن‌ها -->
+    <div id="tab-plans" class="card hidden">
+      <h3 style="margin-bottom:14px">پلن‌های اشتراک</h3>
+      <div id="plans-list"></div>
+    </div>
+  </div>
+
+  <script>
+    const API = window.location.origin + '/api';
+    let token = localStorage.getItem('ata_token');
+
+    function showTab(name) {
+      document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('tab-auth').classList.add('hidden');
+      document.getElementById('tab-chat').classList.add('hidden');
+      document.getElementById('tab-plans').classList.add('hidden');
+      document.getElementById('tab-' + name).classList.remove('hidden');
+
+      if (name === 'plans') loadPlans();
+      if (name === 'chat' && token) loadLimits();
+    }
+
+    async function register() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const name = document.getElementById('name').value;
+
+      const res = await fetch(API + '/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, name })
+      });
+      const data = await res.json();
+      if (data.token) {
+        localStorage.setItem('ata_token', data.token);
+        token = data.token;
+        document.getElementById('user-info').textContent = data.user.email + ' | ' + data.user.plan;
+        alert('ثبت‌نام موفق');
+      } else {
+        alert(data.error || 'خطا');
+      }
+    }
+
+    async function login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      const res = await fetch(API + '/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (data.token) {
+        localStorage.setItem('ata_token', data.token);
+        token = data.token;
+        document.getElementById('user-info').textContent = data.user.email + ' | ' + data.user.plan;
+        alert('ورود موفق');
+      } else {
+        alert(data.error || 'خطا');
+      }
+    }
+
+    async function loadPlans() {
+      const res = await fetch(API + '/plans');
+      const plans = await res.json();
+      const list = document.getElementById('plans-list');
+      list.innerHTML = plans.map(p => `
+        <div style="border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:10px">
+          <strong>${p.name}</strong><br>
+          ${p.price.toLocaleString()} تومان / ${p.duration_days} روز
+          <button style="margin-top:8px" onclick="subscribe('${p.code}')">فعال‌سازی</button>
+        </div>
+      `).join('');
+    }
+
+    async function subscribe(code) {
+      if (!token) return alert('ابتدا وارد شوید');
+      const res = await fetch(API + '/plans/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({ plan_code: code })
+      });
+      const data = await res.json();
+      alert(data.message || data.error);
+    }
+
+    async function loadLimits() {
+      const res = await fetch(API + '/services/limits', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      const data = await res.json();
+      document.getElementById('limit-info').textContent =
+        `پلن: ${data.plan} | محدودیت‌ها بارگذاری شد`;
+    }
+
+    async function sendRequest() {
+      if (!token) return alert('ابتدا وارد شوید');
+      const prompt = document.getElementById('prompt').value;
+      const service = document.getElementById('service').value;
+
+      const box = document.getElementById('chat-box');
+      box.innerHTML += `<div class="msg user">${prompt}</div>`;
+
+      const res = await fetch(API + '/services/use', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({ service, prompt })
+      });
+      const data = await res.json();
+
+      if (data.error) {
+        box.innerHTML += `<div class="msg ai">${data.error}</div>`;
+      } else {
+        box.innerHTML += `<div class="msg ai">${data.response}\n\nاستفاده: \( {data.used}/ \){data.max}</div>`;
+      }
+      box.scrollTop = box.scrollHeight;
+    }
+
+    // اگر قبلاً وارد شده
+    if (token) {
+      document.getElementById('user-info').textContent = 'وارد شده';
+    }
+  </script>
+</body>
+</html>
