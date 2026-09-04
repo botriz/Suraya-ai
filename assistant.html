@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>دستیار ثریا</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card: #141b2d;
+      --primary: #6c5ce7;
+      --text: #e8eaf6;
+      --muted: #9aa3b8;
+      --border: #1e2a44;
+      --user: #1a2744;
+      --ai: #1e1a3a;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card);
+    }
+    .logo { font-weight: 700; font-size: 1.15rem; }
+    .back {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    #chat {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .msg {
+      max-width: 88%;
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+    .msg.user {
+      background: var(--user);
+      align-self: flex-start;
+      border-bottom-right-radius: 4px;
+    }
+    .msg.ai {
+      background: var(--ai);
+      align-self: flex-end;
+      border-bottom-left-radius: 4px;
+    }
+    .msg.system {
+      align-self: center;
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.8rem;
+      max-width: 100%;
+      text-align: center;
+    }
+    .input-area {
+      padding: 12px 16px 20px;
+      border-top: 1px solid var(--border);
+      background: var(--card);
+      display: flex;
+      gap: 10px;
+    }
+    #input {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      resize: none;
+      max-height: 120px;
+    }
+    #input:focus { border-color: var(--primary); }
+    #send {
+      background: var(--primary);
+      border: none;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    #send:disabled { opacity: 0.5; }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="back">← بازگشت</a>
+    <div class="logo">دستیار ثریا</div>
+    <div style="width:60px"></div>
+  </header>
+
+  <div id="chat">
+    <div class="msg system">دستیار داخلی ثریا فعال است · بدون محدودیت</div>
+    <div class="msg ai">سلام. من دستیار اختصاصی سایت ثریا هستم. هر دستوری بدهید انجام می‌دهم.</div>
+  </div>
+
+  <div class="input-area">
+    <textarea id="input" rows="1" placeholder="دستور یا سؤال خود را بنویسید..."></textarea>
+    <button id="send">➤</button>
+  </div>
+
+  <script>
+    const chat = document.getElementById('chat');
+    const input = document.getElementById('input');
+    const sendBtn = document.getElementById('send');
+
+    function addMsg(text, type) {
+      const div = document.createElement('div');
+      div.className = `msg ${type}`;
+      div.textContent = text;
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function reply(userText) {
+      const t = userText.toLowerCase().trim();
+
+      if (t.includes('سلام') || t.includes('درود')) {
+        return 'سلام! آماده‌ام. چه کاری انجام دهم؟';
+      }
+      if (t.includes('وضعیت') || t.includes('status')) {
+        return 'سیستم داخلی ثریا فعال است.\nدسترسی: کامل و بدون قفل\nنسخه: داخلی اختصاصی';
+      }
+      if (t.includes('کمک') || t.includes('help') || t.includes('چی کار')) {
+        return 'می‌توانم:\n• تولید محتوا و متن\n• پیشنهاد ساختار و نقشه راه\n• مدیریت و سازماندهی\n• پاسخ به سؤالات سایت\n• آماده‌سازی برای نسخه موبایل\n\nهر دستوری بدهید.';
+      }
+      if (t.includes('اپ') || t.includes('موبایل') || t.includes('اندروید')) {
+        return 'نسخه موبایل با پلن‌های پولی در فاز بعدی آماده می‌شود.\nالان تمرکز روی نسخه داخلی بدون محدودیت است.';
+      }
+      if (t.includes('قفل') || t.includes('محدود')) {
+        return 'برای شما هیچ قفل و محدودیتی وجود ندارد. تمام قابلیت‌ها باز است.';
+      }
+
+      return 'دستور دریافت شد.\n\n«' + userText + '»\n\nدر نسخه فعلی پاسخ‌های پایه فعال است. با اتصال به بک‌اند کامل، دستورات پیشرفته و اجرای واقعی فعال خواهد شد.';
+    }
+
+    function handleSend() {
+      const text = input.value.trim();
+      if (!text) return;
+      addMsg(text, 'user');
+      input.value = '';
+      input.style.height = 'auto';
+      sendBtn.disabled = true;
+
+      setTimeout(() => {
+        addMsg(reply(text), 'ai');
+        sendBtn.disabled = false;
+        input.focus();
+      }, 400);
+    }
+
+    sendBtn.addEventListener('click', handleSend);
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleSend();
+      }
+    });
+    input.addEventListener('input', () => {
+      input.style.height = 'auto';
+      input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+    });
+  </script>
+</body>
+</html>
