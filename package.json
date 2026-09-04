@@ -1,11 +1,10 @@
 {
   "name": "ata-ai",
   "version": "1.0.0",
-  "description": "آتا ای‌آی - دستیار هوشمند فارسی‌محور",
+  "description": "آتا ای‌آی",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.19.2",
