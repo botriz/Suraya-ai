@@ -1,5 +1,4 @@
-core
-contracts
-world
-frontend
-docs
+server.js, 
+package.json, 
+routes
+public
