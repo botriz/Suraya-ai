@@ -158,4 +158,367 @@
     }
     .plan-card.popular {
       border-color: var(--primary);
-      box-shadow: 0 0 0 1px var
+      box-shadow: 0 0 0 1px var(--primary);
+    }
+    .plan-card .badge {
+      position: absolute;
+      top: -10px;
+      left: 20px;
+      background: var(--primary);
+      color: white;
+      font-size: 0.72rem;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+    .plan-card h3 { font-size: 1.15rem; margin-bottom: 4px; }
+    .plan-card .price {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin: 12px 0;
+    }
+    .plan-card .price span { font-size: 0.9rem; color: var(--muted); font-weight: 400; }
+    .plan-card ul {
+      list-style: none;
+      margin: 16px 0 20px;
+    }
+    .plan-card li {
+      padding: 6px 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .plan-card li::before {
+      content: "✓";
+      color: var(--success);
+      font-weight: 700;
+    }
+
+    /* Chat Section */
+    .chat-section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 40px 0;
+      display: flex;
+      flex-direction: column;
+      height: 520px;
+    }
+    .chat-header {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card2);
+    }
+    .chat-header h3 { font-size: 1.05rem; }
+    #chat-box {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .msg {
+      max-width: 85%;
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-size: 0.93rem;
+      line-height: 1.65;
+      white-space: pre-wrap;
+    }
+    .msg.user {
+      background: #1e3a5f;
+      align-self: flex-start;
+      border-bottom-right-radius: 4px;
+    }
+    .msg.ai {
+      background: #1e1b4b;
+      align-self: flex-end;
+      border-bottom-left-radius: 4px;
+    }
+    .msg.system {
+      align-self: center;
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+    .chat-input-area {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+      background: var(--card2);
+    }
+    #chat-input {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      resize: none;
+      max-height: 100px;
+    }
+    #chat-input:focus { border-color: var(--primary); }
+    #send-btn {
+      background: var(--primary);
+      border: none;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 40px 0 30px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+      margin-top: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 1.7rem; }
+      .services { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <div class="logo">آتا ای‌آی</div>
+      <div class="nav-links">
+        <a href="#services">خدمات</a>
+        <a href="#plans">پلن‌ها</a>
+        <a href="#chat">دستیار</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero -->
+    <section class="hero">
+      <h1>قدرتمندترین دستیار هوش مصنوعی<br>فارسی‌محور</h1>
+      <p>تولید محتوا، کدنویسی، کسب‌وکار، آموزش و صدها خدمت کاربردی — با تمرکز کامل روی نیازهای کاربران ایرانی</p>
+      <div class="hero-buttons">
+        <a href="#chat" class="btn">شروع گفتگو با آتا</a>
+        <a href="#plans" class="btn btn-outline">مشاهده پلن‌ها</a>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <h2 class="section-title" id="services">خدمات اصلی</h2>
+    <div class="services">
+      <div class="service-card" onclick="startService('تولید محتوا برای اینستاگرام و شبکه‌های اجتماعی')">
+        <div class="icon">📱</div>
+        <h3>تولید محتوا</h3>
+        <p>کپشن، ریلز، استوری، پست تبلیغاتی و محتوای ویروسی</p>
+      </div>
+      <div class="service-card" onclick="startService('نوشتن شعر، داستان و متن ادبی')">
+        <div class="icon">✍️</div>
+        <h3>شعر و ادبیات</h3>
+        <p>شعر، داستان کوتاه، متن ادبی و خلاقانه</p>
+      </div>
+      <div class="service-card" onclick="startService('نوشتن مقاله علمی یا پزشکی')">
+        <div class="icon">📚</div>
+        <h3>مقاله و تحقیق</h3>
+        <p>مقاله علمی، پزشکی، دانشگاهی و گزارش تخصصی</p>
+      </div>
+      <div class="service-card" onclick="startService('کدنویسی حرفه‌ای')">
+        <div class="icon">💻</div>
+        <h3>کدنویسی حرفه‌ای</h3>
+        <p>پایتون، جاوااسکریپت، فلاتر، وب و همه زبان‌ها</p>
+      </div>
+      <div class="service-card" onclick="startService('ایده و سناریو برای کلیپ و فیلم کوتاه')">
+        <div class="icon">🎬</div>
+        <h3>کلیپ و ویدیو</h3>
+        <p>ایده، سناریو و ساختار کلیپ‌های جذاب</p>
+      </div>
+      <div class="service-card" onclick="startService('کمک به کسب‌وکار و بازاریابی')">
+        <div class="icon">📈</div>
+        <h3>کسب‌وکار</h3>
+        <p>بازاریابی، فروش، برنامه‌ریزی و مدیریت</p>
+      </div>
+      <div class="service-card" onclick="startService('آموزش و یادگیری')">
+        <div class="icon">🎓</div>
+        <h3>آموزش</h3>
+        <p>تدریس، خلاصه درس، حل تمرین و آمادگی کنکور</p>
+      </div>
+      <div class="service-card" onclick="startService('ترجمه و پشتیبانی چندزبانه')">
+        <div class="icon">🌍</div>
+        <h3>چندزبانه</h3>
+        <p>فارسی، انگلیسی، عربی، ترکی و زبان‌های دیگر</p>
+      </div>
+    </div>
+
+    <!-- Plans -->
+    <h2 class="section-title" id="plans">پلن‌های اشتراک</h2>
+    <div class="plans">
+      <div class="plan-card">
+        <h3>رایگان</h3>
+        <div class="price">۰ <span>تومان</span></div>
+        <ul>
+          <li>۲۰ پیام در روز</li>
+          <li>تولید متن پایه</li>
+          <li>دسترسی به خدمات عمومی</li>
+        </ul>
+        <button class="btn btn-outline" style="width:100%" onclick="selectPlan('رایگان')">انتخاب</button>
+      </div>
+      <div class="plan-card popular">
+        <div class="badge">پیشنهادی</div>
+        <h3>حرفه‌ای</h3>
+        <div class="price">۱۹۹٬۰۰۰ <span>تومان / ماه</span></div>
+        <ul>
+          <li>پیام نامحدود</li>
+          <li>تولید محتوا پیشرفته</li>
+          <li>کدنویسی حرفه‌ای</li>
+          <li>اولویت در پاسخ‌دهی</li>
+        </ul>
+        <button class="btn" style="width:100%" onclick="selectPlan('حرفه‌ای')">انتخاب</button>
+      </div>
+      <div class="plan-card">
+        <h3>سازمانی</h3>
+        <div class="price">۴۹۹٬۰۰۰ <span>تومان / ماه</span></div>
+        <ul>
+          <li>همه قابلیت‌های حرفه‌ای</li>
+          <li>مدیریت تیم</li>
+          <li>API اختصاصی</li>
+          <li>پشتیبانی ویژه</li>
+        </ul>
+        <button class="btn btn-outline" style="width:100%" onclick="selectPlan('سازمانی')">انتخاب</button>
+      </div>
+    </div>
+
+    <!-- Chat -->
+    <h2 class="section-title" id="chat">گفتگو با آتا</h2>
+    <div class="chat-section">
+      <div class="chat-header">
+        <h3>آتا ای‌آی</h3>
+        <span style="font-size:0.8rem; color:var(--success);">● آنلاین</span>
+      </div>
+      <div id="chat-box">
+        <div class="msg system">آتا ای‌آی آماده خدمت‌رسانی است · تمرکز روی نیازهای کاربران ایرانی</div>
+        <div class="msg ai">سلام! من آتا هستم.
+قدرتمندترین دستیار فارسی‌محور در خدمت شما.
+چه کمکی از من ساخته است؟</div>
+      </div>
+      <div class="chat-input-area">
+        <textarea id="chat-input" rows="1" placeholder="درخواست خود را بنویسید..."></textarea>
+        <button id="send-btn">➤</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      آتا ای‌آی · دستیار هوشمند فارسی‌محور · نسخه ۱.۰
+    </div>
+  </footer>
+
+  <script>
+    const chatBox = document.getElementById('chat-box');
+    const chatInput = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('send-btn');
+
+    function addMsg(text, type) {
+      const div = document.createElement('div');
+      div.className = `msg ${type}`;
+      div.textContent = text;
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function startService(service) {
+      chatInput.value = service;
+      document.getElementById('chat').scrollIntoView({ behavior: 'smooth' });
+      setTimeout(handleSend, 300);
+    }
+
+    function selectPlan(plan) {
+      addMsg(`پلن «${plan}» انتخاب شد.`, 'user');
+      setTimeout(() => {
+        addMsg(`پلن ${plan} ثبت شد.
+در نسخه بعدی امکان پرداخت آنلاین فعال می‌شود.
+فعلاً می‌توانید از تمام قابلیت‌های نمایشی استفاده کنید.`, 'ai');
+      }, 400);
+      document.getElementById('chat').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function reply(text) {
+      const t = text.toLowerCase();
+
+      if (t.includes('سلام') || t.includes('درود')) {
+        return 'سلام! خوش اومدی.\nمن آتا هستم. بگو چه کاری برات انجام بدم؟';
+      }
+      if (t.includes('اینستاگرام') || t.includes('محتوا') || t.includes('کپشن')) {
+        return 'عالی! برای تولید محتوای اینستاگرام بگو:\n- موضوع پست یا ریلز\n- لحن مورد نظرت (رسمی، خودمونی، طنز، انگیزشی)\n- تعداد کلمات تقریبی\n\nمن برات کپشن قوی + هشتگ و ایده استوری می‌نویسم.';
+      }
+      if (t.includes('شعر') || t.includes('داستان') || t.includes('ادبی')) {
+        return 'حتماً.\nموضوع، سبک (سنتی، نیمایی، سپید، داستان کوتاه) و احساس مورد نظرت رو بگو تا برات بنویسم.';
+      }
+      if (t.includes('کد') || t.includes('برنامه') || t.includes('پایتون') || t.includes('فلاتر')) {
+        return 'آماده‌ام.\nبگو دقیقاً چه کدی می‌خوای (زبان + توضیح کامل کار).\nکد تمیز، کامنت‌دار و آماده اجرا تحویل می‌دم.';
+      }
+      if (t.includes('مقاله') || t.includes('علمی') || t.includes('پزشکی')) {
+        return 'موضوع مقاله، سطح (دانشجویی / تخصصی) و تعداد کلمات تقریبی رو بگو تا ساختار و متن کامل رو برات آماده کنم.';
+      }
+      if (t.includes('کلیپ') || t.includes('فیلم') || t.includes('ویدیو')) {
+        return 'برای ساخت کلیپ بگو:\n- موضوع\n- مدت تقریبی\n- سبک (آموزشی، تبلیغاتی، داستانی)\nمن سناریو، دیالوگ و ساختار شات‌ها رو می‌دم.';
+      }
+      if (t.includes('پلن') || t.includes('اشتراک') || t.includes('قیمت')) {
+        return 'پلن‌های فعلی:\n• رایگان: ۲۰ پیام روزانه\n• حرفه‌ای: ۱۹۹ هزار تومان / ماه (پیشنهادی)\n• سازمانی: ۴۹۹ هزار تومان / ماه\n\nکدوم رو می‌خوای؟';
+      }
+
+      return `درخواستت دریافت شد:
+
+«${text}»
+
+در نسخه فعلی پاسخ هوشمند پایه فعال است.
+با اتصال به مدل‌های قوی‌تر، کیفیت پاسخ‌ها به سطح جهانی می‌رسد.
+
+اگر جزئیات بیشتری بدی، دقیق‌تر کمکت می‌کنم.`;
+    }
+
+    function handleSend() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+      addMsg(text, 'user');
+      chatInput.value = '';
+      chatInput.style.height = 'auto';
+      sendBtn.disabled = true;
+
+      setTimeout(() => {
+        addMsg(reply(text), 'ai');
+        sendBtn.disabled = false;
+        chatInput.focus();
+      }, 450);
+    }
+
+    sendBtn.addEventListener('click', handleSend);
+    chatInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleSend();
+      }
+    });
+    chatInput.addEventListener('input', () => {
+      chatInput.style.height = 'auto';
+      chatInput.style.height = Math.min(chatInput.scrollHeight, 100) + 'px';
+    });
+  </script>
+</body>
+</html>
