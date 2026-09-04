@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Suraya-AI Pro | دستیار همه‌فن‌حریف</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card: #141b2d;
+      --primary: #6c5ce7;
+      --text: #e8eaf6;
+      --muted: #9aa3b8;
+      --border: #1e2a44;
+      --user: #1a2744;
+      --ai: #1e1a3a;
+      --success: #00cec9;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card);
+    }
+    .logo { font-weight: 700; font-size: 1.2rem; }
+    .badge { background: rgba(0,206,201,0.15); color: var(--success); font-size: 0.7rem; padding: 3px 8px; border-radius: 20px; }
+    .back { color: var(--muted); text-decoration: none; font-size: 0.85rem; }
+    #chat {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .msg { max-width: 90%; padding: 12px 16px; border-radius: 16px; font-size: 0.95rem; line-height: 1.65; white-space: pre-wrap; }
+    .msg.user { background: var(--user); align-self: flex-start; border-bottom-right-radius: 4px; }
+    .msg.ai { background: var(--ai); align-self: flex-end; border-bottom-left-radius: 4px; }
+    .input-area {
+      padding: 12px 16px 18px;
+      border-top: 1px solid var(--border);
+      background: var(--card);
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+    }
+    #input {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 16px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      resize: none;
+      max-height: 130px;
+    }
+    #input:focus { border-color: var(--primary); }
+    #send {
+      background: var(--primary);
+      border: none;
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      color: white;
+      font-size: 1.25rem;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    #send:disabled { opacity: 0.45; }
+    .quick {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 0 16px 10px;
+      background: var(--card);
+    }
+    .quick button {
+      flex-shrink: 0;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-family: inherit;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="back">← بازگشت به سایت</a>
+    <div class="logo">Suraya-AI Pro</div>
+    <div class="badge">بدون محدودیت • نسخه حرفه‌ای</div>
+  </header>
+
+  <div id="chat">
+    <div class="msg system">Suraya-AI Pro فعال است · نسخه داخلی قوی · پلن‌های پولی آماده</div>
+    <div class="msg ai">سلام. من Suraya-AI Pro هستم. دستیار همه‌فن‌حریف شما.  
+هر کاری که بخواهید انجام می‌دهم: تولید متن، تصویر، ویدیو، آهنگ، فیلم، کد، مدیریت صفحات، پلن اشتراک و ...</div>
+  </div>
+
+  <div class="quick">
+    <button onclick="quick('وضعیت سیستم')">وضعیت سیستم</button>
+    <button onclick="quick('ساخت پلن ماهانه')">ساخت پلن ماهانه</button>
+    <button onclick="quick('تولید مقاله علمی')">تولید مقاله علمی</button>
+    <button onclick="quick('تولید فیلم کوتاه')">تولید فیلم کوتاه</button>
+  </div>
+
+  <div class="input-area">
+    <textarea id="input" rows="1" placeholder="دستور یا درخواست خود را بنویسید..."></textarea>
+    <button id="send">➤</button>
+  </div>
+
+  <script>
+    const chat = document.getElementById('chat');
+    const input = document.getElementById('input');
+    const sendBtn = document.getElementById('send');
+
+    const memory = { plans: [], tasks: [], notes: [] };
+
+    function addMsg(text, type) {
+      const div = document.createElement('div');
+      div.className = `msg ${type}`;
+      div.textContent = text;
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function quick(text) {
+      input.value = text;
+      handleSend();
+    }
+
+    function reply(userText) {
+      const t = userText.toLowerCase().trim();
+
+      if (t.includes('سلام') || t.includes('درود')) return 'سلام. آماده‌ام. چه کاری انجام دهم؟';
+      if (t.includes('وضعیت')) return 'Suraya-AI Pro فعال است.\nنسخه: داخلی حرفه‌ای\nاشتراک: ماهانه/سالانه\nقفل: فقط برای پلن‌های عادی';
+
+      if (t.includes('پلن') || t.includes('اشتراک') || t.includes('قیمت')) {
+        if (t.includes('ساخت') || t.includes('اضافه')) {
+          memory.plans.push({id: Date.now(), name: 'پلن جدید', price: 'در انتظار', duration: 'ماهانه'});
+          return `پلن جدید ثبت شد.\nبرای تکمیل بگویید: نام، قیمت، مدت`;
+        }
+        return `پلن‌های فعلی: ${memory.plans.length}\nمی‌خواهید پلن بسازیم؟`;
+      }
+
+      if (t.includes('تسک') || t.includes('ثبت')) {
+        memory.tasks.push({id: Date.now(), text: userText});
+        return `ثبت شد. تعداد تسک‌ها: ${memory.tasks.length}`;
+      }
+
+      if (t.includes('لیست تسک')) return memory.tasks.length ? memory.tasks.map((t,i) => `${i+1}. ${t.text}`).join('\n') : 'هیچ تسک ثبت نشده.';
+
+      if (t.includes('تولید مقاله')) return 'مقاله علمی در حال تولید... (در نسخه کامل با اتصال به بک‌اند انجام می‌شود)';
+      if (t.includes('فیلم')) return 'فیلم کوتاه در حال تولید... (در نسخه کامل)';
+      if (t.includes('کد') || t.includes('برنامه')) return 'کد حرفه‌ای در تمام زبان‌ها (پایتون، جاوااسکریپت، فلاتر، ...) آماده است.';
+
+      return `دستور دریافت شد: «${userText}»\n\nدر نسخه حرفه‌ای کامل، این کار را انجام می‌دهم.\nمی‌خواهید این دستور را به عنوان تسک هم ذخیره کنم؟`;
+    }
+
+    function handleSend() {
+      const text = input.value.trim();
+      if (!text) return;
+      addMsg(text, 'user');
+      input.value = '';
+      input.style.height = 'auto';
+      sendBtn.disabled = true;
+
+      setTimeout(() => {
+        addMsg(reply(text), 'ai');
+        sendBtn.disabled = false;
+        input.focus();
+      }, 350);
+    }
+
+    sendBtn.addEventListener('click', handleSend);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } });
+    input.addEventListener('input', () => { input.style.height = 'auto'; input.style.height = Math.min(input.scrollHeight, 130) + 'px'; });
+  </script>
+</body>
+</html>
