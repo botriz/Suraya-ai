@@ -1,0 +1,231 @@
+Suraya-ai/
+│
+├── 📁 blockchain/                      # هستهٔ بلاکچین
+│   ├── 📁 core/                        # پروتکل اصلی
+│   │   ├── chain.js                    # موتور بلاکچین
+│   │   ├── block.js                    # ساختار بلاک
+│   │   ├── transaction.js              # تراکنش‌ها
+│   │   ├── merkle-tree.js              # درخت مرکل
+│   │   ├── crypto.js                   # رمزنگاری Quantum-Ready
+│   │   └── consensus.js                # الگوریتم Proof of Intelligence
+│   │
+│   ├── 📁 contracts/                   # قراردادهای هوشمند
+│   │   ├── ARZA-Token.sol              # توکن اصلی ثریا
+│   │   ├── World-Registry.sol          # ثبت جهان
+│   │   ├── Entity-Manager.sol          # مدیریت موجودیت‌ها
+│   │   ├── Mission-Rewards.sol         # پاداش مأموریت
+│   │   ├── DAO-Governance.sol          # DAO خودمختار
+│   │   ├── Treasury.sol                # خزانهٔ عمومی
+│   │   └── NFT-Intelligence.sol        # NFT‌های هوشمند
+│   │
+│   ├── 📁 validator-nodes/             # گره‌های شبکه
+│   │   ├── node.js                     # اجرای گره
+│   │   ├── validator.js                # تایید‌کنندهٔ بلاک
+│   │   ├── sync-protocol.js            # هماهنگ‌سازی
+│   │   └── peer-manager.js             # مدیریت همتایان
+│   │
+│   ├── 📁 api/                         # API بلاکچین
+│   │   ├── rpc-server.js               # سرور JSON-RPC
+│   │   ├── rest-api.js                 # API RESTful
+│   │   ├── websocket.js                # اتصالات زنده
+│   │   └── rate-limiter.js             # محدود‌کنندهٔ نرخ
+│   │
+│   └── 📁 tests/                       # تست‌های واحد
+│       ├── consensus.test.js
+│       ├── contracts.test.js
+│       └── integration.test.js
+│
+├── 📁 world-engine/                    # موتور جهان هوشمند
+│   ├── 📁 entities/                    # موجودیت‌های اصلی
+│   │   ├── base-entity.js              # کلاس پایه
+│   │   ├── 📁 natural/
+│   │   │   ├── torbaq.js               # 🌍 خاک‌دانه
+│   │   │   ├── آب.js                   # 💧 آب‌دولت
+│   │   │   ├── kulekcI.js              # 🌬️ باد‌نواز
+│   │   │   ├── ateş.js                 # 🔥 آتش‌خیز
+│   │   │   ├── nur.js                  # ☀️ نور‌مهر
+│   │   │   ├── nemlik.js               # 💧 رطوبت‌یار
+│   │   │   └── soyuq.js                # ❄️ سرما‌نگار
+│   │   ├── 📁 economic/
+│   │   │   ├── factory.js              # 🏭 کار‌خانه‌ای
+│   │   │   ├── merchant.js             # 🛒 بازرگان‌ی
+│   │   │   └── banker.js               # 🏦 سرمایه‌دار
+│   │   └── 📁 governance/
+│   │       ├── ruler.js                # 👑 پادشاه‌نشین
+│   │       ├── scholar.js              # 📚 دانش‌ورز
+│   │       ├── healer.js               # ⚕️ معالج‌زاد
+│   │       └── artist.js               # 🎨 هنرمند‌پال
+│   │
+│   ├── 📁 physics/                     # موتور فیزیک
+│   │   ├── climate-system.js           # سیستم آب‌و‌هوا
+│   │   ├── particle-system.js          # سیستم ذرات
+│   │   ├── element-interaction.js      # تعاملات عناصر
+│   │   └── growth-decay.js             # رشد و نابودی
+│   │
+│   ├── 📁 cities/                      # شهرهای جهانی
+│   │   ├── city-generator.js           # نسل‌سازی
+│   │   ├── geolocation-loader.js       # بارگذاری مختصات
+│   │   └── 📁 instances/
+│   │       ├── tehran.json
+│   │       ├── istanbul.json
+│   │       ├── shanghai.json
+│   │       └── ...
+│   │
+│   └── 📁 ai/                          # هوش مصنوعی
+│       ├── entity-ai.js                # هوش موجودیت‌ها
+│       ├── nlp-system.js               # درک طبیعی زبان
+│       └── decision-engine.js          # موتور تصمیم‌گیری
+│
+├── 📁 gameplay/                        # سیستم بازی
+│   ├── 📁 missions/
+│   │   ├── mission-system.js
+│   │   ├── mission-templates.js
+│   │   ├── difficulty-scaling.js
+│   │   └── 📁 quests/
+│   │       ├── farming-quest.js        # مأموریت کشاورزی
+│   │       ├── trading-quest.js        # مأموریت تجارت
+│   │       ├── building-quest.js       # مأموریت ساخت
+│   │       └── governance-quest.js     # مأموریت حکمرانی
+│   │
+│   ├── 📁 progression/
+│   │   ├── level-system.js
+│   │   ├── skill-tree.js
+│   │   └── achievement-system.js
+│   │
+│   ├── 📁 economy/
+│   │   ├── resource-system.js
+│   │   ├── crafting-system.js
+│   │   ├── trading-market.js
+│   │   └── auction-system.js
+│   │
+│   └── 📁 events/
+│       ├── seasonal-events.js
+│       ├── world-events.js
+│       └── emergency-events.js
+│
+├── 📁 frontend/                        # رابط کاربری
+│   ├── 📁 src/
+│   │   ├── 📁 components/
+│   │   │   ├── world-viewer.vue        # نمایش‌دهندهٔ جهان
+│   │   │   ├── wallet.vue              # والت
+│   │   │   ├── marketplace.vue         # بازار
+│   │   │   ├── mission-board.vue       # تخته مأموریت‌ها
+│   │   │   ├── city-explorer.vue       # اکتشاف شهر
+│   │   │   └── admin-panel.vue         # پنل ادمین
+│   │   │
+│   │   ├── 📁 pages/
+│   │   │   ├── home.vue
+│   │   │   ├── game.vue
+│   │   │   ├── world.vue
+│   │   │   ├── profile.vue
+│   │   │   └── leaderboard.vue
+│   │   │
+│   │   ├── 📁 graphics/
+│   │   │   ├── three-d-world.js        # Three.js یا Babylon.js
+│   │   │   ├── particle-renderer.js
+│   │   │   └── shader-manager.js
+│   │   │
+│   │   ├── 📁 store/
+│   │   │   ├── blockchain.store.js
+│   │   │   ├── world.store.js
+│   │   │   ├── player.store.js
+│   │   │   └── ui.store.js
+│   │   │
+│   │   ├── App.vue
+│   │   └── main.js
+│   │
+│   ├── 📁 public/
+│   │   ├── index.html
+│   │   ├── assets/
+│   │   │   ├── 3d-models/
+│   │   │   ├── textures/
+│   │   │   ├── sounds/
+│   │   │   └── music/
+│   │   │
+│   │   └── data/
+│   │       ├── world-data.json
+│   │       ├── cities-data.json
+│   │       └── entities-data.json
+│   │
+│   ├── package.json
+│   ├── vue.config.js
+│   └── vite.config.js
+│
+├── 📁 backend/                         # سرور
+│   ├── 📁 services/
+│   │   ├── blockchain-service.js       # ارتباط با بلاکچین
+│   │   ├── world-service.js            # مدیریت جهان
+│   │   ├── player-service.js           # مدیریت بازیکن
+│   │   ├── mission-service.js          # مدیریت مأموریت
+│   │   ├── market-service.js           # بازار
+│   │   └── notification-service.js     # اطلاع‌رسانی
+│   │
+│   ├── 📁 middleware/
+│   │   ├── auth.js
+│   │   ├── rate-limit.js
+│   │   └── error-handler.js
+│   │
+│   ├── 📁 routes/
+│   │   ├── blockchain.routes.js
+│   │   ├── world.routes.js
+│   │   ├── player.routes.js
+│   │   └── market.routes.js
+│   │
+│   ├── 📁 database/
+│   │   ├── models/
+│   │   │   ├── player.model.js
+│   │   │   ├── mission.model.js
+│   │   │   └── transaction.model.js
+│   │   ├── migrations/
+│   │   └── seeds/
+│   │
+│   ├── server.js
+│   ├── config.js
+│   └── package.json
+│
+├── 📁 _admin_secret/                  # 🔐 داده‌های محرمانه
+│   ├── genesis-config.json.enc        # تنظیمات بلاک اول
+│   ├── admin-keys.json.enc            # کلیدهای ادمین
+│   ├── validator-keys/                # کلیدهای تایید‌کنندگان
+│   ├── treasury-keys/                 # کلیدهای خزانه
+│   ├── world-rules.json.enc           # قوانین جهان
+│   ├── entity-manifest.json.enc       # مانیفست موجودیت‌ها
+│   ├── audit-log.json                 # گزارش‌های مدیریتی
+│   └── backup/                        # پشتیبان‌گیری
+│
+├── 📁 docs/                            # مستندات
+│   ├── WHITEPAPER.fa.md                # کتاب سفید (فارسی)
+│   ├── TECHNICAL-SPEC.md               # مشخصات فنی
+│   ├── API-DOCS.md                     # مستندات API
+│   ├── GAME-RULES.md                   # قوانین بازی
+│   ├── ECONOMICS.md                    # نظام اقتصادی
+│   └── ROADMAP.md                      # نقشهٔ راه
+│
+├── 📁 scripts/                         # اسکریپت‌های مدیریتی
+│   ├── deploy-blockchain.sh            # استقرار بلاکچین
+│   ├── init-genesis.sh                 # راه‌اندازی شبکه
+│   ├── start-validator.sh              # اجرای گره تایید‌کننده
+│   ├── backup-world.sh                 # پشتیبان‌گیری جهان
+│   ├── mint-tokens.sh                  # ایجاد توکن
+│   └── reset-chain.sh                  # بازنشانی (توسعه)
+│
+├── 📁 docker/                          # کانتینرهای Docker
+│   ├── Dockerfile.blockchain           # تصویر بلاکچین
+│   ├── Dockerfile.node                 # تصویر گره
+│   ├── Dockerfile.frontend             # تصویر رابط
+│   ├── docker-compose.yml              # کامپوز Docker
+│   └── .env.example
+│
+├── 📁 infrastructure/                  # زیرساخت
+│   ├── kubernetes/                     # تنظیمات K8s
+│   ├── monitoring/                     # نظارت
+│   │   ├── prometheus.yml
+│   │   ├── grafana-dashboards.json
+│   │   └── alerting.yml
+│   └── logging/                        # ثبت‌کردن رویدادها
+│
+├── .gitignore
+├── .env.example
+├── README.md                           # راهنمای پروژه
+├── LICENSE
+└── package.json                        # وابستگی‌های اصلی
