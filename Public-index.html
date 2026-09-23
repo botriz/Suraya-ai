@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ata AI — AI Content Services</title>
+  <meta name="description" content="Affordable AI-powered content and business services.">
+  <style>
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Arial,sans-serif;
+      background:#080b12;
+      color:#fff;
+      line-height:1.6
+    }
+    .wrap{
+      width:min(1050px,92%);
+      margin:auto
+    }
+    header{
+      padding:70px 0 45px;
+      text-align:center
+    }
+    h1{
+      font-size:clamp(38px,7vw,72px);
+      margin:0 0 15px
+    }
+    .hero{
+      font-size:20px;
+      color:#b8c0d0;
+      max-width:700px;
+      margin:auto
+    }
+    .cta{
+      display:inline-block;
+      margin-top:28px;
+      padding:15px 28px;
+      border-radius:12px;
+      background:#7c3aed;
+      color:white;
+      text-decoration:none;
+      font-weight:bold
+    }
+    section{padding:35px 0}
+    h2{text-align:center;font-size:34px}
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:20px
+    }
+    .card{
+      background:#111827;
+      border:1px solid #263044;
+      border-radius:18px;
+      padding:25px
+    }
+    .price{
+      font-size:34px;
+      font-weight:bold;
+      margin:15px 0
+    }
+    .card a{
+      display:block;
+      text-align:center;
+      background:#fff;
+      color:#111827;
+      padding:12px;
+      border-radius:10px;
+      text-decoration:none;
+      font-weight:bold
+    }
+    form{
+      max-width:650px;
+      margin:auto;
+      background:#111827;
+      padding:25px;
+      border-radius:18px
+    }
+    input,textarea,select{
+      width:100%;
+      padding:13px;
+      margin:8px 0 15px;
+      border-radius:9px;
+      border:1px solid #374151;
+      background:#080b12;
+      color:#fff
+    }
+    button{
+      width:100%;
+      padding:14px;
+      border:0;
+      border-radius:10px;
+      background:#7c3aed;
+      color:#fff;
+      font-weight:bold;
+      font-size:16px
+    }
+    #result{
+      margin-top:18px;
+      text-align:center
+    }
+    footer{
+      padding:40px 0;
+      text-align:center;
+      color:#7f899b
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>Ata AI</h1>
+    <p class="hero">
+      Affordable AI-powered content and business services
+      for creators, small businesses and online sellers.
+    </p>
+    <a class="cta" href="#order">Start an Order</a>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>Simple Services</h2>
+
+    <div class="grid">
+
+      <div class="card">
+        <h3>Social Content Pack</h3>
+        <p>10 ready-to-publish social media posts with captions and hashtags.</p>
+        <div class="price">$5</div>
+        <a href="#order">Order</a>
+      </div>
+
+      <div class="card">
+        <h3>Business Content Pack</h3>
+        <p>20 posts, promotional copy and a simple content strategy.</p>
+        <div class="price">$10</div>
+        <a href="#order">Order</a>
+      </div>
+
+      <div class="card">
+        <h3>Product Description Pack</h3>
+        <p>10 professional product descriptions for an online store.</p>
+        <div class="price">$5</div>
+        <a href="#order">Order</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="order">
+  <div class="wrap">
+    <h2>Place Your Order</h2>
+
+    <form id="orderForm">
+
+      <label>Name</label>
+      <input name="name" required>
+
+      <label>Email</label>
+      <input name="email" type="email">
+
+      <label>Service</label>
+      <select name="service" required>
+        <option value="">Choose a service</option>
+        <option value="Social Content Pack - $5">
+          Social Content Pack — $5
+        </option>
+        <option value="Business Content Pack - $10">
+          Business Content Pack — $10
+        </option>
+        <option value="Product Description Pack - $5">
+          Product Description Pack — $5
+        </option>
+      </select>
+
+      <label>What do you need?</label>
+      <textarea name="details" rows="6"
+        placeholder="Tell us about your business, topic, products or audience..."></textarea>
+
+      <button type="submit">Submit Order</button>
+
+      <div id="result"></div>
+
+    </form>
+  </div>
+</section>
+
+<footer>
+  Ata AI © 2026
+</footer>
+
+<script>
+const form = document.getElementById("orderForm");
+const result = document.getElementById("result");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  result.textContent = "Submitting...";
+
+  const data = Object.fromEntries(new FormData(form));
+
+  try {
+    const response = await fetch("/api/order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+
+    const resultData = await response.json();
+
+    if (!resultData.ok) {
+      throw new Error(resultData.error || "Order failed");
+    }
+
+    result.innerHTML =
+      "<strong>Order received: " +
+      resultData.orderId +
+      "</strong><br>" +
+      resultData.message;
+
+    form.reset();
+
+  } catch (error) {
+    result.textContent =
+      "Something went wrong. Please try again.";
+  }
+});
+</script>
+
+</body>
+</html>
