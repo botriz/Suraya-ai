@@ -1,0 +1,56 @@
+{
+  "world": "Suraya",
+  "version": "0.1.0",
+  "stage": "foundation",
+  "defaultLocale": "azb-Arab",
+  "availableLocales": [
+    "fa-IR",
+    "en"
+  ],
+  "officialLanguage": {
+    "language": "Azerbaijani Turkic",
+    "dialect": "Tabrizi",
+    "script": "Persian"
+  },
+  "firstPlannedCity": {
+    "name": "Tabriz",
+    "country": "Iran",
+    "status": "planned"
+  },
+  "buildOrder": [
+    "nature",
+    "time",
+    "geography",
+    "environment_rules",
+    "cities",
+    "citizens",
+    "characters"
+  ],
+  "audiences": [
+    {
+      "id": "visitors",
+      "path": "/world/visitors.html"
+    },
+    {
+      "id": "creators",
+      "path": "/world/creators.html"
+    },
+    {
+      "id": "businesses",
+      "path": "/world/businesses.html"
+    },
+    {
+      "id": "developers",
+      "path": "/world/developers.html"
+    }
+  ],
+  "features": {
+    "registration": false,
+    "avatars": false,
+    "worldLedger": false,
+    "realPayments": false,
+    "autonomousCharacters": false,
+    "analytics": false,
+    "optionalCookies": true
+  }
+}
