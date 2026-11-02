@@ -1,7 +1,5 @@
 import express from "express";
 
-const router = express.Router();
-
 const manifest = {
   world: "Suraya",
   apiVersion: "v1",
@@ -23,6 +21,8 @@ const manifest = {
 };
 
 export function createWorldRouter({ pool, isDatabaseReady }) {
+  const router = express.Router();
+
   router.get("/status", (_req, res) => {
     const ready = Boolean(pool && isDatabaseReady());
     res.status(200).json({
