@@ -3,7 +3,9 @@ name: Suraya public services CI
 on:
   push:
     branches:
+      - main
       - "feature/suraya-public-tools-v1"
+      - "feature/world-core-api-v1"
   pull_request:
     branches:
       - main
@@ -28,3 +30,13 @@ jobs:
           test -s public/world/developers.html
           test -s public/world/world.css
           grep -q 'cookieBanner' public/world/index.html
+
+      - run: node --check world/world-api.js
+      - name: Verify digital world API and migration
+        run: |
+          test -s world/world-api.js
+          test -s migrations/001_world_foundation.sql
+          grep -q 'world_regions' migrations/001_world_foundation.sql
+          grep -q 'world_events' migrations/001_world_foundation.sql
+          grep -q 'api/world/v1' server.js
+          grep -q 'autonomousActions: false' world/world-api.js

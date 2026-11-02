@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import pg from "pg";
+import { readFile } from "node:fs/promises";
+import { createWorldRouter } from "./world/world-api.js";
 
 dotenv.config();
 
@@ -36,6 +38,7 @@ const pool = process.env.DATABASE_URL
 
 let databaseReady = false;
 let databaseError = "DATABASE_URL is not configured";
+let worldDatabaseReady = false;
 const requestBuckets = new Map();
 
 async function initializeDatabase() {
@@ -57,6 +60,16 @@ async function initializeDatabase() {
     databaseReady = true;
     databaseError = "";
     console.log("Suraya order database ready");
+
+    try {
+      const worldMigration = await readFile(path.join(__dirname, "migrations", "001_world_foundation.sql"), "utf8");
+      await pool.query(worldMigration);
+      worldDatabaseReady = true;
+      console.log("Suraya digital world schema ready");
+    } catch (worldError) {
+      worldDatabaseReady = false;
+      console.error("Suraya digital world initialization failed:", worldError.message);
+    }
   } catch (error) {
     databaseReady = false;
     databaseError = error.message;
@@ -99,6 +112,8 @@ app.get("/api/status", (_req, res) => {
     timestamp: new Date().toISOString()
   });
 });
+
+app.use("/api/world/v1", createWorldRouter({ pool, isDatabaseReady: () => worldDatabaseReady }));
 
 app.get("/api/services", (_req, res) => {
   res.json({ ok: true, services });
@@ -170,6 +185,7 @@ app.listen(PORT, HOST, () => {
 if (pool) {
   pool.on("error", (error) => {
     databaseReady = false;
+    worldDatabaseReady = false;
     databaseError = error.message;
     console.error("Database pool error:", error.message);
   });
