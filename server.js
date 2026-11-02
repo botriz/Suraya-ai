@@ -21,9 +21,12 @@ app.use(express.json({ limit: "32kb" }));
 app.use(express.urlencoded({ extended: false, limit: "32kb" }));
 
 const services = {
-  social_content: { title: "بسته محتوای شبکه‌های اجتماعی", price: 5, currency: "USD" },
-  business_content: { title: "بسته محتوای کسب‌وکار", price: 10, currency: "USD" },
-  product_descriptions: { title: "توضیحات محصولات فروشگاه", price: 5, currency: "USD" }
+  social_content: { title: "بسته محتوای شبکه‌های اجتماعی", price: 5, currency: "USD", billing: "one_time" },
+  business_content: { title: "بسته محتوای کسب‌وکار", price: 10, currency: "USD", billing: "one_time" },
+  product_descriptions: { title: "توضیحات محصولات فروشگاه", price: 5, currency: "USD", billing: "one_time" },
+  social_monthly: { title: "مدیریت ماهانه محتوای شبکه اجتماعی", price: 29, currency: "USD", billing: "monthly", description: "تقویم محتوایی، طراحی و آماده‌سازی پست و گزارش ماهانه؛ انتشار فقط با دسترسی و تأیید مشتری." },
+  subscription_ops: { title: "راه‌اندازی و مدیریت عملیات اشتراک", price: 19, currency: "USD", billing: "monthly", description: "طراحی پلن‌ها، پیگیری تمدیدها و گزارش اشتراک؛ بدون دریافت رمز عبور یا انجام پرداخت از طرف مشتری." },
+  store_launch: { title: "راه‌اندازی محتوایی فروشگاه آنلاین", price: 49, currency: "USD", billing: "one_time", description: "ساختار دسته‌بندی، محتوای صفحات کلیدی و بسته اولیه توضیحات محصول." }
 };
 
 const pool = process.env.DATABASE_URL
