@@ -1,18 +1,19 @@
 {
-  "name": "ata-ai",
-  "version": "1.0.0",
-  "description": "Ata AI - Revenue MVP",
+  "name": "suraya-public-services",
+  "version": "1.1.0",
+  "description": "Suraya public AI services and order intake",
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "check": "node --check server.js"
   },
   "engines": {
     "node": ">=18"
   },
   "dependencies": {
-    "express": "^4.19.2",
-    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "pg": "^8.13.1",
     "dotenv": "^16.4.5"
   }
 }

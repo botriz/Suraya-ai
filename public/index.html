@@ -1,428 +1,109 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Ata AI — affordable AI-powered content services for creators, businesses and online sellers.">
-  <title>Ata AI — AI Content Services</title>
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b1020">
+  <meta name="description" content="ثریا؛ خدمات هوش مصنوعی برای تولید محتوا، کسب‌وکارها و فروشگاه‌های آنلاین.">
+  <title>ثریا | خدمات هوش مصنوعی</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #080b12;
-      color: #ffffff;
-      line-height: 1.6;
-    }
-
-    .container {
-      width: min(1050px, 92%);
-      margin: auto;
-    }
-
-    header {
-      padding: 80px 0 60px;
-      text-align: center;
-    }
-
-    .logo {
-      font-size: 18px;
-      font-weight: bold;
-      color: #a78bfa;
-      margin-bottom: 25px;
-    }
-
-    h1 {
-      font-size: clamp(42px, 8vw, 76px);
-      line-height: 1.05;
-      margin: 0 0 20px;
-    }
-
-    .hero-text {
-      max-width: 720px;
-      margin: auto;
-      color: #b8c0d0;
-      font-size: 20px;
-    }
-
-    .button {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 15px 28px;
-      border-radius: 12px;
-      background: #7c3aed;
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .button:hover {
-      background: #6d28d9;
-    }
-
-    section {
-      padding: 45px 0;
-    }
-
-    h2 {
-      text-align: center;
-      font-size: 34px;
-      margin-bottom: 35px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background: #111827;
-      border: 1px solid #263044;
-      border-radius: 18px;
-      padding: 25px;
-    }
-
-    .card h3 {
-      margin-top: 0;
-      font-size: 22px;
-    }
-
-    .card p {
-      color: #aeb7c8;
-    }
-
-    .price {
-      font-size: 34px;
-      font-weight: bold;
-      margin: 20px 0;
-    }
-
-    .card-link {
-      display: block;
-      text-align: center;
-      background: #ffffff;
-      color: #111827;
-      padding: 12px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .order-box {
-      max-width: 650px;
-      margin: auto;
-      background: #111827;
-      border: 1px solid #263044;
-      padding: 28px;
-      border-radius: 18px;
-    }
-
-    label {
-      display: block;
-      margin-top: 12px;
-      font-weight: bold;
-    }
-
-    input,
-    textarea,
-    select {
-      width: 100%;
-      padding: 14px;
-      margin-top: 8px;
-      margin-bottom: 15px;
-      border-radius: 9px;
-      border: 1px solid #374151;
-      background: #080b12;
-      color: #ffffff;
-      font-size: 16px;
-    }
-
-    textarea {
-      resize: vertical;
-    }
-
-    button {
-      width: 100%;
-      padding: 15px;
-      border: 0;
-      border-radius: 10px;
-      background: #7c3aed;
-      color: #ffffff;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #6d28d9;
-    }
-
-    #result {
-      margin-top: 20px;
-      text-align: center;
-      color: #c4b5fd;
-    }
-
-    .note {
-      text-align: center;
-      color: #7f899b;
-      margin-top: 20px;
-      font-size: 14px;
-    }
-
-    footer {
-      padding: 50px 0;
-      text-align: center;
-      color: #7f899b;
-    }
+    :root{color-scheme:dark;--bg:#0b1020;--panel:#121a2d;--line:#26334e;--text:#f4f6ff;--muted:#aab5ca;--accent:#8b7cff;--cyan:#6ddbd2}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 80% 0%,#1c2550 0,transparent 38%),var(--bg);color:var(--text);font-family:Vazirmatn,system-ui,sans-serif;line-height:1.85}
+    a{color:inherit}.wrap{width:min(1100px,92%);margin:auto}.nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0;border-bottom:1px solid #ffffff14}.brand{font-size:1.35rem;font-weight:800;letter-spacing:.02em}.brand span{color:var(--accent)}.nav a{color:var(--muted);text-decoration:none;margin-right:22px;font-size:.92rem}
+    .hero{padding:82px 0 64px;text-align:center}.eyebrow{display:inline-block;border:1px solid #8b7cff66;color:#c7c0ff;background:#8b7cff14;border-radius:99px;padding:4px 15px;font-size:.85rem}.hero h1{font-size:clamp(2.2rem,6vw,4.4rem);line-height:1.3;margin:20px auto 12px;max-width:850px}.hero h1 em{font-style:normal;color:#a99eff}.hero p{max-width:700px;margin:0 auto;color:var(--muted);font-size:1.08rem}.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:28px}.btn{display:inline-block;padding:12px 23px;border-radius:12px;text-decoration:none;font-weight:700;background:var(--accent);color:white;border:1px solid var(--accent)}.btn.alt{background:transparent;border-color:var(--line);color:var(--text)}
+    section{padding:48px 0}.section-head{text-align:center;margin-bottom:28px}.section-head h2{font-size:2rem;margin:0 0 5px}.section-head p{margin:0;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:linear-gradient(155deg,#17213a,#101729);border:1px solid var(--line);border-radius:20px;padding:25px;display:flex;flex-direction:column;min-height:280px}.icon{font-size:1.7rem}.card h3{margin:10px 0 5px;font-size:1.2rem}.card p{color:var(--muted);margin:0 0 18px}.price{font-weight:800;font-size:1.45rem;margin-top:auto}.price small{font-size:.8rem;color:var(--muted);font-weight:400}.card a{margin-top:12px;color:#c9c3ff;text-decoration:none;font-weight:700}
+    .order-panel{max-width:760px;margin:auto;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:28px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}label{display:block;font-weight:600;margin:10px 0 5px}input,select,textarea{width:100%;padding:13px 14px;background:#0a1121;border:1px solid #34415c;border-radius:10px;color:var(--text);font:inherit}textarea{resize:vertical}input:focus,select:focus,textarea:focus{outline:2px solid #8b7cff88;border-color:var(--accent)}.full{grid-column:1/-1}button{width:100%;margin-top:18px;padding:14px;border:0;border-radius:11px;background:var(--accent);color:white;font:inherit;font-weight:800;cursor:pointer}button:disabled{opacity:.6;cursor:wait}#result{margin-top:14px;text-align:center;color:var(--cyan);min-height:1.5em}.fine{font-size:.82rem;color:var(--muted);text-align:center;margin:12px 0 0}.status{text-align:center;color:var(--muted);font-size:.85rem;margin-top:24px}.status strong{color:var(--cyan)}footer{border-top:1px solid #ffffff14;padding:28px 0;color:var(--muted);font-size:.85rem;text-align:center}
+    @media(max-width:760px){.grid{grid-template-columns:1fr}.hero{padding-top:55px}.form-grid{grid-template-columns:1fr}.nav a{margin-right:10px}.card{min-height:unset}}
   </style>
 </head>
-
 <body>
+  <div class="wrap">
+    <nav class="nav" aria-label="ناوبری اصلی">
+      <div class="brand">ثریا <span>· Suraya</span></div>
+      <div><a href="#services">خدمات</a><a href="#order">ثبت درخواست</a></div>
+    </nav>
+    <header class="hero">
+      <span class="eyebrow">هوش مصنوعی برای کار واقعی</span>
+      <h1>ایده‌هایتان را به <em>محتوای آماده استفاده</em> تبدیل کنید</h1>
+      <p>ثریا ابزار و خدمات هوشمند تولید محتوا را برای سازندگان، کسب‌وکارهای کوچک و فروشگاه‌های آنلاین فراهم می‌کند. درخواستتان را ثبت کنید تا جزئیات و زمان تحویل با شما هماهنگ شود.</p>
+      <div class="actions"><a class="btn" href="#order">ثبت درخواست خدمت</a><a class="btn alt" href="#services">مشاهده خدمات</a></div>
+      <div class="status" id="systemStatus">در حال بررسی وضعیت سامانه…</div>
+    </header>
 
-  <header>
-    <div class="container">
-
-      <div class="logo">ATA AI</div>
-
-      <h1>AI Content Services</h1>
-
-      <p class="hero-text">
-        Affordable, ready-to-use content for creators,
-        small businesses and online sellers.
-      </p>
-
-      <a class="button" href="#order">
-        Start an Order
-      </a>
-
-    </div>
-  </header>
-
-
-  <section>
-    <div class="container">
-
-      <h2>Our Services</h2>
-
+    <section id="services">
+      <div class="section-head"><h2>خدمات قابل سفارش</h2><p>قیمت‌های پایه؛ مبلغ نهایی پیش از شروع کار تأیید می‌شود.</p></div>
       <div class="grid">
-
-        <div class="card">
-          <h3>Social Content Pack</h3>
-
-          <p>
-            10 ready-to-publish social media posts,
-            captions and hashtags.
-          </p>
-
-          <div class="price">$5</div>
-
-          <a class="card-link" href="#order">
-            Order Now
-          </a>
-        </div>
-
-
-        <div class="card">
-          <h3>Business Content Pack</h3>
-
-          <p>
-            20 social posts, promotional copy
-            and a simple content strategy.
-          </p>
-
-          <div class="price">$10</div>
-
-          <a class="card-link" href="#order">
-            Order Now
-          </a>
-        </div>
-
-
-        <div class="card">
-          <h3>Product Description Pack</h3>
-
-          <p>
-            10 professional product descriptions
-            for your online store.
-          </p>
-
-          <div class="price">$5</div>
-
-          <a class="card-link" href="#order">
-            Order Now
-          </a>
-        </div>
-
+        <article class="card"><div class="icon">✦</div><h3>بسته محتوای شبکه‌های اجتماعی</h3><p>۱۰ ایده و متن پست به‌همراه کپشن و هشتگ متناسب با موضوع و مخاطب شما.</p><div class="price">$5 <small>قیمت پایه</small></div><a href="#order" data-service="social_content">سفارش این خدمت ←</a></article>
+        <article class="card"><div class="icon">◈</div><h3>بسته محتوای کسب‌وکار</h3><p>۲۰ متن شبکه اجتماعی، متن تبلیغاتی و یک برنامه محتوایی ساده برای شروع.</p><div class="price">$10 <small>قیمت پایه</small></div><a href="#order" data-service="business_content">سفارش این خدمت ←</a></article>
+        <article class="card"><div class="icon">▤</div><h3>توضیحات محصولات فروشگاه</h3><p>۱۰ توضیح محصول خوانا و ساختاریافته برای معرفی بهتر کالاهای فروشگاه شما.</p><div class="price">$5 <small>قیمت پایه</small></div><a href="#order" data-service="product_descriptions">سفارش این خدمت ←</a></article>
       </div>
+    </section>
 
-    </div>
-  </section>
-
-
-  <section id="order">
-
-    <div class="container">
-
-      <h2>Place Your Order</h2>
-
-      <div class="order-box">
-
+    <section id="order">
+      <div class="section-head"><h2>ثبت درخواست</h2><p>فرم را تکمیل کنید؛ ثبت نهایی فقط پس از ذخیره موفق در سامانه انجام می‌شود.</p></div>
+      <div class="order-panel">
         <form id="orderForm">
-
-          <label for="name">
-            Name
-          </label>
-
-          <input
-            id="name"
-            name="name"
-            type="text"
-            placeholder="Your name"
-            required
-          >
-
-
-          <label for="email">
-            Email
-          </label>
-
-          <input
-            id="email"
-            name="email"
-            type="email"
-            placeholder="your@email.com"
-          >
-
-
-          <label for="service">
-            Service
-          </label>
-
-          <select
-            id="service"
-            name="service"
-            required
-          >
-
-            <option value="">
-              Choose a service
-            </option>
-
-            <option value="Social Content Pack - $5">
-              Social Content Pack — $5
-            </option>
-
-            <option value="Business Content Pack - $10">
-              Business Content Pack — $10
-            </option>
-
-            <option value="Product Description Pack - $5">
-              Product Description Pack — $5
-            </option>
-
-          </select>
-
-
-          <label for="details">
-            What do you need?
-          </label>
-
-          <textarea
-            id="details"
-            name="details"
-            rows="6"
-            placeholder="Tell us about your business, products, topic or audience..."
-          ></textarea>
-
-
-          <button type="submit">
-            Submit Order
-          </button>
-
-          <div id="result"></div>
-
+          <div class="form-grid">
+            <div><label for="name">نام *</label><input id="name" name="name" autocomplete="name" minlength="2" maxlength="120" required></div>
+            <div><label for="email">ایمیل (اختیاری)</label><input id="email" name="email" type="email" autocomplete="email" maxlength="254"></div>
+            <div class="full"><label for="service">خدمت موردنظر *</label><select id="service" name="service" required><option value="">یک خدمت انتخاب کنید</option><option value="social_content">بسته محتوای شبکه‌های اجتماعی</option><option value="business_content">بسته محتوای کسب‌وکار</option><option value="product_descriptions">توضیحات محصولات فروشگاه</option></select></div>
+            <div class="full"><label for="details">توضیحات پروژه</label><textarea id="details" name="details" rows="5" maxlength="4000" placeholder="موضوع، نوع کسب‌وکار، مخاطبان و جزئیات موردنیاز را بنویسید…"></textarea></div>
+          </div>
+          <button id="submitButton" type="submit">ارسال درخواست</button>
+          <div id="result" role="status" aria-live="polite"></div>
+          <p class="fine">در این مرحله پرداخت آنلاین فعال نیست. مبلغ و شرایط انجام کار پیش از شروع با شما هماهنگ خواهد شد.</p>
         </form>
-
-        <div class="note">
-          We will review your request and contact you with the next steps.
-        </div>
-
       </div>
-
-    </div>
-
-  </section>
-
-
-  <footer>
-    <div class="container">
-      Ata AI © 2026
-    </div>
-  </footer>
-
-
+    </section>
+    <footer>ثریا · Suraya — خدمات هوش مصنوعی</footer>
+  </div>
   <script>
-
     const form = document.getElementById("orderForm");
     const result = document.getElementById("result");
+    const button = document.getElementById("submitButton");
+    const status = document.getElementById("systemStatus");
 
-    form.addEventListener("submit", async function(event) {
-
-      event.preventDefault();
-
-      result.textContent = "Submitting your order...";
-
-      const data = Object.fromEntries(
-        new FormData(form)
-      );
-
-      try {
-
-        const response = await fetch("/api/order", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(data)
-        });
-
-        const resultData = await response.json();
-
-        if (!resultData.ok) {
-          throw new Error(
-            resultData.error || "Order failed"
-          );
-        }
-
-        result.innerHTML =
-          "<strong>Order received!</strong><br>" +
-          "Order ID: " +
-          resultData.orderId +
-          "<br>" +
-          resultData.message;
-
-        form.reset();
-
-      } catch (error) {
-
-        result.textContent =
-          "Something went wrong. Please try again.";
-
-      }
-
+    fetch("/api/status").then(r => r.json()).then(data => {
+      status.innerHTML = data.orderIntake
+        ? "وضعیت ثبت درخواست: <strong>آماده دریافت سفارش</strong>"
+        : "نمایش خدمات فعال است؛ ثبت سفارش پس از اتصال پایگاه داده پایدار فعال می‌شود.";
+      button.disabled = !data.orderIntake;
+      if (!data.orderIntake) button.textContent = "ثبت سفارش موقتاً غیرفعال است";
+    }).catch(() => {
+      status.textContent = "وضعیت سامانه در دسترس نیست؛ لطفاً بعداً مراجعه کنید.";
+      button.disabled = true;
     });
 
-  </script>
+    document.querySelectorAll("[data-service]").forEach(link => {
+      link.addEventListener("click", () => {
+        document.getElementById("service").value = link.dataset.service;
+      });
+    });
 
+    form.addEventListener("submit", async event => {
+      event.preventDefault();
+      result.textContent = "در حال ثبت درخواست…";
+      button.disabled = true;
+      try {
+        const payload = Object.fromEntries(new FormData(form));
+        const response = await fetch("/api/order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const data = await response.json();
+        if (!response.ok || !data.ok) throw new Error(data.error || "ثبت درخواست انجام نشد.");
+        result.textContent = "درخواست ثبت شد. کد پیگیری: " + data.orderId;
+        form.reset();
+      } catch (error) {
+        result.textContent = error.message || "خطا در ثبت درخواست. دوباره تلاش کنید.";
+      } finally {
+        button.disabled = false;
+      }
+    });
+  </script>
 </body>
 </html>
