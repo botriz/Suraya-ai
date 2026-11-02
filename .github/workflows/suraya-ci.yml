@@ -18,3 +18,13 @@ jobs:
           node-version: 20
       - run: npm install
       - run: npm run check
+      - run: node --check public/world/world.js
+      - name: Verify digital world pages
+        run: |
+          test -s public/world/index.html
+          test -s public/world/visitors.html
+          test -s public/world/creators.html
+          test -s public/world/businesses.html
+          test -s public/world/developers.html
+          test -s public/world/world.css
+          grep -q 'cookieBanner' public/world/index.html
