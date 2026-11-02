@@ -185,6 +185,7 @@ app.listen(PORT, HOST, () => {
 if (pool) {
   pool.on("error", (error) => {
     databaseReady = false;
+    worldDatabaseReady = false;
     databaseError = error.message;
     console.error("Database pool error:", error.message);
   });
