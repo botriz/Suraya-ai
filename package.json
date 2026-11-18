@@ -6,7 +6,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "check": "node --check server.js && node --check world/world-api.js && node --test"
+    "check": "node --check server.js && node --check world/world-api.js && node --test",
+    "dev": "node --watch server.js"
   },
   "engines": {
     "node": ">=18"
