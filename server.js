@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import pg from "pg";
 import { readFile } from "node:fs/promises";
 import { createWorldRouter } from "./world/world-api.js";
+import { createHealthRouter } from "./health/health-router.js";
 
 dotenv.config();
 
@@ -101,9 +102,10 @@ function rateLimit(req, res, next) {
   next();
 }
 
-app.get("/health", (_req, res) => {
-  res.json({ ok: true, service: "Suraya", time: new Date().toISOString() });
-});
+app.use(createHealthRouter({
+  isDatabaseReady: () => databaseReady,
+  isWorldDatabaseReady: () => worldDatabaseReady
+}));
 
 app.get("/api/status", (_req, res) => {
   res.status(databaseReady ? 200 : 503).json({
