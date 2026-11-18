@@ -82,3 +82,8 @@ npm run check
 - [مستندات API جهان دیجیتال](docs/digital-world-api-v1.md)
 - [نقشه راه جهان دیجیتال](docs/digital-world-roadmap.md)
 - [مالکیت پروژه](OWNERSHIP.md)
+
+
+## Legacy setup scripts
+
+The old `setup.js`, `suraya-master-setup.js`, and `setup-revenue.js` bootstrappers are disabled. They previously overwrote application files, generated placeholder credentials, or created simulated wallet/payment state. Do not run them. The active service is deployed from reviewed Git commits and uses PostgreSQL migrations.
