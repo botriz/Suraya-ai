@@ -125,6 +125,31 @@ body{background:#050b16}
 .map-coordinate-readout strong{color:#dffcf4;font-size:11px;font-weight:600}
 .map-coordinate-readout small{margin-right:auto;color:#83a5b8;font-size:9px}
 @media(max-width:700px){.map-reset{padding:6px 9px;font-size:9px}.map-coordinate-readout{gap:7px}.map-coordinate-readout strong{width:100%}.map-coordinate-readout small{margin-right:0}}
+
+/* Real-world reference gallery: nature, city and human life */
+.real-world-gallery{width:min(1240px,94%);margin:0 auto 82px;position:relative}
+.real-world-gallery-head{max-width:780px;margin:0 0 22px}
+.real-world-gallery-head .eyebrow{color:var(--mint);font-size:11px;font-weight:800}
+.real-world-gallery-head h2{font-size:clamp(23px,3vw,35px);line-height:1.5;margin:7px 0}
+.real-world-gallery-head p{color:var(--muted);font-size:12px;line-height:2;margin:0}
+.real-world-gallery-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+.real-world-card{overflow:hidden;border:1px solid #a9dff024;border-radius:21px;background:linear-gradient(150deg,#132438,#0d1928);box-shadow:0 17px 42px #0003;transition:transform .35s,border-color .35s}
+.real-world-card:hover{transform:translateY(-6px);border-color:#8cebd55c}
+.real-world-photo{height:220px;position:relative;overflow:hidden;background:#132b3a}
+.real-world-photo:after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(transparent,#071523d9)}
+.real-world-photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s}
+.real-world-card:hover .real-world-photo img{transform:scale(1.06)}
+.real-world-photo-tag{position:absolute;z-index:2;top:13px;right:13px;padding:6px 10px;border-radius:99px;border:1px solid #e0fff13d;background:#071523bd;color:#e5fff5;font-size:9px;backdrop-filter:blur(10px)}
+.real-world-card-copy{padding:16px 17px 18px}
+.real-world-card-copy .category{color:#8debd5;font-size:9px;font-weight:800}
+.real-world-card-copy h3{font-size:16px;line-height:1.7;margin:5px 0 8px}
+.real-world-card-copy p{font-size:11px;line-height:2;color:#afc2d3;margin:0 0 12px;min-height:66px}
+.real-world-credit{font-size:9px;color:#8fa9bd}
+.real-world-credit a{color:#b8e8dc;text-decoration:underline;text-underline-offset:3px}
+.real-world-gallery-note{margin-top:16px;padding:12px 15px;border-right:2px solid #7ce6d1;background:linear-gradient(90deg,#0c1927,#112b32);color:#a9c0cf;font-size:10px;line-height:2}
+.real-world-gallery-note b{color:#dffcf4}
+@media(max-width:900px){.real-world-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.real-world-card:last-child{grid-column:1/-1}.real-world-card:last-child .real-world-photo{height:240px}}
+@media(max-width:600px){.real-world-gallery{margin-bottom:55px}.real-world-gallery-grid{grid-template-columns:1fr;gap:13px}.real-world-card:last-child{grid-column:auto}.real-world-photo{height:210px}.real-world-card-copy p{min-height:0}}
 </style></head>
 <body><div class="wrap">
 <nav class="nav"><a class="brand" href="/"><span class="brand-mark">ث</span><span><b>ثریا</b><small>جهان خدمات هوشمند · SURAYA</small></span></a><div class="nav-links"><a href="#services">خدمات</a><a href="/creator.html">استودیو سازندگان</a><a href="/world/">جهان دیجیتال</a></div><a class="nav-cta" href="#services">کشف خدمات ←</a></nav>
@@ -277,7 +302,54 @@ body{background:#050b16}
       <div class="real-map-legend"><span><i></i> مبدأ مفهومی</span><span><i></i> نقاط مطالعاتی آینده</span></div>
     </div>
   </div>
-</section>\n<div class="section-intro" id="services"><div><div class="eyebrow">خدمات و تخصص‌ها</div><h2>متخصص خودت را انتخاب کن</h2><p>هر نام، یک مهارت؛ هر مهارت، یک همراه هوشمند.</p></div><span class="stage-tag">۶ حوزهٔ خدماتی</span></div>
+</section>\n
+<section class="real-world-gallery" id="realWorldGallery" aria-labelledby="realWorldGalleryTitle">
+  <div class="real-world-gallery-head">
+    <div class="eyebrow">الهام از جهان واقعی · نه شهرهای خیالی</div>
+    <h2 id="realWorldGalleryTitle">آینده را از روی زمین واقعی طراحی می‌کنیم</h2>
+    <p>قبل از ساختن هر جهان تازه، باید جهان فعلی را درست ببینیم؛ طبیعت، شهر، معماری و مهم‌تر از همه زندگی انسان‌ها. این تصاویر نمونه‌هایی واقعی‌اند که می‌توان از آن‌ها آموخت.</p>
+  </div>
+  <div class="real-world-gallery-grid">
+    <article class="real-world-card">
+      <div class="real-world-photo">
+        <img src="https://images.unsplash.com/photo-1489462276963-958e0cbc0477?auto=format&fit=crop&fm=jpg&q=82&w=1400" alt="نمای هوایی واقعی از باغ‌های خلیج سنگاپور و پیوند فضای سبز با معماری شهری" loading="lazy" decoding="async">
+        <span class="real-world-photo-tag">سنگاپور · مکان واقعی</span>
+      </div>
+      <div class="real-world-card-copy">
+        <span class="category">شهر و معماری</span>
+        <h3>شهری که طبیعت را از زندگی جدا نمی‌کند</h3>
+        <p>فضای سبز، آب، سازه‌های شاخص و مسیرهای پیاده؛ نمونه‌ای برای مطالعهٔ رابطهٔ شهر با زیست‌بوم.</p>
+        <div class="real-world-credit">تصویر: Chuttersnap · <a href="https://unsplash.com/photos/aerial-view-photography-of-gardens-by-the-bay-singapore-6xjpvDRwcPM" target="_blank" rel="noopener">منبع و مجوز تصویر</a></div>
+      </div>
+    </article>
+    <article class="real-world-card">
+      <div class="real-world-photo">
+        <img src="https://images.unsplash.com/photo-1759681770972-560b9949da0b?auto=format&fit=crop&fm=jpg&q=82&w=1400" alt="نمای هوایی واقعی از رودخانه‌ای که میان جنگل انبوه جریان دارد" loading="lazy" decoding="async">
+        <span class="real-world-photo-tag">زیست‌بوم طبیعی · مکان واقعی</span>
+      </div>
+      <div class="real-world-card-copy">
+        <span class="category">طبیعت و حیات</span>
+        <h3>طبیعت، زیرساخت اصلی زندگی</h3>
+        <p>رودخانه، پوشش گیاهی و پیوستگی زیستگاه‌ها؛ یادآوری اینکه فناوری آینده باید با طبیعت سازگار باشد.</p>
+        <div class="real-world-credit">تصویر: Kristaps Ungurs · <a href="https://unsplash.com/photos/aerial-view-of-a-winding-river-through-a-dense-forest-mwaQp_50kz8/" target="_blank" rel="noopener">منبع و مجوز تصویر</a></div>
+      </div>
+    </article>
+    <article class="real-world-card">
+      <div class="real-world-photo">
+        <img src="https://images.unsplash.com/photo-1623701321923-7fce11be70d2?auto=format&fit=crop&fm=jpg&q=82&w=1400" alt="مردم در حال استراحت و گذراندن وقت در فضای سبز عمومی نیویورک" loading="lazy" decoding="async">
+        <span class="real-world-photo-tag">نیویورک · مکان واقعی</span>
+      </div>
+      <div class="real-world-card-copy">
+        <span class="category">انسان و اجتماع</span>
+        <h3>شهر برای زندگی انسان ساخته می‌شود</h3>
+        <p>فضای عمومی، آرامش، حرکت و تعامل؛ معیار موفقیت شهر فقط ارتفاع ساختمان‌ها یا قدرت فناوری نیست.</p>
+        <div class="real-world-credit">تصویر: Yoav Aziz · <a href="https://unsplash.com/photos/people-sitting-on-white-bench-on-green-grass-field-during-daytime-9HZDbU66-dc" target="_blank" rel="noopener">منبع و مجوز تصویر</a></div>
+      </div>
+    </article>
+  </div>
+  <div class="real-world-gallery-note"><b>مرز واقعیت و چشم‌انداز:</b> مکان‌ها و عکس‌ها واقعی‌اند و صرفاً مرجع الهام و مطالعه‌اند؛ این تصاویر، پروژه‌های ساخته‌شدهٔ ثریا یا طرح‌های اجرایی تأییدشده نیستند. طراحی هر منطقهٔ آینده باید با نقشه‌برداری، داده‌های محیطی، نیازهای مردم و امکان‌سنجی واقعی انجام شود.</div>
+</section>
+<div class="section-intro" id="services"><div><div class="eyebrow">خدمات و تخصص‌ها</div><h2>متخصص خودت را انتخاب کن</h2><p>هر نام، یک مهارت؛ هر مهارت، یک همراه هوشمند.</p></div><span class="stage-tag">۶ حوزهٔ خدماتی</span></div>
 <section class="service-world">
 <div class="stage" aria-live="polite"><div class="stage-top"><span class="stage-tag">همراه منتخب تو</span><span class="stage-tag" id="stageIndex">آمادهٔ انتخاب</span></div><div class="stage-art"><div class="stage-rings"></div><div id="bigCharacter" class="character-large"></div></div><div class="stage-caption"><h3 id="stageName">جهان ثریا منتظر توست</h3><p id="stageDescription">از فهرست سمت راست یک تخصص را انتخاب کن تا همراه هوشمند و جزئیات آن را ببینی.</p><div class="stage-hint">انتخاب آگاهانه · جزئیات روشن · تصمیم با شما</div></div></div>
 <div class="service-list-panel"><div class="list-heading"><h2>فهرست خدمات ثریا</h2><span>برای مشاهده انتخاب کن</span></div><div class="service-list" id="serviceList"><div class="service-row"><span class="service-copy">در حال دریافت خدمات…</span></div></div>
