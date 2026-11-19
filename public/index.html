@@ -256,6 +256,38 @@ img,svg,video,canvas{max-width:100%}
  .nav-links{gap:7px;font-size:9px}
 }
 
+
+/* Hierarchical settings workspace */
+html,body{overscroll-behavior:none}
+body.ui-modal-lock{overflow:hidden!important;position:fixed;width:100%;inset-inline:0}
+.hub-window{width:min(100%,760px);max-height:100svh;height:min(100svh,900px);overflow:hidden;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}
+.hub-head{flex:0 0 auto}
+.hub-window .hub-profile{flex:0 0 auto}
+.hub-window .hub-section{display:block;flex:0 0 auto;min-width:0;margin:0 0 9px;padding:0;border:1px solid #ffffff18;border-radius:15px;background:#ffffff06;overflow:hidden}
+.hub-window .hub-section>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;cursor:pointer;min-height:48px;color:#edf5ff;font-weight:800}
+.hub-window .hub-section>summary::-webkit-details-marker{display:none}
+.hub-window .hub-section>summary:after{content:"＋";color:var(--mint);font-size:18px;line-height:1}
+.hub-window .hub-section[open]>summary:after{content:"−"}
+.hub-window .hub-section>summary h3{font-size:13px;margin:0}
+.hub-section-body{padding:0 13px 13px;border-top:1px solid #ffffff12}
+.hub-window .hub-section-body>*:first-child{margin-top:12px}
+.hub-window .hub-section-body .hub-note{margin-bottom:5px}
+.hub-window .hub-section-body .hub-field{gap:10px}
+.hub-window .hub-section-body input,.hub-window .hub-section-body select{min-width:0}
+.hub-overlay.open{overflow:hidden;overscroll-behavior:contain}
+.hub-overlay.open .hub-window{overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.service-drawer{max-height:100svh;height:100svh;overflow:hidden;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}
+.service-drawer #drawerServices{min-height:0;overflow:auto;overscroll-behavior:contain}
+.service-drawer .drawer-detail{flex:0 0 auto;max-height:34svh;overflow:auto}
+.paywall-overlay.open,.connect-modal.open{overflow:hidden;overscroll-behavior:contain}
+@media(max-width:600px){
+ .hub-window{border-radius:0;width:100%;height:100svh;max-height:100svh;padding:calc(12px + env(safe-area-inset-top)) 13px calc(12px + env(safe-area-inset-bottom))}
+ .hub-window .hub-profile{gap:10px;padding:12px 0}
+ .hub-window .hub-section>summary{padding:11px 12px}
+ .hub-section-body{padding-inline:10px}
+ .service-drawer{width:100%;max-width:none;inset-inline:0;border-radius:0;padding:calc(15px + env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom))}
+}
+
 </style></head>
 <body><div class="wrap">
 <nav class="nav"><a class="brand" href="/"><span class="brand-mark">ث</span><span><b>ثریا</b><small>جهان خدمات هوشمند · SURAYA</small></span></a><div class="nav-links"><a href="#services">خدمات</a><a href="/creator.html">استودیو سازندگان</a><a href="/world/">جهان دیجیتال</a></div><a class="nav-cta" href="#services">کشف خدمات ←</a></nav>
@@ -686,4 +718,33 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
 })();
 </script>
 
+<script>
+/* Convert account settings into nested, keyboard-accessible accordion folders. */
+(function(){
+ const overlay=document.getElementById("userHubOverlay");
+ const windowPanel=overlay&&overlay.querySelector(".hub-window");
+ if(!overlay||!windowPanel)return;
+ windowPanel.querySelectorAll(".hub-section").forEach((section,index)=>{
+   if(section.tagName==="DETAILS")return;
+   const heading=section.querySelector(":scope > h3");
+   if(!heading)return;
+   const details=document.createElement("details");
+   details.className=section.className;
+   details.open=false;
+   const summary=document.createElement("summary");
+   summary.appendChild(heading);
+   const body=document.createElement("div");
+   body.className="hub-section-body";
+   while(section.firstChild)body.appendChild(section.firstChild);
+   details.append(summary,body);
+   section.replaceWith(details);
+ });
+ const setLock=()=>document.body.classList.toggle("ui-modal-lock",overlay.classList.contains("open"));
+ new MutationObserver(setLock).observe(overlay,{attributes:true,attributeFilter:["class"]});
+ setLock();
+ const close=document.getElementById("hubClose");
+ if(close)close.addEventListener("click",()=>document.body.classList.remove("ui-modal-lock"));
+ overlay.addEventListener("click",event=>{if(event.target===overlay)document.body.classList.remove("ui-modal-lock")});
+})();
+</script>
 </body></html>
