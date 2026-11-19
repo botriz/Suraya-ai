@@ -220,6 +220,42 @@ body{background:#050b16}
 .connect-modal-status{min-height:25px;color:#f0d49c;font-size:10px;line-height:1.8;margin-top:10px}
 @media(max-width:700px){.wallet-layout{grid-template-columns:1fr}.connect-hub{padding:58px 0}.connect-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.connect-card{padding:13px 9px}}
 
+
+/* Mobile-first, edge-to-edge app frame */
+html,body{width:100%;max-width:100%;min-width:0;margin:0}
+body{overflow-x:hidden;overscroll-behavior-x:none}
+img,svg,video,canvas{max-width:100%}
+.wrap{width:min(1240px,calc(100% - 40px));max-width:100%}
+.world-intro{left:auto;transform:none;width:100%;max-width:100%;margin-left:0;margin-right:0}
+@media(max-width:700px){
+ html{width:100%;overflow-x:hidden;scrollbar-gutter:stable}
+ body{width:100%;min-height:100svh;min-height:100dvh;overflow-x:hidden;overscroll-behavior-x:none;touch-action:pan-y pinch-zoom}
+ .wrap,.world-topline,.world-main{width:100%;max-width:100%;padding-left:16px;padding-right:16px}
+ .nav{width:100%;padding-left:16px;padding-right:16px;gap:8px;min-width:0}
+ .nav-links{min-width:0;flex-wrap:wrap;justify-content:flex-end}
+ .hero,.section-intro,.service-world,.story-world,.order-section{max-width:100%;min-width:0}
+ .world-intro{width:100%;min-height:calc(100svh - env(safe-area-inset-top) - env(safe-area-inset-bottom));min-height:calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));overflow:hidden}
+ .world-main{grid-template-columns:minmax(0,1fr);min-height:0;padding-top:28px;padding-bottom:120px}
+ .world-scene{width:100%;max-width:100%;margin:0;height:clamp(260px,54svh,440px);min-width:0}
+ .world-planet{width:min(86vw,420px);right:50%;transform:translateX(50%);top:0}
+ .world-copy{width:100%;max-width:100%;min-width:0;padding:10px 0 24px}
+ .service-world,.story-grid,.order-layout{grid-template-columns:minmax(0,1fr);min-width:0}
+ .stage,.service-list-panel,.story-shell,.story-artifact,.story-narrative,.order-card,.invoice-card{min-width:0;max-width:100%}
+ .connect-section,.connect-shell,.connect-panel,.connect-grid,.crypto-grid,.wallet-layout{min-width:0;max-width:100%}
+ .connect-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .crypto-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .connect-card,.crypto-card{min-width:0;overflow-wrap:anywhere}
+ .connect-modal{padding:0;align-items:stretch}
+ .connect-modal-card{width:100%;max-width:100%;min-height:100svh;min-height:100dvh;max-height:100svh;max-height:100dvh;border-radius:0;padding:calc(18px + env(safe-area-inset-top)) 16px calc(18px + env(safe-area-inset-bottom));overflow-y:auto;overscroll-behavior:contain}
+ .hub-modal,.account-modal,.service-drawer,.hub-drawer{max-width:100vw}
+ .bottom-note{padding-left:16px;padding-right:16px}
+}
+@media(max-width:380px){
+ .wrap,.world-topline,.world-main{padding-left:12px;padding-right:12px}
+ .connect-grid,.crypto-grid{grid-template-columns:minmax(0,1fr)}
+ .nav-links{gap:7px;font-size:9px}
+}
+
 </style></head>
 <body><div class="wrap">
 <nav class="nav"><a class="brand" href="/"><span class="brand-mark">ث</span><span><b>ثریا</b><small>جهان خدمات هوشمند · SURAYA</small></span></a><div class="nav-links"><a href="#services">خدمات</a><a href="/creator.html">استودیو سازندگان</a><a href="/world/">جهان دیجیتال</a></div><a class="nav-cta" href="#services">کشف خدمات ←</a></nav>
