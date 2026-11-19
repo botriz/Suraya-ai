@@ -71,7 +71,12 @@ body{background:#050b16}
 @media(max-width:850px){.world-main{grid-template-columns:1fr;min-height:810px;padding:20px 0 180px}.world-copy{max-width:620px;padding:12px 0 0}.world-copy h1{max-width:650px}.world-copy>p{max-width:580px}.world-scene{height:460px;margin:-5px -3% 0 0}.world-planet{width:min(72vw,490px);right:8%;top:0}.world-landscape{height:210px}.world-vision-note{bottom:48px}.world-node.node-forest{left:4%;top:40%}}
 @media(max-width:560px){.world-intro{min-height:890px;margin-bottom:28px}.world-topline{padding-top:12px}.world-status{font-size:9px;padding:6px 9px}.world-topline .world-label{font-size:8px}.world-main{min-height:820px;padding:20px 0 170px}.world-copy{padding-top:4px}.world-copy h1{font-size:38px;line-height:1.4;margin:12px 0}.world-copy>p{font-size:12px;line-height:2}.world-actions{margin-top:18px}.world-actions .btn{font-size:11px;padding:10px 14px}.world-proof{margin-top:17px}.world-scene{height:365px;margin:-1px -6% 0 -5%}.world-planet{width:82vw;right:9%;top:0}.world-node{font-size:8px;padding:6px 8px}.world-node small{font-size:7px}.node-tabriz{right:1%;top:24%}.node-forest{left:0;top:45%}.node-city{right:2%;bottom:22%}.world-landscape{height:155px}.world-vision-note{right:4%;bottom:42px;max-width:210px;font-size:8px}.world-vision-note b{font-size:10px}.world-scroll{bottom:9px;font-size:8px}}
 @media(prefers-reduced-motion:reduce){.world-stars,.world-planet,.world-orbit:after{animation:none!important}}
-\n</style></head>
+\n
+@keyframes worldPersonSway{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.world-person-one{transform-box:fill-box;transform-origin:center bottom;animation:worldPersonSway 3.4s ease-in-out infinite}
+.world-person-two{transform-box:fill-box;transform-origin:center bottom;animation:worldPersonSway 4s ease-in-out infinite reverse}
+@media(prefers-reduced-motion:reduce){.world-person-one,.world-person-two{animation:none!important}}
+</style></head>
 <body><div class="wrap">
 <nav class="nav"><a class="brand" href="/"><span class="brand-mark">ث</span><span><b>ثریا</b><small>جهان خدمات هوشمند · SURAYA</small></span></a><div class="nav-links"><a href="#services">خدمات</a><a href="/creator.html">استودیو سازندگان</a><a href="/world/">جهان دیجیتال</a></div><a class="nav-cta" href="#services">کشف خدمات ←</a></nav>
 
@@ -160,6 +165,35 @@ body{background:#050b16}
       </g>
       <g stroke="#9debd0" stroke-opacity=".6" fill="none" stroke-width="2"><path d="M70 241v-52m-18 23 18-18 18 18M1190 250v-64m-20 26 20-20 20 20M1355 246v-48m-15 18 15-16 15 16"/></g>
       <path d="M0 262Q240 235 430 262T830 258T1200 263T1440 250V280H0Z" fill="#071a25"/>
+      <path d="M250 278Q390 244 520 270T730 268" fill="none" stroke="#56c9d4" stroke-opacity=".36" stroke-width="10"/>
+      <path d="M250 278Q390 244 520 270T730 268" fill="none" stroke="#b8fff0" stroke-opacity=".55" stroke-width="2"/>
+      <g fill="none" stroke="#83d7cb" stroke-opacity=".6" stroke-width="2">
+        <path d="M915 122V16m-35 26 35-26 35 26M1035 139V29m-35 31 35-31 35 31"/>
+        <path d="M915 16h65M1035 29h58M915 16l-18 20M1035 29l-20 22"/>
+      </g>
+      <g fill="#0b1e2b" stroke="#9cebd8" stroke-opacity=".65" stroke-width="2">
+        <g class="world-people" transform="translate(390 207)">
+          <g class="world-person-one">
+            <circle cx="0" cy="0" r="7" fill="#f1c8a8" stroke="none"/>
+            <path d="M-7 10Q0 5 7 10L10 35H-10Z" fill="#8bdcc9" stroke="none"/>
+            <path d="M-5 34l-5 20m15-20 7 20M-7 17l-13 12m25-12 13 10" fill="none" stroke="#d4f8ef" stroke-width="4" stroke-linecap="round"/>
+          </g>
+        </g>
+        <g class="world-person-two" transform="translate(475 224)">
+          <circle cx="0" cy="0" r="6" fill="#f1c8a8" stroke="none"/>
+          <path d="M-7 9Q0 5 7 9L9 31H-9Z" fill="#a99cf0" stroke="none"/>
+          <path d="M-4 30l-4 18m12-18 5 18M-7 16l-12 8m26-8 10 7" fill="none" stroke="#e2dcff" stroke-width="4" stroke-linecap="round"/>
+        </g>
+        <g transform="translate(575 236)">
+          <circle cx="0" cy="0" r="6" fill="#f1c8a8" stroke="none"/>
+          <path d="M-7 9Q0 5 7 9L9 30H-9Z" fill="#e5c17f" stroke="none"/>
+          <path d="M-4 29l-4 17m12-17 5 17" fill="none" stroke="#f7e7c4" stroke-width="4" stroke-linecap="round"/>
+        </g>
+      </g>
+      <g fill="#b5fff0" opacity=".85">
+        <circle cx="375" cy="194" r="2"><animate attributeName="opacity" values=".2;1;.2" dur="3s" repeatCount="indefinite"/></circle>
+        <circle cx="500" cy="202" r="2"><animate attributeName="opacity".replace("","") values=".2;1;.2" dur="2.4s" repeatCount="indefinite"/></circle>
+      </g>
       <path d="M0 0H1440V280H0Z" fill="url(#skylineFade)"/>
     </svg>
   </div>
