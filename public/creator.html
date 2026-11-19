@@ -41,11 +41,11 @@ label{display:block;margin:13px 0 5px;color:#dbe7f8;font-size:13px;font-weight:6
 (()=>{const $=id=>document.getElementById(id),consentName="suraya_cookie_consent",prefsName="suraya_creator_prefs",secure=location.protocol==="https:"?"; Secure":"";
 function setCookie(n,v,d){document.cookie=n+"="+encodeURIComponent(v)+"; Max-Age="+d*86400+"; Path=/; SameSite=Lax"+secure}
 function getCookie(n){const r=document.cookie.split("; ").find(x=>x.startsWith(n+"="));return r?decodeURIComponent(r.slice(n.length+1)):""}
-function savePrefs(){if(getCookie(consentName)!=="accepted")return;const p={platform:$("platform").value,tone:$("tone").value,language:$("language").value};setCookie(prefsName,btoa(unescape(encodeURIComponent(JSON.stringify(p)))),15552000)}
+function savePrefs(){if(getCookie(consentName)!=="accepted")return;const p={platform:$("platform").value,tone:$("tone").value,language:$("language").value};setCookie(prefsName,btoa(unescape(encodeURIComponent(JSON.stringify(p)))),180)}
 function readPrefs(){if(getCookie(consentName)!=="accepted")return;try{const p=JSON.parse(decodeURIComponent(escape(atob(getCookie(prefsName)))));["platform","tone","language"].forEach(k=>{if(p[k]&&[...$(k).options].some(o=>o.value===p[k]))$(k).value=p[k]})}catch(_){}}
 const banner=$("cookie-banner"),details=$("cookie-details"),show=()=>banner.classList.add("show"),hide=()=>banner.classList.remove("show");if(!getCookie(consentName))show();else readPrefs();
-$("cookie-accept").addEventListener("click",()=>{setCookie(consentName,"accepted",15552000);savePrefs();hide()});
-$("cookie-reject").addEventListener("click",()=>{setCookie(consentName,"essential",15552000);document.cookie=prefsName+"=; Max-Age=0; Path=/; SameSite=Lax"+secure;hide()});
+$("cookie-accept").addEventListener("click",()=>{setCookie(consentName,"accepted",180);savePrefs();hide()});
+$("cookie-reject").addEventListener("click",()=>{setCookie(consentName,"essential",180);document.cookie=prefsName+"=; Max-Age=0; Path=/; SameSite=Lax"+secure;hide()});
 $("cookie-settings").addEventListener("click",()=>details.classList.toggle("open"));$("cookie-link").addEventListener("click",show);$("cookie-link").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();show()}});
 ["platform","tone","language"].forEach(k=>$(k).addEventListener("change",savePrefs));
 const labels={title:"عنوان",caption:"کپشن",hashtags:"هشتگ‌ها",script:"سناریو",cta:"دعوت به اقدام"};
