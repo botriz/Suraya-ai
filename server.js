@@ -6,6 +6,7 @@ import pg from "pg";
 import { readFile } from "node:fs/promises";
 import { createWorldRouter } from "./world/world-api.js";
 import { createHealthRouter } from "./health/health-router.js";
+import { createOperatorRouter } from "./routes/operator-api.js";
 
 dotenv.config();
 
@@ -61,6 +62,7 @@ async function initializeDatabase() {
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
       )
     `);
+    await pool.query(await readFile(path.join(__dirname, "migrations", "002_revenue_operations.sql"), "utf8"));
     databaseReady = true;
     databaseError = "";
     console.log("Suraya order database ready");
@@ -119,6 +121,7 @@ app.get("/api/status", (_req, res) => {
 });
 
 app.use("/api/world/v1", createWorldRouter({ pool, isDatabaseReady: () => worldDatabaseReady }));
+app.use("/api/operator/v1", createOperatorRouter({ pool, getToken: () => process.env.SURAYA_OPERATOR_TOKEN }));
 
 app.get("/api/services", (_req, res) => {
   res.json({ ok: true, services });

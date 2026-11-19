@@ -6,6 +6,7 @@ on:
       - main
       - "feature/suraya-public-tools-v1"
       - "feature/world-core-api-v1"
+      - "feature/revenue-operations-v1-2026-11"
   pull_request:
     branches:
       - main

@@ -87,3 +87,13 @@ npm run check
 ## Legacy setup scripts
 
 The old `setup.js`, `suraya-master-setup.js`, and `setup-revenue.js` bootstrappers are disabled. They previously overwrote application files, generated placeholder credentials, or created simulated wallet/payment state. Do not run them. The active service is deployed from reviewed Git commits and uses PostgreSQL migrations.
+
+
+## Revenue operations v1
+
+- Public order intake is available at `POST /api/order`.
+- Private operator endpoints are mounted at `/api/operator/v1` and require `Authorization: Bearer <SURAYA_OPERATOR_TOKEN>`.
+- The operator desk is served at `/operator.html`; it supports listing/filtering orders, quoting, status transitions, internal notes, and delivery timestamps.
+- Migration `002_revenue_operations.sql` adds quote fields and an immutable event history for operator changes.
+- Configure a long random `SURAYA_OPERATOR_TOKEN` in the Render service environment before using the operator desk. The operator API intentionally fails closed when it is missing.
+- This release does not charge customers, send invoices, deliver generated AI content, or activate subscriptions. Quotes and fulfilment remain manual until a payment provider and production AI provider are configured and tested.
