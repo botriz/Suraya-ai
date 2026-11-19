@@ -247,7 +247,7 @@ body{background:#050b16}
   </div>
   <div class="real-map-shell">
     <div class="real-map-toolbar">
-      <div><strong>اطلس اکتشاف ثریا</strong><small>برای رفتن به هر نقطه، نام شهر را لمس کن</small></div>
+      <div><strong>اطلس اکتشاف ثریا</strong><small>نقشهٔ خیابانی یا تصاویر ماهواره‌ای را از کنترل لایه‌ها انتخاب کن</small></div>
       <div class="real-map-locations" aria-label="انتخاب شهر">
         <button type="button" data-city="tabriz" class="active">تبریز</button>
         <button type="button" data-city="tehran">تهران</button>
@@ -263,7 +263,7 @@ body{background:#050b16}
       <div class="real-map-loading" id="realMapLoading">در حال بارگذاری نقشهٔ واقعی زمین…</div>
     </div>
     <div class="real-map-foot">
-      <div class="real-map-disclaimer"><b>شفافیت دربارهٔ نقشه:</b> بستر نقشه از داده‌های جغرافیایی OpenStreetMap بارگیری می‌شود. نشانگرها، نقاط واقعی شهرها برای مطالعه و تصور آینده‌اند؛ به‌معنای ساخت شهر، مالکیت زمین، پروژهٔ اجرایی یا وجود زیرساخت ثریا در آن مکان‌ها نیستند.</div>
+      <div class="real-map-disclaimer"><b>شفافیت دربارهٔ نقشه:</b> نقشه و تصاویر ماهواره‌ای از سرویس‌های نقشهٔ واقعی بارگیری می‌شوند. نشانگرها، نقاط واقعی شهرها برای مطالعه و تصور آینده‌اند؛ خط‌های نقطه‌چین صرفاً ارتباط مفهومی را نشان می‌دهند، نه مسیر اجرایی. این موارد به‌معنای ساخت شهر، مالکیت زمین، پروژهٔ اجرایی یا وجود زیرساخت ثریا در آن مکان‌ها نیستند.</div>
       <div class="real-map-legend"><span><i></i> مبدأ مفهومی</span><span><i></i> نقاط مطالعاتی آینده</span></div>
     </div>
   </div>
@@ -330,9 +330,11 @@ fetch("/api/services").then(r=>{if(!r.ok)throw new Error("catalog unavailable");
   newyork:{name:"نیویورک",coords:[40.7128,-74.0060],kind:"future",sub:"نقطهٔ مطالعاتی · شبکهٔ جهانی و اقتصاد خلاق"}
  };
  const map=L.map(root,{zoomControl:true,scrollWheelZoom:false,worldCopyJump:true}).setView([31,48],2.35);
- L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
+ const street=L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{
   maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'
  }).addTo(map);
+ const satellite=L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{maxZoom:19,attribution:"Tiles &copy; Esri, Maxar, Earthstar Geographics, and the GIS User Community"});
+ L.control.layers({"نقشهٔ خیابانی واقعی":street,"تصاویر ماهواره‌ای واقعی":satellite},null,{position:"topright",collapsed:false}).addTo(map);
  const markers={};
  Object.entries(places).forEach(([id,p])=>{
   const icon=L.divIcon({className:"",html:'<div class="map-pin '+p.kind+'"></div>',iconSize:[20,20],iconAnchor:[10,10]});
@@ -340,8 +342,7 @@ fetch("/api/services").then(r=>{if(!r.ok)throw new Error("catalog unavailable");
   marker.bindPopup('<div class="map-popup-title">'+p.name+'</div><div class="map-popup-sub">'+p.sub+'</div>');
   markers[id]=marker;
  });
- const routePoints=["tabriz","istanbul","dubai","singapore","tokyo","newyork"].map(id=>places[id].coords);
- L.polyline(routePoints,{color:"#a6a0ff",weight:2,opacity:.55,dashArray:"5 9",smoothFactor:2}).addTo(map);
+ ["istanbul","dubai","singapore","tokyo","newyork"].forEach(id=>L.polyline([places.tabriz.coords,places[id].coords],{color:"#a6a0ff",weight:2,opacity:.45,dashArray:"5 9",smoothFactor:2,interactive:false}).addTo(map));
  function focus(id){
   const p=places[id]; if(!p)return;
   map.flyTo(p.coords, id==="tabriz"?7:5,{duration:1.25});
