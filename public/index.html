@@ -24,11 +24,148 @@ a{color:inherit;text-decoration:none}button,input,textarea{font:inherit}.wrap{wi
 /* Living portfolio and service identities */
 .story-world{padding:4px 0 58px}.story-shell{position:relative;overflow:hidden;border:1px solid #b6d8ff24;border-radius:30px;background:radial-gradient(ellipse at 88% 0%,#b5a1ff16,transparent 42%),linear-gradient(145deg,#132238ed,#0a1423f2);box-shadow:0 24px 70px #0004;padding:25px}.story-shell:before{content:"";position:absolute;width:240px;height:240px;border:1px solid #83e8d41c;border-radius:50%;left:-110px;bottom:-140px;box-shadow:0 0 0 22px #83e8d408,0 0 0 48px #83e8d405;pointer-events:none}.story-head{display:flex;justify-content:space-between;align-items:center;gap:12px;position:relative;z-index:1}.story-head h2{margin:0;font-size:22px}.story-stamp{border:1px solid #ffd28a50;color:#ffd28a;border-radius:99px;padding:4px 10px;font-size:10px;white-space:nowrap}.story-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:18px;margin-top:18px;position:relative;z-index:1}.story-narrative{border:1px solid #ffffff16;border-radius:21px;padding:19px;background:#ffffff06}.story-narrative .eyebrow{font-size:10px}.story-narrative h3{font-size:20px;line-height:1.7;margin:7px 0}.story-narrative p{font-size:12px;color:#c0cde0;margin:0}.story-artifact{border:1px solid #ffffff18;border-radius:21px;padding:18px;background:linear-gradient(135deg,#ffffff0a,#ffffff03);min-width:0}.artifact-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.artifact-brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:13px}.artifact-logo{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:var(--avatar-bg);border:1px solid #ffffff22}.artifact-logo svg{width:24px;height:24px}.artifact-type{font-size:10px;color:#9eafc7}.artifact-content{border-radius:15px;background:#07111eaa;border:1px solid #ffffff13;padding:16px;min-height:140px}.artifact-content h4{font-size:17px;line-height:1.65;margin:0 0 8px}.artifact-content p{font-size:12px;color:#c4d0e0;margin:0;white-space:pre-line}.artifact-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:13px;color:#93a8c2;font-size:10px}.sample-disclaimer{font-size:10px;color:#8496ad;margin-top:13px}.story-points{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}.story-points span{border:1px solid #ffffff19;border-radius:99px;padding:4px 9px;color:#c5d2e5;font-size:10px}.service-logo{display:inline-grid;place-items:center;vertical-align:middle;width:21px;height:21px;margin-left:6px;border-radius:7px;background:var(--avatar-bg);border:1px solid #ffffff24}.service-logo svg{width:15px;height:15px}.service-row .service-copy strong{display:flex;align-items:center;gap:2px}.service-row .service-copy strong .service-title{display:inline}.story-shell.pulse{animation:storyPulse .5s ease}@keyframes storyPulse{0%{box-shadow:0 24px 70px #0004}45%{box-shadow:0 0 0 3px #83e8d433,0 24px 70px #0006}100%{box-shadow:0 24px 70px #0004}}
 @media(max-width:700px){.story-shell{padding:17px;border-radius:23px}.story-grid{grid-template-columns:1fr}.story-head h2{font-size:19px}.story-narrative h3{font-size:18px}.artifact-content{min-height:120px}}
-</style></head>
+
+/* Immersive living-world opening experience */
+:root{--world-ink:#f4fbff;--world-mint:#9cf4dc;--world-blue:#82d8ff;--world-violet:#b7a5ff}
+body{background:#050b16}
+.world-intro{position:relative;isolation:isolate;width:100vw;max-width:100vw;left:50%;transform:translateX(-50%);min-height:min(900px,calc(100svh - 72px));overflow:hidden;margin:0 0 38px;background:radial-gradient(ellipse at 70% 25%,#23516b 0%,#10253b 34%,#091528 66%,#050b16 100%);border-top:1px solid #a8dfff16;border-bottom:1px solid #a8dfff24}
+.world-intro:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,#07101b08 0%,#07101b00 48%,#07101b9c 100%),radial-gradient(ellipse at 15% 20%,#8265c62b,transparent 34%),radial-gradient(ellipse at 85% 10%,#52d9c52b,transparent 32%)}
+.world-stars{position:absolute;inset:0;pointer-events:none;opacity:.7;background-image:radial-gradient(2px 2px at 12% 18%,#e8fbff 45%,transparent 60%),radial-gradient(1px 1px at 31% 12%,#b5dfff 45%,transparent 60%),radial-gradient(2px 2px at 82% 22%,#d8fff6 45%,transparent 60%),radial-gradient(1px 1px at 67% 9%,#fff 45%,transparent 60%),radial-gradient(1px 1px at 48% 30%,#c6dcff 45%,transparent 60%),radial-gradient(2px 2px at 93% 42%,#fff 45%,transparent 60%),radial-gradient(1px 1px at 8% 49%,#b4d9ff 45%,transparent 60%);background-size:420px 330px;animation:starDrift 48s linear infinite}
+@keyframes starDrift{to{background-position:420px 330px}}
+.world-topline{position:relative;z-index:5;width:min(1240px,94%);margin:auto;padding:17px 0 0;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.world-status{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid #a5e9dc35;border-radius:99px;background:#071624a8;color:#c7fff1;font-size:10px;backdrop-filter:blur(12px)}
+.world-status i{width:7px;height:7px;border-radius:50%;background:#7df1c9;box-shadow:0 0 13px #7df1c9;animation:breathe 2s infinite}
+.world-topline .world-label{font-size:10px;color:#c1d3e6;letter-spacing:.08em}
+.world-main{position:relative;z-index:3;width:min(1240px,94%);margin:auto;min-height:650px;display:grid;grid-template-columns:.78fr 1.22fr;align-items:center;gap:0;padding:24px 0 165px}
+.world-copy{position:relative;z-index:4;max-width:490px;padding:10px 0 35px}
+.world-kicker{display:flex;align-items:center;gap:9px;color:#a8f2df;font-size:12px;font-weight:700}
+.world-kicker:before{content:"";width:27px;height:1px;background:#a8f2df;box-shadow:0 0 12px #a8f2df}
+.world-copy h1{font-size:clamp(35px,5vw,65px);line-height:1.34;letter-spacing:-.035em;margin:16px 0 15px;color:#f6fbff;text-shadow:0 5px 40px #0008}
+.world-copy h1 em{font-style:normal;background:linear-gradient(100deg,#a8f6dc,#9ed5ff 55%,#c6aaff);background-clip:text;-webkit-background-clip:text;color:transparent}
+.world-copy>p{max-width:440px;color:#c0d2e5;font-size:14px;line-height:2.1;margin:0}
+.world-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.world-actions .btn{border-radius:99px;padding:12px 19px;box-shadow:0 10px 35px #78dfd22a}
+.world-actions .btn.secondary{border-color:#b9e8ff4d;background:#07182a80;backdrop-filter:blur(10px)}
+.world-proof{display:flex;align-items:center;gap:13px;margin-top:27px;color:#a9bbce;font-size:10px}
+.world-proof b{display:block;color:#e6f5ff;font-size:12px}
+.world-proof .proof-mark{width:37px;height:37px;display:grid;place-items:center;border:1px solid #a7dfff42;border-radius:13px;background:#b6eaff0d;color:#a7f4df;font-size:17px}
+.world-scene{position:relative;min-width:0;height:590px;margin-left:-55px}
+.world-planet{position:absolute;width:min(61vw,570px);aspect-ratio:1;right:1%;top:1%;border-radius:50%;filter:drop-shadow(0 22px 65px #0009);animation:planetFloat 9s ease-in-out infinite}
+.world-planet svg{width:100%;height:100%;overflow:visible}
+@keyframes planetFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-12px) rotate(1deg)}}
+.world-glow{position:absolute;inset:8%;border-radius:50%;background:#66d9ee20;filter:blur(55px);animation:breathe 7s ease-in-out infinite}
+.world-orbit{position:absolute;width:112%;height:38%;border:1px solid #a6e6ff45;border-radius:50%;left:-6%;top:32%;transform:rotate(-21deg);box-shadow:0 0 22px #8ddfff12;pointer-events:none}
+.world-orbit:after{content:"";position:absolute;width:8px;height:8px;border-radius:50%;background:#d2fff3;box-shadow:0 0 18px 5px #7be7db;left:13%;top:8%}
+.world-node{position:absolute;z-index:3;display:flex;align-items:center;gap:8px;padding:8px 11px;border:1px solid #c1eaff35;border-radius:13px;background:#07182bc9;box-shadow:0 10px 28px #0004;backdrop-filter:blur(12px);color:#d9efff;font-size:10px;white-space:nowrap}
+.world-node small{display:block;color:#8faec8;font-size:8px}
+.world-node .node-dot{width:7px;height:7px;border-radius:50%;background:#8df3d7;box-shadow:0 0 10px #8df3d7}
+.node-tabriz{right:5%;top:27%}.node-forest{left:0;top:47%}.node-city{right:8%;bottom:24%}
+.world-landscape{position:absolute;z-index:2;left:50%;bottom:-1px;transform:translateX(-50%);width:100%;height:255px;pointer-events:none}
+.world-landscape svg{width:100%;height:100%;display:block}
+.world-scene-caption{position:absolute;z-index:4;right:4%;bottom:18px;color:#b8d3e7;font-size:9px;text-shadow:0 2px 10px #000}
+.world-scroll{position:absolute;z-index:5;bottom:19px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:9px;color:#a8bfd3;font-size:9px;white-space:nowrap}
+.world-scroll:before{content:"";width:1px;height:25px;background:linear-gradient(#a8f4df,transparent);animation:scrollPulse 1.8s infinite}
+@keyframes scrollPulse{50%{opacity:.25;transform:scaleY(.55)}}
+.world-vision-note{position:absolute;z-index:4;bottom:55px;right:max(3%,calc((100% - 1240px)/2));max-width:260px;border-right:2px solid #8debd4;padding:5px 12px;color:#c4d9e9;background:linear-gradient(90deg,transparent,#0714219c);font-size:9px;line-height:1.9}
+.world-vision-note b{display:block;color:#e7fff8;font-size:11px}
+@media(max-width:850px){.world-main{grid-template-columns:1fr;min-height:810px;padding:20px 0 180px}.world-copy{max-width:620px;padding:12px 0 0}.world-copy h1{max-width:650px}.world-copy>p{max-width:580px}.world-scene{height:460px;margin:-5px -3% 0 0}.world-planet{width:min(72vw,490px);right:8%;top:0}.world-landscape{height:210px}.world-vision-note{bottom:48px}.world-node.node-forest{left:4%;top:40%}}
+@media(max-width:560px){.world-intro{min-height:890px;margin-bottom:28px}.world-topline{padding-top:12px}.world-status{font-size:9px;padding:6px 9px}.world-topline .world-label{font-size:8px}.world-main{min-height:820px;padding:20px 0 170px}.world-copy{padding-top:4px}.world-copy h1{font-size:38px;line-height:1.4;margin:12px 0}.world-copy>p{font-size:12px;line-height:2}.world-actions{margin-top:18px}.world-actions .btn{font-size:11px;padding:10px 14px}.world-proof{margin-top:17px}.world-scene{height:365px;margin:-1px -6% 0 -5%}.world-planet{width:82vw;right:9%;top:0}.world-node{font-size:8px;padding:6px 8px}.world-node small{font-size:7px}.node-tabriz{right:1%;top:24%}.node-forest{left:0;top:45%}.node-city{right:2%;bottom:22%}.world-landscape{height:155px}.world-vision-note{right:4%;bottom:42px;max-width:210px;font-size:8px}.world-vision-note b{font-size:10px}.world-scroll{bottom:9px;font-size:8px}}
+@media(prefers-reduced-motion:reduce){.world-stars,.world-planet,.world-orbit:after{animation:none!important}}
+\n</style></head>
 <body><div class="wrap">
 <nav class="nav"><a class="brand" href="/"><span class="brand-mark">ث</span><span><b>ثریا</b><small>جهان خدمات هوشمند · SURAYA</small></span></a><div class="nav-links"><a href="#services">خدمات</a><a href="/creator.html">استودیو سازندگان</a><a href="/world/">جهان دیجیتال</a></div><a class="nav-cta" href="#services">کشف خدمات ←</a></nav>
-<header class="hero"><div class="hero-copy"><div class="eyebrow">✦ یک جهان، چندین همکار هوشمند</div><h1>برای ایده‌هایت، <em>نیروی تازه‌ای</em> بساز</h1><p>از خلق محتوا و رشد رسانه تا راه‌اندازی فروشگاه و مدیریت کسب‌وکار؛ متخصصان هوشمند ثریا کنار تو هستند تا ایده را به نتیجه‌ای قابل استفاده تبدیل کنند.</p><div class="hero-actions"><a class="btn" href="#services">ورود به دنیای خدمات <span>←</span></a><a class="btn secondary" href="/creator.html">آزمایش استودیوی محتوا</a></div></div>
-<div class="hero-scene"><div class="scene-orbit"></div><i class="spark one"></i><i class="spark two"></i><i class="spark three"></i><svg class="hero-character" viewBox="0 0 220 250" role="img" aria-label="راهنمای جهان ثریا"><defs><linearGradient id="heroCape" x2="1" y2="1"><stop stop-color="#b5a1ff"/><stop offset="1" stop-color="#68dfd2"/></linearGradient><linearGradient id="heroFace" x2="0" y2="1"><stop stop-color="#ffe4ce"/><stop offset="1" stop-color="#e7ad91"/></linearGradient></defs><path d="M42 115Q4 81 32 54Q18 21 65 34Q91 0 119 31Q167 7 176 55Q217 73 181 111L166 155H51Z" fill="none" stroke="#a9e9e3" stroke-width="7" stroke-linecap="round" opacity=".6"/><path d="M55 136Q37 186 49 224Q109 253 169 222Q180 172 153 132Z" fill="url(#heroCape)" stroke="#d4fff4" stroke-width="2"/><path d="M57 87Q49 24 111 22Q175 22 163 93L150 137Q109 164 68 136Z" fill="#d8eaff"/><ellipse cx="111" cy="101" rx="43" ry="48" fill="url(#heroFace)"/><path d="M67 91Q62 38 111 39Q153 35 158 88Q132 67 109 71Q83 70 67 91" fill="#263c62"/><path d="M74 58Q31 34 49 10Q56 49 88 38M145 52Q190 22 174 5Q174 43 139 38" fill="none" stroke="#d8eaff" stroke-width="13" stroke-linecap="round"/><ellipse cx="96" cy="103" rx="5" ry="7" fill="#25395c"/><ellipse cx="127" cy="103" rx="5" ry="7" fill="#25395c"/><path d="M101 124q10 9 20 0" stroke="#a45d6c" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M81 151l30 18 31-18" stroke="#426e8d" stroke-width="5" fill="none"/><circle cx="111" cy="183" r="10" fill="#ffe7a1" stroke="#fff5d2" stroke-width="2"/></svg></div></header>
+
+<section class="world-intro" aria-label="چشم‌انداز جهان دیجیتال ثریا">
+  <div class="world-stars"></div>
+  <div class="world-topline">
+    <span class="world-status"><i></i> جهان در حال شکل‌گیری است</span>
+    <span class="world-label">SURAYA · A LIVING DIGITAL WORLD</span>
+  </div>
+  <div class="world-main">
+    <div class="world-copy">
+      <div class="world-kicker">از زمین آغاز می‌کنیم؛ برای جهانی فراتر</div>
+      <h1>جهانی که فقط ساخته نمی‌شود؛ <em>زندگی می‌کند.</em></h1>
+      <p>از آسمان به زمین نگاه کن؛ شهرهایی که نفس می‌کشند، طبیعتی که جان دارد و کاراکترهایی که می‌سازند، می‌آموزند و زندگی می‌کنند. این تصویر، چشم‌انداز جهانی است که قدم‌به‌قدم در ثریا شکل می‌گیرد.</p>
+      <div class="world-actions">
+        <a class="btn" href="#services">ورود به جهان خدمات <span>←</span></a>
+        <a class="btn secondary" href="#worldVision">تماشای چشم‌انداز <span>⌄</span></a>
+      </div>
+      <div class="world-proof"><span class="proof-mark">✧</span><span><b>از تبریز، رو به جهان</b>یک جهان مشترک؛ با هویت‌ها و مسیرهای منحصربه‌فرد</span></div>
+    </div>
+    <div class="world-scene" id="worldVision">
+      <div class="world-glow"></div>
+      <div class="world-planet">
+        <svg viewBox="0 0 600 600" role="img" aria-label="نمای هنری کره زمین با شهرها و مسیرهای نورانی">
+          <defs>
+            <radialGradient id="earthOcean" cx="34%" cy="28%" r="75%"><stop stop-color="#5eafc2"/><stop offset=".48" stop-color="#23617b"/><stop offset=".82" stop-color="#12334f"/><stop offset="1" stop-color="#07182d"/></radialGradient>
+            <linearGradient id="earthRim" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c9fff0" stop-opacity=".95"/><stop offset=".45" stop-color="#6ed5ef" stop-opacity=".45"/><stop offset="1" stop-color="#7f87ff" stop-opacity=".05"/></linearGradient>
+            <radialGradient id="earthLight" cx="50%" cy="48%" r="50%"><stop stop-color="#8df3db" stop-opacity=".3"/><stop offset="1" stop-color="#8df3db" stop-opacity="0"/></radialGradient>
+            <clipPath id="earthClip"><circle cx="300" cy="300" r="248"/></clipPath>
+            <filter id="earthBlur"><feGaussianBlur stdDeviation="7"/></filter>
+          </defs>
+          <circle cx="300" cy="300" r="273" fill="#62d9ed" opacity=".07" filter="url(#earthBlur)"/>
+          <circle cx="300" cy="300" r="250" fill="url(#earthOcean)" stroke="url(#earthRim)" stroke-width="3"/>
+          <g clip-path="url(#earthClip)">
+            <ellipse cx="300" cy="300" rx="245" ry="91" fill="none" stroke="#a9e7f3" stroke-opacity=".14"/>
+            <ellipse cx="300" cy="300" rx="145" ry="246" fill="none" stroke="#a9e7f3" stroke-opacity=".12"/>
+            <path d="M54 296Q112 264 170 274T289 290T421 268T548 300M58 356Q150 335 222 353T376 354T540 342" fill="none" stroke="#b7e9f4" stroke-opacity=".12" stroke-width="2"/>
+            <g fill="#64c5a2" stroke="#a5f3d4" stroke-opacity=".35" stroke-width="2">
+              <path d="M116 142l28-22 34 8 18 25-12 22 16 22-17 23-5 36-28 20-14-25-25-12-6-34-21-19 8-28z"/>
+              <path d="M192 270l34 10 26 31-7 42-19 34-7 49-20 39-17-23-5-51-21-38 4-43z"/>
+              <path d="M276 125l36-21 45 11 23 25 42-2 37 28-15 26-45 2-17 23-40-5-22 20-36-17-31 10-19-25 22-29-12-24z"/>
+              <path d="M349 235l39-13 41 23 11 40-20 29-8 43-28 25-20-27-31-9-15-45 13-37z"/>
+              <path d="M438 368l29-12 37 16 14 28-27 23-36-6-21-24z"/>
+              <path d="M86 91l42-20 29 9-9 23-43 8zM500 170l32-10 25 24-12 26-36-8z"/>
+            </g>
+            <g fill="#d7fff3" opacity=".65"><circle cx="160" cy="205" r="3"/><circle cx="310" cy="164" r="3"/><circle cx="390" cy="278" r="3"/><circle cx="225" cy="355" r="2.5"/><circle cx="468" cy="390" r="3"/></g>
+            <g fill="none" stroke="#a5f5df" stroke-width="2" stroke-opacity=".55"><path d="M160 205Q272 90 390 278"/><path d="M225 355Q325 255 468 390"/><path d="M310 164Q360 200 390 278"/></g>
+            <g fill="#f7e6a8"><circle cx="160" cy="205" r="5"/><circle cx="310" cy="164" r="5"/><circle cx="390" cy="278" r="5"/><circle cx="225" cy="355" r="4"/></g>
+            <circle cx="300" cy="300" r="248" fill="url(#earthLight)"/>
+            <path d="M63 230Q145 130 248 70M380 70Q510 130 548 245" fill="none" stroke="#e0fff9" stroke-opacity=".2" stroke-width="12" filter="url(#earthBlur)"/>
+          </g>
+          <circle cx="300" cy="300" r="250" fill="none" stroke="#d2fff3" stroke-opacity=".4" stroke-width="1"/>
+        </svg>
+        <div class="world-orbit"></div>
+      </div>
+      <div class="world-node node-tabriz"><i class="node-dot"></i><span>تبریز<small>نقطهٔ آغاز این جهان</small></span></div>
+      <div class="world-node node-forest"><i class="node-dot"></i><span>زیست‌بوم‌های سبز<small>طبیعت، آرامش و حیات</small></span></div>
+      <div class="world-node node-city"><i class="node-dot"></i><span>شهرهای آینده<small>فناوری در خدمت زندگی</small></span></div>
+    </div>
+  </div>
+  <div class="world-landscape" aria-hidden="true">
+    <svg viewBox="0 0 1440 280" preserveAspectRatio="xMidYMax slice">
+      <defs>
+        <linearGradient id="skylineFade" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#163c55" stop-opacity="0"/><stop offset="1" stop-color="#071523" stop-opacity=".96"/></linearGradient>
+        <linearGradient id="cityGlow" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#83e8d8" stop-opacity=".8"/><stop offset="1" stop-color="#8a9eff" stop-opacity=".2"/></linearGradient>
+      </defs>
+      <path d="M0 130L120 80 205 118 310 52 420 130 520 82 630 140 750 60 860 120 970 70 1080 126 1200 55 1320 118 1440 80V280H0Z" fill="#102c3d" opacity=".65"/>
+      <path d="M0 175Q190 130 350 180T700 165T1050 174T1440 150V280H0Z" fill="#0b2332"/>
+      <g fill="#102b3d" stroke="#3d7d8b" stroke-opacity=".45">
+        <path d="M690 115h54v165h-54zM751 75h70v205h-70zM829 104h46v176h-46zM884 49h80v231h-80zM974 99h54v181h-54zM1040 69h74v211h-74zM1125 120h48v160h-48zM1183 91h68v189h-68zM1260 135h50v145h-50z"/>
+        <path d="M705 105l12-24 12 24M766 75l20-34 20 34M899 49l25-32 25 32M1058 69l19-27 19 27" fill="#16445a"/>
+      </g>
+      <g stroke="#91e9dd" stroke-opacity=".7" stroke-width="2">
+        <path d="M704 139h25m-25 17h25m-25 17h25m-25 17h25m-25 17h25m-25 17h25m-25 17h25"/>
+        <path d="M767 102h37m-37 18h37m-37 18h37m-37 18h37m-37 18h37m-37 18h37m-37 18h37m-37 18h37"/>
+        <path d="M900 83h40m-40 19h40m-40 19h40m-40 19h40m-40 19h40m-40 19h40m-40 19h40m-40 19h40"/>
+        <path d="M1056 102h40m-40 18h40m-40 18h40m-40 18h40m-40 18h40m-40 18h40m-40 18h40"/>
+        <path d="M1195 122h42m-42 19h42m-42 19h42m-42 19h42m-42 19h42"/>
+      </g>
+      <g fill="#8ee9d8" opacity=".75"><circle cx="820" cy="69" r="3"/><circle cx="922" cy="35" r="3"/><circle cx="1078" cy="55" r="3"/><circle cx="1216" cy="77" r="3"/></g>
+      <path d="M0 204Q180 158 340 211T690 205T1030 209T1440 191V280H0Z" fill="#0a302f"/>
+      <g fill="#0c4139" stroke="#6bc7a5" stroke-opacity=".35">
+        <path d="M0 240q35-85 70 0q36-110 72 0q38-95 76 0q34-72 68 0v40H0z"/>
+        <path d="M1080 250q35-94 70 0q36-112 72 0q38-96 76 0q34-78 68 0v30h-286z"/>
+        <path d="M1260 246q32-76 64 0q33-90 66 0q28-65 56 0v34h-186z"/>
+      </g>
+      <g stroke="#9debd0" stroke-opacity=".6" fill="none" stroke-width="2"><path d="M70 241v-52m-18 23 18-18 18 18M1190 250v-64m-20 26 20-20 20 20M1355 246v-48m-15 18 15-16 15 16"/></g>
+      <path d="M0 262Q240 235 430 262T830 258T1200 263T1440 250V280H0Z" fill="#071a25"/>
+      <path d="M0 0H1440V280H0Z" fill="url(#skylineFade)"/>
+    </svg>
+  </div>
+  <div class="world-vision-note"><b>این فقط یک پیش‌نمایش مفهومی است</b>جهان دیجیتال هنوز در حال طراحی و ساخت است؛ این تصویر، مقصدی را نشان می‌دهد که برای رسیدن به آن تلاش می‌کنیم.</div>
+  <div class="world-scroll">برای کشف خدمات و همراهان هوشمند، پایین‌تر برو</div>
+</section>
 <div class="section-intro" id="services"><div><div class="eyebrow">خدمات و تخصص‌ها</div><h2>متخصص خودت را انتخاب کن</h2><p>هر نام، یک مهارت؛ هر مهارت، یک همراه هوشمند.</p></div><span class="stage-tag">۶ حوزهٔ خدماتی</span></div>
 <section class="service-world">
 <div class="stage" aria-live="polite"><div class="stage-top"><span class="stage-tag">همراه منتخب تو</span><span class="stage-tag" id="stageIndex">آمادهٔ انتخاب</span></div><div class="stage-art"><div class="stage-rings"></div><div id="bigCharacter" class="character-large"></div></div><div class="stage-caption"><h3 id="stageName">جهان ثریا منتظر توست</h3><p id="stageDescription">از فهرست سمت راست یک تخصص را انتخاب کن تا همراه هوشمند و جزئیات آن را ببینی.</p><div class="stage-hint">انتخاب آگاهانه · جزئیات روشن · تصمیم با شما</div></div></div>
