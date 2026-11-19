@@ -97,3 +97,13 @@ The old `setup.js`, `suraya-master-setup.js`, and `setup-revenue.js` bootstrappe
 - Migration `002_revenue_operations.sql` adds quote fields and an immutable event history for operator changes.
 - Configure a long random `SURAYA_OPERATOR_TOKEN` in the Render service environment before using the operator desk. The operator API intentionally fails closed when it is missing.
 - This release does not charge customers, send invoices, deliver generated AI content, or activate subscriptions. Quotes and fulfilment remain manual until a payment provider and production AI provider are configured and tested.
+
+
+## Creator content engine
+
+- Creator UI: `/creator.html`.
+- API: `POST /api/creator/v1/draft`.
+- Configure `AI_API_KEY` in the hosting environment. Optional: `AI_BASE_URL` (OpenAI-compatible API base URL) and `AI_MODEL`.
+- The engine validates topic, platform, tone, language and model output. It fails closed without a provider key and never publishes content automatically.
+- Supported platform targets: Instagram, YouTube, Rubika, Telegram and LinkedIn. Supported languages: Persian, English, Arabic and Turkish.
+- This code integration is not a claim that the provider is configured or that generation is live. Provider credentials and billing/quota must be configured separately.
