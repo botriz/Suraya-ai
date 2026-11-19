@@ -118,6 +118,13 @@ body{background:#050b16}
 .leaflet-control-zoom a{background:#102234ed!important;color:#e8f5ff!important;border-color:#8adfce44!important}
 .leaflet-control-attribution{background:#081521d9!important;color:#d3e6f3!important;font-size:9px!important}
 .leaflet-control-attribution a{color:#9be8d7!important}
+
+.map-reset{border:1px solid #a7e8db66;border-radius:99px;padding:7px 12px;background:#123b3a;color:#c9fff0;font-size:10px;white-space:nowrap;cursor:pointer}
+.map-reset:hover{background:#1b5b52}
+.map-coordinate-readout{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:11px 16px;background:linear-gradient(90deg,#102a36,#101c2b);border-top:1px solid #9be6d51b;color:#9db8c9;font-size:10px}
+.map-coordinate-readout strong{color:#dffcf4;font-size:11px;font-weight:600}
+.map-coordinate-readout small{margin-right:auto;color:#83a5b8;font-size:9px}
+@media(max-width:700px){.map-reset{padding:6px 9px;font-size:9px}.map-coordinate-readout{gap:7px}.map-coordinate-readout strong{width:100%}.map-coordinate-readout small{margin-right:0}}
 </style></head>
 <body><div class="wrap">
 <nav class="nav"><a class="brand" href="/"><span class="brand-mark">ث</span><span><b>ثریا</b><small>جهان خدمات هوشمند · SURAYA</small></span></a><div class="nav-links"><a href="#services">خدمات</a><a href="/creator.html">استودیو سازندگان</a><a href="/world/">جهان دیجیتال</a></div><a class="nav-cta" href="#services">کشف خدمات ←</a></nav>
@@ -264,11 +271,13 @@ body{background:#050b16}
         <button type="button" data-city="tokyo">توکیو</button>
         <button type="button" data-city="newyork">نیویورک</button>
       </div>
+      <button type="button" class="map-reset" id="mapReset">نمای کلی جهان ↺</button>
     </div>
     <div style="position:relative">
       <div id="realWorldMap" role="application" aria-label="نقشه تعاملی واقعی جهان با نقاط مطالعاتی ثریا"></div>
       <div class="real-map-loading" id="realMapLoading">در حال بارگذاری نقشهٔ واقعی زمین…</div>
     </div>
+    <div class="map-coordinate-readout" id="mapCoordinateReadout" aria-live="polite"><span>نقطهٔ انتخابی روی نقشه</span><strong>برای مشاهدهٔ مختصات، هر نقطه از نقشه را لمس کن.</strong><small>مختصات جغرافیایی · WGS84</small></div>
     <div class="real-map-foot">
       <div class="real-map-disclaimer"><b>شفافیت دربارهٔ نقشه:</b> نقشه و تصاویر ماهواره‌ای از سرویس‌های نقشهٔ واقعی بارگیری می‌شوند. نشانگرها، نقاط واقعی شهرها برای مطالعه و تصور آینده‌اند؛ خط‌های نقطه‌چین صرفاً ارتباط مفهومی را نشان می‌دهند، نه مسیر اجرایی. این موارد به‌معنای ساخت شهر، مالکیت زمین، پروژهٔ اجرایی یا وجود زیرساخت ثریا در آن مکان‌ها نیستند.</div>
       <div class="real-map-legend"><span><i></i> مبدأ مفهومی</span><span><i></i> نقاط مطالعاتی آینده</span></div>
@@ -350,9 +359,19 @@ fetch("/api/services").then(r=>{if(!r.ok)throw new Error("catalog unavailable");
   markers[id]=marker;
  });
  ["istanbul","dubai","singapore","tokyo","newyork"].forEach(id=>L.polyline([places.tabriz.coords,places[id].coords],{color:"#a6a0ff",weight:2,opacity:.45,dashArray:"5 9",smoothFactor:2,interactive:false}).addTo(map));
+ const readout=document.getElementById("mapCoordinateReadout");
+ function showCoordinates(lat,lng,label){
+  if(!readout)return;
+  const fa=n=>Number(n).toLocaleString("fa-IR",{minimumFractionDigits:5,maximumFractionDigits:5});
+  readout.innerHTML="<span>"+(label||"مختصات نقطهٔ انتخابی")+"</span><strong>عرض جغرافیایی: "+fa(lat)+" · طول جغرافیایی: "+fa(lng)+"</strong><small>بزرگ‌نمایی نقشه: "+map.getZoom().toLocaleString("fa-IR")+"</small>";
+ }
+ map.on("click",e=>showCoordinates(e.latlng.lat,e.latlng.lng,"نقطه‌ای که روی نقشه لمس کردی"));
+ const reset=document.getElementById("mapReset");
+ if(reset)reset.addEventListener("click",()=>{map.closePopup();map.flyTo([31,48],2.35,{duration:1.1});document.querySelectorAll(".real-map-locations button").forEach(b=>b.classList.remove("active"));if(readout)readout.innerHTML="<span>نمای کلی جهان</span><strong>برای مشاهدهٔ مختصات، هر نقطه از نقشه را لمس کن.</strong><small>مختصات جغرافیایی · WGS84</small>";});
  function focus(id){
   const p=places[id]; if(!p)return;
   map.flyTo(p.coords, id==="tabriz"?7:5,{duration:1.25});
+  showCoordinates(p.coords[0],p.coords[1],"شهر انتخاب‌شده: "+p.name);
   markers[id].openPopup();
   document.querySelectorAll(".real-map-locations button").forEach(b=>b.classList.toggle("active",b.dataset.city===id));
  }
