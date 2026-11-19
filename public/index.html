@@ -288,6 +288,39 @@ body.ui-modal-lock{overflow:hidden!important;position:fixed;width:100%;inset-inl
  .service-drawer{width:100%;max-width:none;inset-inline:0;border-radius:0;padding:calc(15px + env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom))}
 }
 
+
+/* Nature guardians for every expandable folder */
+.hub-window .hub-section>summary{position:relative;padding-inline-start:58px!important}
+.folder-guardian{position:absolute;inset-inline-start:12px;top:50%;transform:translateY(-50%);width:34px;height:34px;display:grid;place-items:center;border-radius:12px;background:var(--guardian-bg,#173b3a);border:1px solid var(--guardian-line,#8cebd766);font-size:20px;filter:drop-shadow(0 4px 8px #0008);animation:guardianBob 3.8s ease-in-out infinite}
+.folder-guardian:after{content:"";position:absolute;inset:-4px;border:1px solid var(--guardian-line,#8cebd744);border-radius:15px;opacity:.45;animation:guardianPulse 3s ease-in-out infinite}
+.hub-section[data-folder-theme="forest"]{--guardian-bg:#123a30;--guardian-line:#80e8b8}
+.hub-section[data-folder-theme="water"]{--guardian-bg:#102f48;--guardian-line:#78d9ff}
+.hub-section[data-folder-theme="sun"]{--guardian-bg:#45351b;--guardian-line:#ffd28a}
+.hub-section[data-folder-theme="wind"]{--guardian-bg:#26334b;--guardian-line:#b7caff}
+.hub-section[data-folder-theme="crystal"]{--guardian-bg:#35274b;--guardian-line:#c4a8ff}
+.hub-window .hub-section[open]{box-shadow:0 12px 32px #0003;border-color:var(--guardian-line,#8cebd766)}
+.hub-section-body{background:linear-gradient(145deg,#ffffff06,transparent 75%)}
+.hub-section-body input,.hub-section-body select{border-radius:12px}
+.hub-section-body .hub-actions{padding-top:4px}
+@keyframes guardianBob{0%,100%{translate:0 0;rotate:-4deg}50%{translate:0 -5px;rotate:4deg}}
+@keyframes guardianPulse{0%,100%{transform:scale(.92);opacity:.18}50%{transform:scale(1.12);opacity:.58}}
+/* Service-folder guardians keep the existing selection action intact */
+.service-row .avatar-small{position:relative;border:1px solid #ffffff20;box-shadow:inset 0 0 18px #ffffff10}
+.service-row .avatar-small:after{content:"✦";position:absolute;bottom:2px;left:5px;font-size:10px;color:#f7e5a7;text-shadow:0 0 8px #ffe2a0;animation:breathe 2.4s infinite}
+.drawer-service{position:relative;padding-inline-start:48px}
+.drawer-guardian{position:absolute;inset-inline-start:9px;top:50%;translate:0 -50%;width:30px;height:30px;border-radius:11px;display:grid;place-items:center;background:#153a3b;border:1px solid #8cebd755;font-size:17px;animation:guardianBob 3.6s ease-in-out infinite}
+.drawer-service:hover .drawer-guardian{filter:drop-shadow(0 0 9px #8cebd7)}
+/* Dim cinematic layer: readable text always wins over the moving scenery */
+.world-intro{background:#030914}
+.world-intro:after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,#020713b8 0%,#02071362 42%,#02071330 70%,#0207138a 100%),linear-gradient(180deg,#02071335 0%,transparent 35%,#020713a6 100%);mix-blend-mode:multiply}
+.world-stars{opacity:.42;filter:brightness(.72)}
+.world-planet{filter:brightness(.72) saturate(.88) drop-shadow(0 22px 65px #000c)}
+.world-copy,.world-topline,.world-vision-note,.world-scroll{z-index:4}
+.world-scene{z-index:2}
+.world-copy h1{text-shadow:0 4px 22px #000,0 2px 4px #000}
+.world-copy>p{color:#c2ccda;text-shadow:0 2px 8px #000}
+@media(prefers-reduced-motion:reduce){.folder-guardian,.folder-guardian:after,.drawer-guardian{animation:none!important}}
+
 </style></head>
 <body><div class="wrap">
 <nav class="nav"><a class="brand" href="/"><span class="brand-mark">ث</span><span><b>ثریا</b><small>جهان خدمات هوشمند · SURAYA</small></span></a><div class="nav-links"><a href="#services">خدمات</a><a href="/creator.html">استودیو سازندگان</a><a href="/world/">جهان دیجیتال</a></div><a class="nav-cta" href="#services">کشف خدمات ←</a></nav>
@@ -747,4 +780,49 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
  overlay.addEventListener("click",event=>{if(event.target===overlay)document.body.classList.remove("ui-modal-lock")});
 })();
 </script>
+
+<script>
+/* Add a small animated nature guardian to each folder without replacing its controls. */
+(function(){
+ const folderIcons=["🌳","💧","☀️","🦋","💎","🌱"];
+ const folderThemes=["forest","water","sun","wind","crystal","forest"];
+ document.querySelectorAll(".hub-window .hub-section").forEach((section,index)=>{
+   const summary=section.querySelector(":scope > summary");
+   if(!summary||summary.querySelector(".folder-guardian"))return;
+   const icon=folderIcons[index%folderIcons.length];
+   section.dataset.folderTheme=folderThemes[index%folderThemes.length];
+   const guardian=document.createElement("span");
+   guardian.className="folder-guardian";
+   guardian.setAttribute("aria-hidden","true");
+   guardian.textContent=icon;
+   summary.appendChild(guardian);
+ });
+ const serviceIcons={"social_content":"🦋","business_content":"🌳","product_descriptions":"🌼","social_monthly":"🦉","subscription_ops":"💎","store_launch":"🌱"};
+ document.querySelectorAll(".service-row").forEach((row,index)=>{
+   const avatar=row.querySelector(".avatar-small");
+   if(avatar&&!avatar.dataset.guardianReady){
+     avatar.dataset.guardianReady="1";
+     avatar.title="نگهبان زندهٔ این خدمت";
+   }
+ });
+ const drawer=document.getElementById("drawerServices");
+ if(drawer){
+   const decorate=()=>{
+     drawer.querySelectorAll(".drawer-service").forEach((row,index)=>{
+       if(row.querySelector(".drawer-guardian"))return;
+       const label=row.querySelector("b")?.textContent||"";
+       const icon=Object.entries(serviceIcons).find(([key])=>label.toLowerCase().includes(key))?.[1]||folderIcons[index%folderIcons.length];
+       const guardian=document.createElement("span");
+       guardian.className="drawer-guardian";
+       guardian.setAttribute("aria-hidden","true");
+       guardian.textContent=icon;
+       row.appendChild(guardian);
+     });
+   };
+   decorate();
+   new MutationObserver(decorate).observe(drawer,{childList:true,subtree:true});
+ }
+})();
+</script>
+
 </body></html>
