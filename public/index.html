@@ -76,6 +76,41 @@ body{background:#050b16}
 .world-person-one{transform-box:fill-box;transform-origin:center bottom;animation:worldPersonSway 3.4s ease-in-out infinite}
 .world-person-two{transform-box:fill-box;transform-origin:center bottom;animation:worldPersonSway 4s ease-in-out infinite reverse}
 @media(prefers-reduced-motion:reduce){.world-person-one,.world-person-two{animation:none!important}}
+
+/* Real geographic map and future-world exploration */
+.real-map-section{position:relative;width:min(1240px,94%);margin:10px auto 74px;padding:30px 0 0}
+.real-map-head{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:20px}
+.real-map-head .eyebrow{color:var(--mint);font-size:11px;font-weight:800;letter-spacing:.04em}
+.real-map-head h2{margin:7px 0;font-size:clamp(24px,3vw,36px);line-height:1.5}
+.real-map-head p{margin:0;color:var(--muted);font-size:12px;line-height:2;max-width:650px}
+.real-map-state{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid #83e6d344;border-radius:99px;color:#b9ffeb;background:#0c282b88;font-size:10px;white-space:nowrap}
+.real-map-state:before{content:"";width:7px;height:7px;border-radius:50%;background:#80edca;box-shadow:0 0 12px #80edca}
+.real-map-shell{position:relative;overflow:hidden;border:1px solid #a7dfff2b;border-radius:24px;background:#0a1723;box-shadow:0 25px 70px #0006}
+.real-map-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:13px 16px;border-bottom:1px solid #b4ddf01c;background:linear-gradient(90deg,#102437,#101c2b)}
+.real-map-toolbar strong{font-size:12px;color:#eaf8ff}
+.real-map-toolbar small{display:block;color:#9db6c9;font-size:9px}
+.real-map-locations{display:flex;gap:6px;flex-wrap:wrap}
+.real-map-locations button{border:1px solid #b8dfff32;border-radius:99px;background:#0a1b2b;color:#d6eafa;padding:6px 10px;font-size:10px;cursor:pointer;transition:.2s}
+.real-map-locations button:hover,.real-map-locations button.active{border-color:#8debd5;background:#17413d;color:#c8fff0}
+#realWorldMap{height:490px;width:100%;z-index:1;background:#101e2c}
+.real-map-foot{display:flex;justify-content:space-between;gap:14px;align-items:start;padding:13px 16px;color:#9eb3c7;font-size:10px;line-height:1.9;background:#0b1725}
+.real-map-foot b{color:#d9f5ef}
+.real-map-disclaimer{max-width:780px}
+.real-map-legend{display:flex;gap:13px;flex-wrap:wrap;white-space:nowrap}
+.real-map-legend span{display:inline-flex;align-items:center;gap:6px}
+.real-map-legend i{width:8px;height:8px;border-radius:50%;background:#83edcf;box-shadow:0 0 8px #83edcf}
+.real-map-legend span:last-child i{background:#b6a3ff;box-shadow:0 0 8px #b6a3ff}
+.leaflet-container{font-family:Vazirmatn,system-ui!important}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#101e2e;color:#eaf6ff;border:1px solid #8adfce33;box-shadow:0 10px 32px #0008}
+.leaflet-popup-content{margin:12px 15px;font-family:Vazirmatn,system-ui;line-height:1.9;font-size:11px}
+.map-popup-title{font-size:13px;font-weight:800;color:#baffea}
+.map-popup-sub{font-size:10px;color:#a8bdd0}
+.map-pin{width:17px;height:17px;border-radius:50%;background:#8df1d2;border:3px solid #e5fff7;box-shadow:0 0 0 5px #7be9d455,0 0 20px #7be9d2}
+.map-pin.origin{background:#ffe0a0;border-color:#fff3d7;box-shadow:0 0 0 5px #ffd28a55,0 0 22px #ffd28a}
+.map-pin.future{background:#b8a6ff;border-color:#f0eaff;box-shadow:0 0 0 5px #b8a6ff55,0 0 20px #b8a6ff}
+.real-map-loading{position:absolute;z-index:2;inset:60px 0 0;display:grid;place-items:center;background:#0c1b2a;color:#c8e7e8;font-size:12px;pointer-events:none}
+.real-map-loading.hidden{display:none}
+@media(max-width:700px){.real-map-section{margin:0 auto 52px;padding-top:14px}.real-map-head{align-items:start;flex-direction:column}.real-map-state{font-size:9px}.real-map-shell{border-radius:17px}#realWorldMap{height:410px}.real-map-toolbar{align-items:start}.real-map-toolbar>div:first-child{width:100%}.real-map-locations{gap:5px}.real-map-locations button{font-size:9px;padding:6px 8px}.real-map-foot{flex-direction:column}.real-map-legend{white-space:normal}}
 </style></head>
 <body><div class="wrap">
 <nav class="nav"><a class="brand" href="/"><span class="brand-mark">ث</span><span><b>ثریا</b><small>جهان خدمات هوشمند · SURAYA</small></span></a><div class="nav-links"><a href="#services">خدمات</a><a href="/creator.html">استودیو سازندگان</a><a href="/world/">جهان دیجیتال</a></div><a class="nav-cta" href="#services">کشف خدمات ←</a></nav>
@@ -200,7 +235,39 @@ body{background:#050b16}
   <div class="world-vision-note"><b>این فقط یک پیش‌نمایش مفهومی است</b>جهان دیجیتال هنوز در حال طراحی و ساخت است؛ این تصویر، مقصدی را نشان می‌دهد که برای رسیدن به آن تلاش می‌کنیم.</div>
   <div class="world-scroll">برای کشف خدمات و همراهان هوشمند، پایین‌تر برو</div>
 </section>
-<div class="section-intro" id="services"><div><div class="eyebrow">خدمات و تخصص‌ها</div><h2>متخصص خودت را انتخاب کن</h2><p>هر نام، یک مهارت؛ هر مهارت، یک همراه هوشمند.</p></div><span class="stage-tag">۶ حوزهٔ خدماتی</span></div>
+
+<section class="real-map-section" aria-labelledby="realMapTitle">
+  <div class="real-map-head">
+    <div>
+      <div class="eyebrow">نقشهٔ واقعی زمین · پنجره‌ای به جهان آینده</div>
+      <h2 id="realMapTitle">از یک نقطه روی زمین، تا جهانی به وسعت زمین</h2>
+      <p>این بار به‌جای یک تصویر خیالی، روی نقشهٔ جغرافیایی واقعی حرکت کن. شهرها و مختصات واقعی‌اند؛ لایهٔ آینده، فقط چشم‌انداز و نقاط مطالعاتی ما را نشان می‌دهد.</p>
+    </div>
+    <span class="real-map-state">نقشهٔ زندهٔ جغرافیایی</span>
+  </div>
+  <div class="real-map-shell">
+    <div class="real-map-toolbar">
+      <div><strong>اطلس اکتشاف ثریا</strong><small>برای رفتن به هر نقطه، نام شهر را لمس کن</small></div>
+      <div class="real-map-locations" aria-label="انتخاب شهر">
+        <button type="button" data-city="tabriz" class="active">تبریز</button>
+        <button type="button" data-city="tehran">تهران</button>
+        <button type="button" data-city="istanbul">استانبول</button>
+        <button type="button" data-city="dubai">دبی</button>
+        <button type="button" data-city="singapore">سنگاپور</button>
+        <button type="button" data-city="tokyo">توکیو</button>
+        <button type="button" data-city="newyork">نیویورک</button>
+      </div>
+    </div>
+    <div style="position:relative">
+      <div id="realWorldMap" role="application" aria-label="نقشه تعاملی واقعی جهان با نقاط مطالعاتی ثریا"></div>
+      <div class="real-map-loading" id="realMapLoading">در حال بارگذاری نقشهٔ واقعی زمین…</div>
+    </div>
+    <div class="real-map-foot">
+      <div class="real-map-disclaimer"><b>شفافیت دربارهٔ نقشه:</b> بستر نقشه از داده‌های جغرافیایی OpenStreetMap بارگیری می‌شود. نشانگرها، نقاط واقعی شهرها برای مطالعه و تصور آینده‌اند؛ به‌معنای ساخت شهر، مالکیت زمین، پروژهٔ اجرایی یا وجود زیرساخت ثریا در آن مکان‌ها نیستند.</div>
+      <div class="real-map-legend"><span><i></i> مبدأ مفهومی</span><span><i></i> نقاط مطالعاتی آینده</span></div>
+    </div>
+  </div>
+</section>\n<div class="section-intro" id="services"><div><div class="eyebrow">خدمات و تخصص‌ها</div><h2>متخصص خودت را انتخاب کن</h2><p>هر نام، یک مهارت؛ هر مهارت، یک همراه هوشمند.</p></div><span class="stage-tag">۶ حوزهٔ خدماتی</span></div>
 <section class="service-world">
 <div class="stage" aria-live="polite"><div class="stage-top"><span class="stage-tag">همراه منتخب تو</span><span class="stage-tag" id="stageIndex">آمادهٔ انتخاب</span></div><div class="stage-art"><div class="stage-rings"></div><div id="bigCharacter" class="character-large"></div></div><div class="stage-caption"><h3 id="stageName">جهان ثریا منتظر توست</h3><p id="stageDescription">از فهرست سمت راست یک تخصص را انتخاب کن تا همراه هوشمند و جزئیات آن را ببینی.</p><div class="stage-hint">انتخاب آگاهانه · جزئیات روشن · تصمیم با شما</div></div></div>
 <div class="service-list-panel"><div class="list-heading"><h2>فهرست خدمات ثریا</h2><span>برای مشاهده انتخاب کن</span></div><div class="service-list" id="serviceList"><div class="service-row"><span class="service-copy">در حال دریافت خدمات…</span></div></div>
@@ -246,5 +313,43 @@ function selectService(code){const s=catalog[code];if(!s)return;selected=code;re
 $("continueButton").addEventListener("click",()=>{$("orderSection").classList.add("show");$("orderSection").scrollIntoView({behavior:"smooth",block:"start"})});$("clearButton").addEventListener("click",()=>{selected=null;renderList();$("selection").classList.remove("show");$("stageName").textContent="جهان ثریا منتظر توست";$("stageDescription").textContent="از فهرست سمت راست یک تخصص را انتخاب کن تا همراه هوشمند و جزئیات آن را ببینی.";$("bigCharacter").innerHTML="";$("stageIndex").textContent="آمادهٔ انتخاب";$("orderSection").classList.remove("show")});
 $("orderForm").addEventListener("submit",async e=>{e.preventDefault();if(!selected)return;const button=$("submitButton"),result=$("result");button.disabled=true;result.className="";result.textContent="در حال ثبت درخواست…";try{const payload=Object.fromEntries(new FormData(e.currentTarget));payload.service=selected;const response=await fetch("/api/order",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});const data=await response.json();if(!response.ok||!data.ok)throw new Error(data.error||"ثبت درخواست ناموفق بود.");result.textContent="درخواست با موفقیت ثبت شد. کد پیگیری: "+data.orderId+" · پیش‌فاکتور شما برای هماهنگی آماده است.";e.currentTarget.reset()}catch(err){result.className="error";result.textContent=err.message||"ارتباط با سامانه برقرار نشد."}finally{button.disabled=false}});
 fetch("/api/services").then(r=>{if(!r.ok)throw new Error("catalog unavailable");return r.json()}).then(data=>{catalog=data.services||{};renderList();if(Object.keys(catalog).length){$("stageIndex").textContent=Object.keys(catalog).length.toLocaleString("fa-IR")+" خدمت آماده";$("stageDescription").textContent="یک خدمت را از فهرست سمت راست انتخاب کن؛ پیش‌فاکتور فقط پس از انتخاب نمایش داده می‌شود."}}).catch(()=>{$("serviceList").textContent="دریافت فهرست خدمات با مشکل روبه‌رو شد. اتصال سامانه را بررسی و صفحه را تازه‌سازی کن.";$("stageDescription").textContent="خدمات در حال حاضر در دسترس نیستند."});
+})();
+</script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
+<script>
+(function(){
+ const root=document.getElementById("realWorldMap"); if(!root||!window.L)return;
+ const loading=document.getElementById("realMapLoading");
+ const places={
+  tabriz:{name:"تبریز",coords:[38.0962,46.2738],kind:"origin",sub:"مبدأ مفهومی ثریا · نقطهٔ آغاز روایت ما"},
+  tehran:{name:"تهران",coords:[35.6892,51.3890],kind:"future",sub:"نقطهٔ مطالعاتی · شهر و فناوری"},
+  istanbul:{name:"استانبول",coords:[41.0082,28.9784],kind:"future",sub:"نقطهٔ مطالعاتی · پیوند جغرافیا و فرهنگ"},
+  dubai:{name:"دبی",coords:[25.2048,55.2708],kind:"future",sub:"نقطهٔ مطالعاتی · معماری و زیرساخت شهری"},
+  singapore:{name:"سنگاپور",coords:[1.3521,103.8198],kind:"future",sub:"نقطهٔ مطالعاتی · شهر هوشمند و طبیعت شهری"},
+  tokyo:{name:"توکیو",coords:[35.6762,139.6503],kind:"future",sub:"نقطهٔ مطالعاتی · فناوری و زندگی شهری"},
+  newyork:{name:"نیویورک",coords:[40.7128,-74.0060],kind:"future",sub:"نقطهٔ مطالعاتی · شبکهٔ جهانی و اقتصاد خلاق"}
+ };
+ const map=L.map(root,{zoomControl:true,scrollWheelZoom:false,worldCopyJump:true}).setView([31,48],2.35);
+ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
+  maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'
+ }).addTo(map);
+ const markers={};
+ Object.entries(places).forEach(([id,p])=>{
+  const icon=L.divIcon({className:"",html:'<div class="map-pin '+p.kind+'"></div>',iconSize:[20,20],iconAnchor:[10,10]});
+  const marker=L.marker(p.coords,{icon}).addTo(map);
+  marker.bindPopup('<div class="map-popup-title">'+p.name+'</div><div class="map-popup-sub">'+p.sub+'</div>');
+  markers[id]=marker;
+ });
+ const routePoints=["tabriz","istanbul","dubai","singapore","tokyo","newyork"].map(id=>places[id].coords);
+ L.polyline(routePoints,{color:"#a6a0ff",weight:2,opacity:.55,dashArray:"5 9",smoothFactor:2}).addTo(map);
+ function focus(id){
+  const p=places[id]; if(!p)return;
+  map.flyTo(p.coords, id==="tabriz"?7:5,{duration:1.25});
+  markers[id].openPopup();
+  document.querySelectorAll(".real-map-locations button").forEach(b=>b.classList.toggle("active",b.dataset.city===id));
+ }
+ document.querySelectorAll(".real-map-locations button").forEach(b=>b.addEventListener("click",()=>focus(b.dataset.city)));
+ map.whenReady(()=>{if(loading)loading.classList.add("hidden");setTimeout(()=>map.invalidateSize(),250);});
+ window.addEventListener("resize",()=>map.invalidateSize());
 })();
 </script></body></html>
