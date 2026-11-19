@@ -149,38 +149,32 @@ body{background:#050b16}
     <div class="world-scene" id="worldVision">
       <div class="world-glow"></div>
       <div class="world-planet">
-        <svg viewBox="0 0 600 600" role="img" aria-label="نمای هنری کره زمین با شهرها و مسیرهای نورانی">
+        <svg viewBox="0 0 600 600" role="img" aria-label="تصویر واقعی کره زمین از مجموعه تصاویر ماهواره‌ای NASA Blue Marble">
           <defs>
-            <radialGradient id="earthOcean" cx="34%" cy="28%" r="75%"><stop stop-color="#5eafc2"/><stop offset=".48" stop-color="#23617b"/><stop offset=".82" stop-color="#12334f"/><stop offset="1" stop-color="#07182d"/></radialGradient>
-            <linearGradient id="earthRim" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c9fff0" stop-opacity=".95"/><stop offset=".45" stop-color="#6ed5ef" stop-opacity=".45"/><stop offset="1" stop-color="#7f87ff" stop-opacity=".05"/></linearGradient>
-            <radialGradient id="earthLight" cx="50%" cy="48%" r="50%"><stop stop-color="#8df3db" stop-opacity=".3"/><stop offset="1" stop-color="#8df3db" stop-opacity="0"/></radialGradient>
+            <linearGradient id="earthRim" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d5fff4" stop-opacity=".98"/><stop offset=".48" stop-color="#74dff3" stop-opacity=".56"/><stop offset="1" stop-color="#8e9aff" stop-opacity=".1"/></linearGradient>
             <clipPath id="earthClip"><circle cx="300" cy="300" r="248"/></clipPath>
-            <filter id="earthBlur"><feGaussianBlur stdDeviation="7"/></filter>
+            <radialGradient id="earthShade" cx="48%" cy="42%" r="70%"><stop offset=".58" stop-color="#071523" stop-opacity="0"/><stop offset="1" stop-color="#06111e" stop-opacity=".48"/></radialGradient>
+            <filter id="earthGlow"><feGaussianBlur stdDeviation="12"/></filter>
           </defs>
-          <circle cx="300" cy="300" r="273" fill="#62d9ed" opacity=".07" filter="url(#earthBlur)"/>
-          <circle cx="300" cy="300" r="250" fill="url(#earthOcean)" stroke="url(#earthRim)" stroke-width="3"/>
-          <g clip-path="url(#earthClip)">
-            <ellipse cx="300" cy="300" rx="245" ry="91" fill="none" stroke="#a9e7f3" stroke-opacity=".14"/>
-            <ellipse cx="300" cy="300" rx="145" ry="246" fill="none" stroke="#a9e7f3" stroke-opacity=".12"/>
-            <path d="M54 296Q112 264 170 274T289 290T421 268T548 300M58 356Q150 335 222 353T376 354T540 342" fill="none" stroke="#b7e9f4" stroke-opacity=".12" stroke-width="2"/>
-            <g fill="#64c5a2" stroke="#a5f3d4" stroke-opacity=".35" stroke-width="2">
-              <path d="M116 142l28-22 34 8 18 25-12 22 16 22-17 23-5 36-28 20-14-25-25-12-6-34-21-19 8-28z"/>
-              <path d="M192 270l34 10 26 31-7 42-19 34-7 49-20 39-17-23-5-51-21-38 4-43z"/>
-              <path d="M276 125l36-21 45 11 23 25 42-2 37 28-15 26-45 2-17 23-40-5-22 20-36-17-31 10-19-25 22-29-12-24z"/>
-              <path d="M349 235l39-13 41 23 11 40-20 29-8 43-28 25-20-27-31-9-15-45 13-37z"/>
-              <path d="M438 368l29-12 37 16 14 28-27 23-36-6-21-24z"/>
-              <path d="M86 91l42-20 29 9-9 23-43 8zM500 170l32-10 25 24-12 26-36-8z"/>
-            </g>
-            <g fill="#d7fff3" opacity=".65"><circle cx="160" cy="205" r="3"/><circle cx="310" cy="164" r="3"/><circle cx="390" cy="278" r="3"/><circle cx="225" cy="355" r="2.5"/><circle cx="468" cy="390" r="3"/></g>
-            <g fill="none" stroke="#a5f5df" stroke-width="2" stroke-opacity=".55"><path d="M160 205Q272 90 390 278"/><path d="M225 355Q325 255 468 390"/><path d="M310 164Q360 200 390 278"/></g>
-            <g fill="#f7e6a8"><circle cx="160" cy="205" r="5"/><circle cx="310" cy="164" r="5"/><circle cx="390" cy="278" r="5"/><circle cx="225" cy="355" r="4"/></g>
-            <circle cx="300" cy="300" r="248" fill="url(#earthLight)"/>
-            <path d="M63 230Q145 130 248 70M380 70Q510 130 548 245" fill="none" stroke="#e0fff9" stroke-opacity=".2" stroke-width="12" filter="url(#earthBlur)"/>
+          <circle cx="300" cy="300" r="270" fill="#5cd9eb" opacity=".11" filter="url(#earthGlow)"/>
+          <image href="https://assets.science.nasa.gov/dynamicimage/assets/science/esd/climate/2023/12/ImageWall5_1920x1200-80.jpg" x="-123" y="18" width="846" height="564" preserveAspectRatio="none" clip-path="url(#earthClip)"/>
+          <circle cx="300" cy="300" r="248" fill="url(#earthShade)" clip-path="url(#earthClip)"/>
+          <g fill="none" stroke="#d4fff2" stroke-opacity=".48">
+            <ellipse cx="300" cy="300" rx="258" ry="82" transform="rotate(-22 300 300)" stroke-width="1.5"/>
+            <path d="M75 280Q300 135 525 280" stroke-width="1" stroke-opacity=".24"/>
           </g>
-          <circle cx="300" cy="300" r="250" fill="none" stroke="#d2fff3" stroke-opacity=".4" stroke-width="1"/>
+          <g fill="#d9fff4">
+            <circle cx="90" cy="185" r="3.5"/><circle cx="501" cy="390" r="3.5"/><circle cx="430" cy="112" r="2.5"/>
+          </g>
+          <g fill="none" stroke="#a5f5df" stroke-width="1.5" stroke-opacity=".65">
+            <path d="M90 185Q300 60 501 390" stroke-dasharray="4 8"/>
+          </g>
+          <circle cx="300" cy="300" r="250" fill="none" stroke="url(#earthRim)" stroke-width="3"/>
+          <circle cx="300" cy="300" r="255" fill="none" stroke="#c8fff1" stroke-opacity=".15" stroke-width="1"/>
         </svg>
         <div class="world-orbit"></div>
       </div>
+      <div class="world-scene-caption">تصویر ماهواره‌ای ترکیبی زمین · <a href="https://science.nasa.gov/resource/blue-marble/" target="_blank" rel="noopener">NASA Blue Marble</a></div>
       <div class="world-node node-tabriz"><i class="node-dot"></i><span>تبریز<small>نقطهٔ آغاز این جهان</small></span></div>
       <div class="world-node node-forest"><i class="node-dot"></i><span>زیست‌بوم‌های سبز<small>طبیعت، آرامش و حیات</small></span></div>
       <div class="world-node node-city"><i class="node-dot"></i><span>شهرهای آینده<small>فناوری در خدمت زندگی</small></span></div>
