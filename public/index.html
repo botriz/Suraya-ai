@@ -150,6 +150,38 @@ body{background:#050b16}
 .real-world-gallery-note b{color:#dffcf4}
 @media(max-width:900px){.real-world-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.real-world-card:last-child{grid-column:1/-1}.real-world-card:last-child .real-world-photo{height:240px}}
 @media(max-width:600px){.real-world-gallery{margin-bottom:55px}.real-world-gallery-grid{grid-template-columns:1fr;gap:13px}.real-world-card:last-child{grid-column:auto}.real-world-photo{height:210px}.real-world-card-copy p{min-height:0}}
+
+/* User hub and floating service navigator */
+.user-hub-trigger,.service-dock-trigger{position:fixed;z-index:1200;top:18px;width:48px;height:48px;border:1px solid #a9e9df66;border-radius:16px;background:linear-gradient(145deg,#162c40ed,#11192ced);color:#eafffa;box-shadow:0 12px 34px #0008,0 0 22px #79e8d522;display:grid;place-items:center;cursor:pointer;backdrop-filter:blur(16px)}
+.user-hub-trigger{right:18px}.service-dock-trigger{left:18px}
+.user-hub-trigger svg,.service-dock-trigger svg{width:23px;height:23px}
+.user-hub-trigger:focus-visible,.service-dock-trigger:focus-visible,.hub-action:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
+.hub-overlay{position:fixed;inset:0;z-index:1300;background:#020712b8;backdrop-filter:blur(8px);display:none;align-items:flex-start;justify-content:center;padding:5vh 14px 18px;overflow:auto}
+.hub-overlay.open{display:flex;animation:enter .2s ease}
+.hub-window{width:min(560px,100%);max-height:90vh;overflow:auto;border:1px solid #a8dfff35;border-radius:25px;background:linear-gradient(150deg,#172940,#0a1424 82%);box-shadow:0 28px 90px #000b;padding:21px}
+.hub-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px}
+.hub-head h2{font-size:19px;margin:0}.hub-close{width:35px;height:35px;border:1px solid #ffffff22;border-radius:11px;background:#ffffff0a;color:#fff;font-size:21px;cursor:pointer}
+.hub-profile{display:flex;align-items:center;gap:14px;padding:14px;border:1px solid #ffffff18;border-radius:18px;background:#ffffff08}
+.hub-avatar{width:66px;height:66px;flex:0 0 66px;border-radius:50%;object-fit:cover;border:2px solid #8cebd7;background:#102339;display:grid;place-items:center;font-size:27px;color:#a8f4e2;overflow:hidden}
+.hub-profile strong{display:block;font-size:14px}.hub-profile small{color:#9eb1c8;font-size:10px}
+.hub-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.hub-action{border:1px solid #a6dfff35;border-radius:11px;background:#ffffff0a;color:#dff8f4;padding:7px 11px;font-size:11px;cursor:pointer}
+.hub-section{border-top:1px solid #ffffff16;margin-top:17px;padding-top:13px}.hub-section h3{font-size:13px;margin:0 0 8px;color:#baf5e7}
+.hub-field{display:grid;grid-template-columns:1fr 1fr;gap:9px}.hub-field label{font-size:10px;color:#aebfd2}.hub-field input,.hub-field select{margin-top:4px;padding:9px;font-size:12px}
+.hub-full{grid-column:1/-1}.hub-note{font-size:10px;color:#9aadc4;line-height:1.9;margin:9px 0 0}.hub-status{font-size:11px;color:#ffd28a;margin-top:9px;min-height:22px}
+.service-drawer{position:fixed;z-index:1250;top:78px;left:14px;width:min(360px,calc(100vw - 28px));max-height:calc(100vh - 98px);overflow:auto;border:1px solid #a8dfff38;border-radius:22px;background:linear-gradient(150deg,#172940f5,#091423f7);box-shadow:0 24px 70px #000b;padding:16px;display:none;backdrop-filter:blur(18px)}
+.service-drawer.open{display:block;animation:enter .22s ease}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}.drawer-head strong{font-size:14px}.drawer-head small{display:block;color:#99aec5;font-size:10px}
+.drawer-service{width:100%;text-align:right;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:11px 9px;border:0;border-bottom:1px solid #ffffff14;background:transparent;color:#eff8ff;cursor:pointer;border-radius:11px}
+.drawer-service:hover{background:#8be8d510}.drawer-service b{font-size:12px}.drawer-service small{display:block;color:#a5b7ca;font-size:10px;line-height:1.6}
+.drawer-quota{font-size:10px;color:#9cf4dc;white-space:nowrap}
+.drawer-detail{display:none;margin-top:12px;padding:13px;border:1px solid #8cebd74d;border-radius:15px;background:#8cebd70c}.drawer-detail.open{display:block}
+.drawer-detail h4{margin:0 0 5px;font-size:13px}.drawer-detail p{margin:0;color:#b8c8da;font-size:11px;line-height:1.9}.drawer-detail .hub-action{margin-top:10px}
+.paywall-overlay{position:fixed;inset:0;z-index:1400;background:#020712c9;display:none;place-items:center;padding:18px;backdrop-filter:blur(9px)}
+.paywall-overlay.open{display:grid}.paywall-card{width:min(430px,100%);padding:24px;border:1px solid #ffd28a55;border-radius:23px;background:linear-gradient(145deg,#27334a,#101827);box-shadow:0 25px 80px #000b;text-align:center}
+.paywall-card h3{font-size:20px;margin:0 0 8px}.paywall-card p{font-size:12px;color:#c1ccdc;line-height:2}.paywall-card .hub-action{margin:5px}
+@media(max-width:560px){.user-hub-trigger,.service-dock-trigger{top:12px;width:43px;height:43px;border-radius:14px}.user-hub-trigger{right:10px}.service-dock-trigger{left:10px}.hub-window{padding:15px;border-radius:20px}.hub-field{grid-template-columns:1fr}.hub-full{grid-column:auto}.service-drawer{top:65px;left:9px;width:min(350px,calc(100vw - 18px))}}
+
 </style></head>
 <body><div class="wrap">
 <nav class="nav"><a class="brand" href="/"><span class="brand-mark">ث</span><span><b>ثریا</b><small>جهان خدمات هوشمند · SURAYA</small></span></a><div class="nav-links"><a href="#services">خدمات</a><a href="/creator.html">استودیو سازندگان</a><a href="/world/">جهان دیجیتال</a></div><a class="nav-cta" href="#services">کشف خدمات ←</a></nav>
@@ -445,4 +477,83 @@ fetch("/api/services").then(r=>{if(!r.ok)throw new Error("catalog unavailable");
  map.whenReady(()=>{if(loading)loading.classList.add("hidden");setTimeout(()=>map.invalidateSize(),250);});
  window.addEventListener("resize",()=>map.invalidateSize());
 })();
-</script></body></html>
+</script>
+<button class="user-hub-trigger" id="userHubOpen" aria-label="مدیریت حساب کاربری" title="حساب کاربری"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="3.5"/><path d="M4.8 20c.7-4 3.1-6 7.2-6s6.5 2 7.2 6" stroke-linecap="round"/></svg></button>
+<button class="service-dock-trigger" id="serviceDockOpen" aria-label="باز کردن فهرست خدمات" title="خدمات ثریا"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/><circle cx="8" cy="6" r="1" fill="currentColor"/><circle cx="15" cy="12" r="1" fill="currentColor"/><circle cx="10" cy="18" r="1" fill="currentColor"/></svg></button>
+<aside class="service-drawer" id="serviceDrawer" aria-label="فهرست خدمات"><div class="drawer-head"><div><strong>خدمات قابل استفاده</strong><small>یک خدمت را انتخاب کن تا توضیحات و سهمیه‌اش را ببینی</small></div><button class="hub-close" id="serviceDrawerClose" aria-label="بستن">×</button></div><div id="drawerServices"></div><div class="drawer-detail" id="drawerDetail"><h4 id="drawerDetailTitle"></h4><p id="drawerDetailText"></p><button class="hub-action" id="drawerUseService">انتخاب این خدمت</button></div><p class="hub-note">سهمیه‌های فعلی در این مرحله روی همین مرورگر ذخیره می‌شوند؛ برای اعمال قطعی روی همه دستگاه‌ها باید حساب کاربری و سرور احراز هویت فعال شوند.</p></aside>
+<div class="hub-overlay" id="userHubOverlay" role="dialog" aria-modal="true" aria-labelledby="hubTitle"><section class="hub-window"><div class="hub-head"><h2 id="hubTitle">مرکز مدیریت حساب</h2><button class="hub-close" id="hubClose" aria-label="بستن">×</button></div>
+<div class="hub-profile"><div class="hub-avatar" id="hubAvatar">☺</div><div><strong id="hubDisplayName">کاربر ثریا</strong><small id="hubPhoneLabel">شماره تلفن تأیید نشده</small><div class="hub-actions"><button class="hub-action" id="chooseAvatar">انتخاب عکس مخاطب</button><button class="hub-action" id="shareAvatar">اشتراک‌گذاری عکس</button></div></div></div>
+<input type="file" id="hubAvatarFile" accept="image/*" hidden>
+<div class="hub-section"><h3>اطلاعات و تنظیمات شخصی</h3><div class="hub-field"><label>نام نمایشی<input id="hubName" maxlength="50" placeholder="نام شما"></label><label>زبان رابط<select id="hubLanguage"><option value="fa">فارسی</option><option value="en">English</option></select></label><label class="hub-full">شماره تلفن برای احراز هویت<input id="hubPhone" inputmode="tel" autocomplete="tel" placeholder="مثلاً 09123456789"></label></div><div class="hub-actions"><button class="hub-action" id="requestOtp">درخواست کد تأیید</button><button class="hub-action" id="verifyPhone">تأیید شماره</button></div><p class="hub-note">ارسال و بررسی پیامک هنوز به ارائه‌دهندهٔ پیامک متصل نشده است؛ این دو دکمه فعلاً وضعیت اتصال را شفاف اعلام می‌کنند و کد ساختگی تولید نمی‌کنند.</p><div class="hub-status" id="hubStatus" role="status"></div></div>
+<div class="hub-section"><h3>اعتبار و پاداش‌ها</h3><div class="hub-field"><label>سکه‌های ثریا<input value="۰ سکه" readonly></label><label>وضعیت احراز هویت<input value="تأییدنشده" readonly></label></div><p class="hub-note">پس از اتصال احراز هویت واقعی، پاداش سکه و خدمات اضافه برای تأییدهای تکمیلی فعال می‌شود. سکه‌ها فعلاً ارزش مالی یا قابلیت خرج‌کردن ندارند.</p></div>
+<div class="hub-section"><h3>حریم خصوصی و اعلان‌ها</h3><div class="hub-field"><label>اعلان‌ها<select id="hubNotifications"><option value="on">روشن</option><option value="off">خاموش</option></select></label><label>نمایش عمومی عکس<select id="hubPhotoVisibility"><option value="private">فقط خودم</option><option value="public">قابل مشاهده با لینک اشتراک</option></select></label></div><div class="hub-actions"><button class="hub-action" id="saveHubSettings">ذخیره تنظیمات این دستگاه</button></div></div>
+</section></div>
+<div class="paywall-overlay" id="paywallOverlay" role="dialog" aria-modal="true"><section class="paywall-card"><h3>سهمیهٔ رایگان این خدمت تمام شده است</h3><p>برای ادامهٔ استفاده، اشتراک مناسب را انتخاب کن. در این نسخه فقط پنجرهٔ معرفی اشتراک نمایش داده می‌شود؛ پرداخت تا اتصال درگاه رسمی فعال نیست.</p><button class="hub-action" id="paywallPlans">مشاهدهٔ پلن‌های اشتراک</button><button class="hub-action" id="paywallClose">فعلاً نه</button></section></div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const easyServices=new Set(["social_content","business_content","product_descriptions"]);
+const usageKey="suraya_service_usage_v1",profileKey="suraya_user_profile_v1";
+const load=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key)||"null")||fallback}catch{return fallback}};
+let usage=load(usageKey,{}),profile=load(profileKey,{});
+let chosenCode=null,avatarData="";
+const persist=()=>{try{localStorage.setItem(usageKey,JSON.stringify(usage))}catch{}};
+const saveProfile=()=>{try{localStorage.setItem(profileKey,JSON.stringify(profile))}catch{}};
+const count=code=>Number(usage[code]||0),limit=code=>easyServices.has(code)?5:1;
+const services=()=>window.surayaCatalog||{};
+const serviceNames={"social_content":"محتوای شبکه‌های اجتماعی","business_content":"محتوای کسب‌وکار","product_descriptions":"توضیحات محصول","social_monthly":"مدیریت ماهانه شبکه اجتماعی","subscription_ops":"مدیریت اشتراک","store_launch":"راه‌اندازی فروشگاه"};
+function open(el){el.classList.add("open")}function close(el){el.classList.remove("open")}
+function renderDrawer(){
+ const host=$("drawerServices");if(!host)return;host.replaceChildren();
+ const catalog=services();Object.entries(catalog).forEach(([code,s])=>{
+  const row=document.createElement("button");row.className="drawer-service";row.type="button";
+  const left=document.createElement("span"),name=document.createElement("b"),desc=document.createElement("small");
+  name.textContent=s.title||serviceNames[code]||code;desc.textContent=s.description||"برای مشاهدهٔ توضیحات و شرایط استفاده لمس کن.";
+  left.append(name,desc);const q=document.createElement("span");q.className="drawer-quota";
+  q.textContent=count(code)>=limit(code)?"نیازمند اشتراک":(limit(code)-count(code)).toLocaleString("fa-IR")+" استفادهٔ رایگان";
+  row.append(left,q);row.addEventListener("click",()=>showDetail(code,s));host.append(row);
+ });
+ if(!host.children.length){host.textContent="فهرست خدمات هنوز بارگذاری نشده است."}
+}
+function showDetail(code,s){
+ chosenCode=code;$("drawerDetailTitle").textContent=s.title||serviceNames[code]||code;
+ const left=Math.max(0,limit(code)-count(code));
+ $("drawerDetailText").textContent=(s.description||"این خدمت برای انجام بخشی از کارهای روزمرهٔ شما طراحی شده است.")+" سهمیهٔ آغازین: "+limit(code)+" بار رایگان؛ باقی‌مانده: "+left+" بار.";
+ $("drawerDetail").classList.add("open");
+}
+$("serviceDockOpen").addEventListener("click",()=>{renderDrawer();open($("serviceDrawer"))});
+$("serviceDrawerClose").addEventListener("click",()=>close($("serviceDrawer")));
+$("drawerUseService").addEventListener("click",()=>{
+ if(!chosenCode)return;
+ if(count(chosenCode)>=limit(chosenCode)){open($("paywallOverlay"));return}
+ close($("serviceDrawer"));
+ if(typeof window.selectService==="function")window.selectService(chosenCode);
+ const order=$("selection");if(order)order.scrollIntoView({behavior:"smooth",block:"center"});
+});
+$("paywallClose").addEventListener("click",()=>close($("paywallOverlay")));
+$("paywallPlans").addEventListener("click",()=>{close($("paywallOverlay"));const section=$("orderSection");if(section){section.classList.add("show");section.scrollIntoView({behavior:"smooth"})}});
+$("userHubOpen").addEventListener("click",()=>open($("userHubOverlay")));
+$("hubClose").addEventListener("click",()=>close($("userHubOverlay")));
+$("userHubOverlay").addEventListener("click",e=>{if(e.target===$("userHubOverlay"))close($("userHubOverlay"))});
+$("hubName").value=profile.name||"";$("hubPhone").value=profile.phone||"";$("hubLanguage").value=profile.language||"fa";
+$("hubNotifications").value=profile.notifications||"on";$("hubPhotoVisibility").value=profile.photoVisibility||"private";
+function updateProfile(){const name=$("hubName").value.trim();$("hubDisplayName").textContent=name||"کاربر ثریا";$("hubPhoneLabel").textContent=profile.verified?"شمارهٔ تلفن تأیید شده":($("hubPhone").value.trim()||"شماره تلفن تأیید نشده");if(avatarData)$("hubAvatar").innerHTML='<img alt="عکس مخاطب" src="'+avatarData+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';}
+updateProfile();
+$("chooseAvatar").addEventListener("click",()=>$("hubAvatarFile").click());
+$("hubAvatarFile").addEventListener("change",e=>{const file=e.target.files&&e.target.files[0];if(!file)return;if(!file.type.startsWith("image/"))return;$("hubStatus").textContent="";const reader=new FileReader();reader.onload=()=>{avatarData=String(reader.result||"");profile.avatar=avatarData;saveProfile();updateProfile();$("hubStatus").textContent="عکس مخاطب روی این دستگاه ذخیره شد."};reader.readAsDataURL(file)});
+avatarData=profile.avatar||"";updateProfile();
+$("shareAvatar").addEventListener("click",async()=>{if(!avatarData){$("hubStatus").textContent="ابتدا یک عکس انتخاب کن.";return}try{const blob=await (await fetch(avatarData)).blob();const file=new File([blob],"suraya-profile.png",{type:blob.type||"image/png"});if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:"عکس پروفایل ثریا"});$("hubStatus").textContent="پنجرهٔ اشتراک‌گذاری باز شد."}else{$("hubStatus").textContent="اشتراک مستقیم عکس در این مرورگر پشتیبانی نمی‌شود؛ از تصویر پروفایل اسکرین‌شات بگیر یا مرورگر دیگری را امتحان کن."}}catch(e){$("hubStatus").textContent="اشتراک‌گذاری لغو شد یا در دسترس نیست."}});
+$("requestOtp").addEventListener("click",()=>{$("hubStatus").textContent="ارسال پیامک هنوز فعال نیست؛ ابتدا باید سرویس پیامک و API امن سمت سرور متصل شود."});
+$("verifyPhone").addEventListener("click",()=>{$("hubStatus").textContent="تأیید شماره هنوز فعال نیست؛ برای امنیت، بدون کد پیامکی واقعی هیچ شماره‌ای تأیید نمی‌شود."});
+$("saveHubSettings").addEventListener("click",()=>{profile={...profile,name:$("hubName").value.trim(),phone:$("hubPhone").value.trim(),language:$("hubLanguage").value,notifications:$("hubNotifications").value,photoVisibility:$("hubPhotoVisibility").value,avatar:avatarData,verified:false};saveProfile();updateProfile();$("hubStatus").textContent="تنظیمات این دستگاه ذخیره شد."});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){close($("userHubOverlay"));close($("serviceDrawer"));close($("paywallOverlay"))}});
+const originalSelect=window.selectService;
+if(typeof originalSelect==="function"){window.selectService=function(code){if(count(code)>=limit(code)){open($("paywallOverlay"));return}originalSelect(code);};}
+const form=$("orderForm");
+if(form)form.addEventListener("submit",e=>{if(!chosenCode&&window.selected)chosenCode=window.selected;const code=form.dataset.service;if(!code)return;if(count(code)>=limit(code)){e.preventDefault();e.stopImmediatePropagation();open($("paywallOverlay"));return}usage[code]=count(code)+1;persist();renderDrawer();},true);
+const catalogPoll=setInterval(()=>{if(Object.keys(services()).length){renderDrawer();clearInterval(catalogPoll)}},400);
+})();
+</script>
+
+</body></html>
