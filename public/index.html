@@ -907,6 +907,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
   account.innerHTML='<span class="tab-icon" aria-hidden="true">☻</span><span>حساب</span>';
   tabs.append(account);
   host.after(tabs);
+  window.dispatchEvent(new Event("resize"));
   function activate(id){
     if(!views[id])return;
     Object.entries(views).forEach(([key,view])=>view.classList.toggle("active",key===id));
