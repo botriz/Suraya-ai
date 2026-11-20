@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9af0dc"/><stop offset=".52" stop-color="#9dbeff"/><stop offset="1" stop-color="#a997f2"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#fff" stop-opacity=".38"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="120" fill="#080e1c"/>
+  <circle cx="256" cy="244" r="190" fill="url(#glow)"/>
+  <circle cx="256" cy="244" r="164" fill="none" stroke="#b8f8eb" stroke-opacity=".32" stroke-width="3"/>
+  <circle cx="256" cy="244" r="137" fill="none" stroke="#b8c9ff" stroke-opacity=".28" stroke-width="2" stroke-dasharray="7 15"/>
+  <path d="M256 78c-72 0-130 58-130 130 0 71 58 129 130 129s130-58 130-129c0-72-58-130-130-130Z" fill="url(#bg)" opacity=".13"/>
+  <text x="256" y="328" text-anchor="middle" font-family="Vazirmatn, Noto Sans Arabic, sans-serif" font-size="238" font-weight="800" fill="url(#bg)">ث</text>
+  <path d="M163 390c56 31 130 31 186 0" fill="none" stroke="#8debd5" stroke-width="9" stroke-linecap="round" opacity=".8"/>
+  <circle cx="165" cy="118" r="8" fill="#c7fff0"/><circle cx="366" cy="152" r="6" fill="#c7baff"/><circle cx="348" cy="364" r="5" fill="#a8dfff"/>
+</svg>
