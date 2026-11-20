@@ -2,6 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080e1c">
+<link rel="manifest" href="/manifest.webmanifest"><link rel="icon" href="/app-icon.svg" type="image/svg+xml">
 <meta name="description" content="ثریا؛ جهان خدمات هوشمند برای آفرینندگان، کسب‌وکارها و فروشگاه‌ها."><title>ثریا | جهان خدمات هوشمند</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">\n<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -321,9 +322,39 @@ body.ui-modal-lock{overflow:hidden!important;position:fixed;width:100%;inset-inl
 .world-copy>p{color:#c2ccda;text-shadow:0 2px 8px #000}
 @media(prefers-reduced-motion:reduce){.folder-guardian,.folder-guardian:after,.drawer-guardian{animation:none!important}}
 
+
+/* App-like workspace: fixed outer viewport, scroll only inside the active view. */
+html,body{height:100%;min-height:0;overflow:hidden}
+body{height:100dvh;min-height:0;overflow:hidden}
+.wrap{height:100dvh;max-height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+.wrap>.nav{flex:0 0 auto}
+.nav-links button{border:0;background:transparent;color:#c4cee0;font:inherit;padding:0;cursor:pointer}
+.nav-links button:hover,.nav-links button.active{color:var(--mint)}
+.nav-cta{font:inherit;cursor:pointer;background:#0d1c2c}
+.app-view-host{position:relative;flex:1 1 auto;min-height:0;overflow:hidden}
+.app-view{display:none;height:100%;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#527a83 transparent;padding-bottom:20px}
+.app-view.active{display:block;animation:enter .22s ease}
+.workspace-tabs{display:flex;flex:0 0 auto;align-items:stretch;justify-content:center;gap:8px;padding:9px 8px max(9px,env(safe-area-inset-bottom));border-top:1px solid #b7dfff24;background:#081321f2;backdrop-filter:blur(18px);z-index:1100}
+.workspace-tabs button{min-width:100px;display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:13px;background:transparent;color:#9fb0c6;padding:8px 15px;font:inherit;font-size:12px;cursor:pointer}
+.workspace-tabs button.active{border-color:#8cebd74d;background:linear-gradient(120deg,#173b3b,#1d2941);color:#cafff0;box-shadow:0 6px 20px #0003}
+.workspace-tabs button .tab-icon{font-size:17px;line-height:1}
+.workspace-tabs button:focus-visible,.nav-cta:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
+.world-status{transition:opacity .2s}
+@media(max-width:560px){
+ .wrap{width:100%;margin:0}
+ .wrap>.nav{padding:10px 12px}
+ .nav-links{gap:10px;font-size:10px}
+ .nav-cta{display:none}
+ .workspace-tabs{gap:3px;padding:7px 5px max(7px,env(safe-area-inset-bottom))}
+ .workspace-tabs button{min-width:0;flex:1;flex-direction:column;gap:2px;padding:5px 2px;border-radius:10px;font-size:9px;line-height:1.4}
+ .workspace-tabs button .tab-icon{font-size:16px}
+ .app-view{padding-bottom:14px}
+}
+@media(prefers-reduced-motion:reduce){.app-view.active{animation:none}}
+
 </style></head>
 <body><div class="wrap">
-<nav class="nav"><a class="brand" href="/"><span class="brand-mark">ث</span><span><b>ثریا</b><small>جهان خدمات هوشمند · SURAYA</small></span></a><div class="nav-links"><a href="#services">خدمات</a><a href="/creator.html">استودیو سازندگان</a><a href="/world/">جهان دیجیتال</a></div><a class="nav-cta" href="#services">کشف خدمات ←</a></nav>
+<nav class="nav"><a class="brand" href="/"><span class="brand-mark">ث</span><span><b>ثریا</b><small>جهان خدمات هوشمند · SURAYA</small></span></a><div class="nav-links"><a href="/creator.html">استودیو سازندگان</a><a href="/world/">جهان دیجیتال</a></div><button class="nav-cta" id="navAccount" type="button">حساب کاربری</button></nav>
 
 <section class="world-intro" aria-label="چشم‌انداز جهان دیجیتال ثریا">
   <div class="world-stars"></div>
@@ -822,6 +853,99 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
    decorate();
    new MutationObserver(decorate).observe(drawer,{childList:true,subtree:true});
  }
+})();
+</script>
+
+
+<script>
+/* Organize the existing public site into three contained mobile-first workspaces. */
+(function(){
+  const shell=document.querySelector(".wrap");
+  const topbar=shell&&shell.querySelector(":scope > .nav");
+  if(!shell||!topbar||shell.querySelector(".app-view-host"))return;
+  const host=document.createElement("main");
+  host.className="app-view-host";
+  host.setAttribute("id","surayaWorkspace");
+  const definitions=[
+    {id:"world",label:"جهان",icon:"✧",selectors:[".world-intro",".real-map-section",".real-world-gallery",".bottom-note"]},
+    {id:"services",label:"خدمات",icon:"✦",selectors:["#services",".service-world",".story-world",".order-section"]},
+    {id:"connections",label:"اتصالات",icon:"◈",selectors:["#connectHub"]}
+  ];
+  const views={};
+  definitions.forEach((definition,index)=>{
+    const view=document.createElement("section");
+    view.className="app-view"+(index===0?" active":"");
+    view.id="view-"+definition.id;
+    view.dataset.workspaceView=definition.id;
+    view.setAttribute("aria-label",definition.label);
+    views[definition.id]=view;
+    host.append(view);
+  });
+  topbar.after(host);
+  definitions.forEach(definition=>{
+    const view=views[definition.id];
+    definition.selectors.forEach(selector=>{
+      const node=document.querySelector(selector);
+      if(node&&node!==view&&!host.contains(node))view.append(node);
+    });
+  });
+  const tabs=document.createElement("nav");
+  tabs.className="workspace-tabs";
+  tabs.setAttribute("aria-label","بخش‌های اصلی ثریا");
+  definitions.forEach((definition,index)=>{
+    const button=document.createElement("button");
+    button.type="button";
+    button.dataset.viewTarget=definition.id;
+    button.className=index===0?"active":"";
+    button.setAttribute("aria-pressed",String(index===0));
+    button.innerHTML='<span class="tab-icon" aria-hidden="true">'+definition.icon+'</span><span>'+definition.label+'</span>';
+    tabs.append(button);
+  });
+  const account=document.createElement("button");
+  account.type="button";
+  account.id="workspaceAccount";
+  account.innerHTML='<span class="tab-icon" aria-hidden="true">☻</span><span>حساب</span>';
+  tabs.append(account);
+  host.after(tabs);
+  function activate(id){
+    if(!views[id])return;
+    Object.entries(views).forEach(([key,view])=>view.classList.toggle("active",key===id));
+    tabs.querySelectorAll("[data-view-target]").forEach(button=>{
+      const active=button.dataset.viewTarget===id;
+      button.classList.toggle("active",active);
+      button.setAttribute("aria-pressed",String(active));
+    });
+    views[id].scrollTop=0;
+    if(id==="world")window.dispatchEvent(new Event("resize"));
+  }
+  tabs.addEventListener("click",event=>{
+    const button=event.target.closest("[data-view-target]");
+    if(button)activate(button.dataset.viewTarget);
+    if(event.target.closest("#workspaceAccount"))document.getElementById("userHubOpen")?.click();
+  });
+  document.querySelectorAll('a[href="#services"]').forEach(link=>{
+    link.addEventListener("click",event=>{event.preventDefault();activate("services")});
+  });
+  document.getElementById("navAccount")?.addEventListener("click",()=>document.getElementById("userHubOpen")?.click());
+  const status=document.querySelector(".world-status");
+  fetch("/api/capabilities",{headers:{"Accept":"application/json"}})
+    .then(response=>response.ok?response.json():null)
+    .then(data=>{
+      const c=data?.capabilities;
+      if(!status||!c)return;
+      const text=c.orderIntake
+        ?(c.contentGeneration?"ثبت درخواست و تولید محتوا آماده است":"ثبت درخواست آماده است · اتصال موتور هوش مصنوعی باقی مانده")
+        :"سایت عمومی فعال است · ثبت درخواست هنوز آماده نیست";
+      status.replaceChildren();
+      const dot=document.createElement("i");
+      const label=document.createElement("span");
+      label.textContent=text;
+      status.append(dot,label);
+      status.title="پرداخت آنلاین، اتصال شبکه‌های اجتماعی و کیف پول واقعی هنوز فعال نیستند.";
+    }).catch(()=>{});
+  if("serviceWorker" in navigator){
+    window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}),{once:true});
+  }
 })();
 </script>
 
