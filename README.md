@@ -11,6 +11,9 @@
 - صفحه عمومی خدمات فارسی در مسیر `/`.
 - فهرست خدمات در `GET /api/services`.
 - وضعیت سرویس در `GET /api/status`.
+- وضعیت دقیق قابلیت‌های فعال و غیرفعال در `GET /api/capabilities`.
+- نسخهٔ قابل نصب وب‌اپ (PWA) با پوستهٔ آفلاین محدود؛ APIها و داده‌های پویا هرگز در حافظهٔ آفلاین ذخیره نمی‌شوند.
+- رابط اصلی موبایل در سه فضای داخلی «جهان»، «خدمات» و «اتصالات»؛ پیمایش صفحه درون هر فضای فعال انجام می‌شود.
 - سلامت فرایند در `GET /health`.
 - آمادگی پایگاه داده و وضعیت جهان دیجیتال در `GET /ready`.
 - ثبت درخواست خدمات در `POST /api/order`، فقط در صورت آماده بودن PostgreSQL.
@@ -52,6 +55,7 @@ npm run check
 | GET | `/health` | زنده بودن فرایند |
 | GET | `/ready` | آمادگی پایگاه داده و قابلیت جهان دیجیتال |
 | GET | `/api/status` | وضعیت سرویس و ثبت سفارش |
+| GET | `/api/capabilities` | وضعیت امن و بدون افشای رازِ قابلیت‌های فعال |
 | GET | `/api/services` | کاتالوگ خدمات |
 | POST | `/api/order` | ثبت درخواست مشتری |
 | GET | `/api/world/v1/status` | وضعیت بنیاد جهان دیجیتال |
@@ -107,3 +111,16 @@ The old `setup.js`, `suraya-master-setup.js`, and `setup-revenue.js` bootstrappe
 - The engine validates topic, platform, tone, language and model output. It fails closed without a provider key and never publishes content automatically.
 - Supported platform targets: Instagram, YouTube, Rubika, Telegram and LinkedIn. Supported languages: Persian, English, Arabic and Turkish.
 - This code integration is not a claim that the provider is configured or that generation is live. Provider credentials and billing/quota must be configured separately.
+
+
+## وضعیت قابلیت‌ها و فعال‌سازی
+
+پاسخ `GET /api/capabilities` مرجع وضعیت اجرایی قابلیت‌هاست و هیچ مقدار محرمانه‌ای برنمی‌گرداند:
+
+- ثبت درخواست و دفتر سفارش: با آماده بودن PostgreSQL فعال است.
+- تولید پیش‌نویس محتوا: فقط با تنظیم امن `AI_API_KEY` در محیط میزبانی فعال می‌شود.
+- پنل اپراتور: به `SURAYA_OPERATOR_TOKEN` و پایگاه دادهٔ آماده نیاز دارد.
+- پرداخت آنلاین، اتصال OAuth شبکه‌های اجتماعی، کیف پول واقعی، حساب‌های کاربری سمت سرور و انتشار خودکار: در این نسخه غیرفعال‌اند.
+- فایل ویدئوی پس‌زمینه در این نسخه وجود ندارد؛ این بخش عمداً خارج از محدودهٔ انتشار فعلی است.
+
+وب‌اپ را می‌توان از مرورگر سازگار روی صفحهٔ اصلی گوشی نصب کرد. حالت آفلاین فقط پوستهٔ سایت را نگه می‌دارد؛ ثبت سفارش، تولید محتوا و سایر درخواست‌های API برای کارکردن به اتصال شبکه نیاز دارند.
