@@ -8,6 +8,8 @@ import { createWorldRouter } from "./world/world-api.js";
 import { createHealthRouter } from "./health/health-router.js";
 import { createOperatorRouter } from "./routes/operator-api.js";
 import { createCreatorRouter } from "./routes/creator-api.js";
+import { createContentEngine } from "./ai/content-engine.js";
+import { buildCapabilities } from "./health/capabilities.js";
 
 dotenv.config();
 
@@ -32,6 +34,8 @@ const services = {
   store_launch: { title: "راه‌اندازی محتوایی فروشگاه آنلاین", price: 49, currency: "USD", billing: "one_time", description: "ساختار دسته‌بندی، محتوای صفحات کلیدی و بسته اولیه توضیحات محصول." }
 };
 
+const contentEngine = createContentEngine();
+
 const pool = process.env.DATABASE_URL
   ? new Pool({
       connectionString: process.env.DATABASE_URL,
@@ -46,6 +50,15 @@ let databaseReady = false;
 let databaseError = "DATABASE_URL is not configured";
 let worldDatabaseReady = false;
 const requestBuckets = new Map();
+
+function currentCapabilities() {
+  return buildCapabilities({
+    databaseReady,
+    worldDatabaseReady,
+    contentEngineReady: contentEngine.isConfigured(),
+    operatorTokenConfigured: Boolean(process.env.SURAYA_OPERATOR_TOKEN)
+  });
+}
 
 async function initializeDatabase() {
   if (!pool) return;
@@ -116,14 +129,20 @@ app.get("/api/status", (_req, res) => {
     service: "Suraya",
     version: "1.1.0",
     orderIntake: databaseReady,
+    capabilities: currentCapabilities(),
     uptime: process.uptime(),
     timestamp: new Date().toISOString()
   });
 });
 
+app.get("/api/capabilities", (_req, res) => {
+  res.set("Cache-Control", "no-store");
+  res.json({ ok: true, service: "Suraya", capabilities: currentCapabilities() });
+});
+
 app.use("/api/world/v1", createWorldRouter({ pool, isDatabaseReady: () => worldDatabaseReady }));
 app.use("/api/operator/v1", createOperatorRouter({ pool, getToken: () => process.env.SURAYA_OPERATOR_TOKEN }));
-app.use("/api/creator/v1", createCreatorRouter({ rateLimit }));
+app.use("/api/creator/v1", createCreatorRouter({ engine: contentEngine, rateLimit }));
 
 app.get("/api/services", (_req, res) => {
   res.json({ ok: true, services });
