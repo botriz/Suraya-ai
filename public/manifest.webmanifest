@@ -1,0 +1,23 @@
+{
+  "id": "/",
+  "name": "ثریا | جهان خدمات هوشمند",
+  "short_name": "ثریا",
+  "description": "درگاه خدمات هوشمند، استودیوی سازندگان و اتصالات دیجیتال ثریا",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#080e1c",
+  "theme_color": "#080e1c",
+  "icons": [
+    {
+      "src": "/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

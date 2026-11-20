@@ -4,6 +4,8 @@
 - Persian public services page at `/`.
 - `GET /api/services` service catalogue.
 - `GET /api/status` runtime and order-intake readiness.
+- `GET /api/capabilities` reports enabled integrations without exposing secrets.
+- Installable PWA shell with network-only API behavior and a limited offline page fallback.
 - `POST /api/order` validated order intake with PostgreSQL persistence.
 - Basic per-IP submission throttling and bounded request payloads.
 - No online payment is enabled; displayed prices are indicative and must be confirmed before work begins.
@@ -29,3 +31,8 @@ The application creates the `suraya_orders` table on startup. If `DATABASE_URL` 
 - Do not collect sensitive identity or payment-card data in the request form.
 - Back up the managed PostgreSQL database and restrict database credentials to the web service.
 - The in-memory rate limiter is a basic single-instance safeguard, not distributed abuse protection.
+
+
+## Capability checks
+
+Use `GET /api/capabilities` after deployment. It reports order intake, content generation, operator access, and digital-world read API readiness separately. Payments, social OAuth, real crypto/personal wallets, server-side user accounts, and automatic publishing remain explicitly disabled until their providers and security controls are implemented.

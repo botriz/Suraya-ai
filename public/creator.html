@@ -2,6 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#08111f">
+<link rel="manifest" href="/manifest.webmanifest"><link rel="icon" href="/app-icon.svg" type="image/svg+xml">
 <meta name="description" content="استودیوی هوشمند سازندگان ثریا؛ از ایده تا بسته محتوایی."><title>ثریا | استودیوی سازندگان</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -54,4 +55,5 @@ try{const res=await fetch("/api/creator/v1/draft",{method:"POST",headers:{"Conte
 for(const [key,label] of Object.entries(labels)){const item=document.createElement("article");item.className="result-item";const top=document.createElement("div");top.className="result-top";const h=document.createElement("h3");h.textContent=label;const copy=document.createElement("button");copy.className="copy";copy.type="button";copy.textContent="کپی";const value=document.createElement("div");value.className="result-text";value.textContent=String(data.draft?.[key]??"");copy.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(value.textContent);copy.textContent="کپی شد ✓";setTimeout(()=>copy.textContent="کپی",1600)}catch(_){copy.textContent="کپی نشد"}});top.append(h,copy);item.append(top,value);$("fields").append(item)}
 $("output").classList.add("has-output");status.textContent="پیش‌نویس آماده شد؛ بازبینی و تأیید نهایی با توست."}catch(err){status.className="status err";status.textContent=err.message||"ارتباط با موتور تولید محتوا برقرار نشد."}finally{btn.disabled=false;btn.textContent="✦ ساخت بستهٔ محتوایی"}});
 })();
-</script></body></html>
+</script><script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}),{once:true})}</script>
+</body></html>
