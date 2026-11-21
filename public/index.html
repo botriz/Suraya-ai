@@ -560,6 +560,24 @@ button:focus-visible,a:focus-visible{outline:2px solid #9af1dc;outline-offset:3p
 @media(max-width:850px){.catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.catalog-page,.contact-page{padding:18px 0 42px}.catalog-hero,.contact-hero{padding:20px;border-radius:21px}.catalog-grid{grid-template-columns:1fr}.catalog-item{min-height:165px}.contact-grid{grid-template-columns:1fr}.social-directory{padding:17px}.social-link-grid{grid-template-columns:1fr}.social-directory-head{align-items:flex-start}.contact-method{padding:15px}}
 
+
+.wallet-page{max-width:1180px;margin:0 auto;padding:32px 0 60px}
+.wallet-page-hero{padding:26px;border:1px solid #b8d8ef30;border-radius:26px;background:radial-gradient(ellipse at 85% 0%,#8debd51c,transparent 42%),linear-gradient(145deg,#14263cef,#0a1626f5);box-shadow:0 22px 65px #0004}
+.wallet-page-hero h2{font-size:clamp(25px,4vw,38px);margin:8px 0}
+.wallet-page-hero>p{max-width:760px;color:#b9c9dc;font-size:13px;margin:0}
+.wallet-safety{display:flex;align-items:center;gap:12px;margin-top:20px;padding:13px 15px;border:1px solid #8debd548;border-radius:16px;background:#8debd50b}
+.wallet-safety>span{font-size:25px;color:#a1f1dc}.wallet-safety b,.wallet-safety small{display:block}.wallet-safety b{font-size:12px;color:#b8f4e4}.wallet-safety small{font-size:10px;color:#aabbd0}
+.wallet-overview-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin:17px 0}
+.wallet-overview-card{padding:19px;border:1px solid #b8d8ef2a;border-radius:19px;background:linear-gradient(150deg,#152840,#0c1728);min-width:0}
+.wallet-overview-card span,.wallet-overview-card small{display:block;color:#9fb2c8;font-size:10px}
+.wallet-overview-card strong{display:block;font-size:15px;margin:9px 0;color:#e8f4ff}
+.wallet-next-steps{padding:21px;border:1px solid #b8d8ef28;border-radius:21px;background:#ffffff06}
+.wallet-next-steps h3{font-size:17px;margin:0 0 10px}
+.wallet-next-steps ol{padding-right:20px;color:#bdcadd;font-size:12px;line-height:2.2}
+.wallet-open-settings{margin-top:8px}
+.wallet-page-note{font-size:10px;color:#8fa3bc;line-height:2;margin-top:15px}
+@media(max-width:650px){.wallet-page{padding:18px 0 40px}.wallet-page-hero{padding:20px}.wallet-overview-grid{grid-template-columns:1fr}.wallet-overview-card{padding:15px}}
+
 </style></head>
 <body><div class="wrap">
 <nav class="nav"><a class="brand" href="/"><span class="brand-mark">ث</span><span><b>ثریا</b><small>جهان خدمات هوشمند · SURAYA</small></span></a><div class="nav-links"><a href="/creator.html">استودیو سازندگان</a><a href="/world/">جهان دیجیتال</a></div><button class="nav-cta" id="navAccount" type="button">حساب کاربری</button></nav>
@@ -797,6 +815,17 @@ button:focus-visible,a:focus-visible{outline:2px solid #9af1dc;outline-offset:3p
   </div>
   <p class="social-note">این کلیدها فعلاً به صفحهٔ اصلی هر پلتفرم می‌روند، نه حساب اختصاصی ثریا. برای اتصال به صفحه‌های واقعی خودت باید نشانی هر حساب را در اختیارم بگذاری.</p>
  </div>
+</section>
+
+<section class="wallet-page" id="walletPage" aria-labelledby="walletPageTitle">
+ <div class="wallet-page-hero"><span class="eyebrow">SURAYA SECURE WALLET</span><h2 id="walletPageTitle">مرکز کیف پول ثریا</h2><p>نمای یکپارچه برای مشاهدهٔ کیف‌های متصل، دارایی‌ها و سوابق تراکنش؛ فعال‌سازی مالی پس از تکمیل احراز هویت، انتخاب شبکه و آزمون امنیتی انجام می‌شود.</p><div class="wallet-safety"><span>◈</span><div><b>حالت ایمن · بدون نگهداری کلید خصوصی</b><small>در این مرحله هیچ موجودی، آدرس یا تراکنش ساختگی نمایش داده نمی‌شود.</small></div></div></div>
+ <div class="wallet-overview-grid">
+  <article class="wallet-overview-card"><span>وضعیت کیف شخصی</span><strong>در انتظار راه‌اندازی امن</strong><small>پس از تکمیل حساب کاربری و انتخاب مدل کیف</small></article>
+  <article class="wallet-overview-card"><span>کیف‌های خارجی</span><strong>اتصال هنوز فعال نیست</strong><small>اتصال غیرامانی با امضای امن و مجوز محدود</small></article>
+  <article class="wallet-overview-card"><span>تاریخچه تراکنش‌ها</span><strong>هنوز تراکنشی ثبت نشده</strong><small>تاریخچه از دفترکل معتبر و زنجیره دریافت خواهد شد</small></article>
+ </div>
+ <div class="wallet-next-steps"><h3>پیش‌نیازهای فعال‌سازی واقعی</h3><ol><li>ثبت‌نام و احراز هویت حساب کاربری</li><li>انتخاب شبکه و دارایی‌های مورد پشتیبانی</li><li>راه‌اندازی دفترکل پایدار و کنترل تکرار تراکنش</li><li>اتصال کیف غیرامانی یا سرویس نگهداری کلیدِ بررسی‌شده</li><li>آزمون و ممیزی امنیتی پیش از پذیرش دارایی واقعی</li></ol><button type="button" class="btn wallet-open-settings" id="walletOpenSettings">مشاهده گزینه‌های کیف پول</button></div>
+ <p class="wallet-page-note">هوش مرکزی می‌تواند وضعیت و گزارش‌های کیف پول را تحلیل کند؛ اما نباید عبارت بازیابی، کلید خصوصی یا اختیار انتقال دارایی را در اختیار داشته باشد. هر انتقال مالی باید با امضای مالک و کنترل‌های مستقل انجام شود.</p>
 </section>
 <footer class="bottom-note"><span>ثریا · جهان خدمات هوشمند</span><span><a href="/creator.html">استودیو سازندگان</a>　·　<a href="/world/">جهان دیجیتال</a>　·　حریم خصوصی و انتخاب آگاهانه</span></footer></div>
 <aside class="cookie-toast" id="cookieToast" aria-label="تنظیمات کوکی" style="display:none;position:fixed;z-index:30;bottom:14px;left:14px;right:14px;max-width:680px;margin:auto;padding:15px 17px;border:1px solid #b9d5ff35;border-radius:18px;background:#091322f5;box-shadow:0 18px 60px #0009;backdrop-filter:blur(18px)"><div style="display:flex;gap:12px;align-items:flex-start"><span style="font-size:24px">🍪</span><div style="flex:1"><b style="font-size:13px">انتخاب حریم خصوصی تو</b><p style="font-size:11px;color:#a8b5c9;margin:3px 0 10px">فقط برای ثبت انتخاب حریم خصوصی از کوکی ضروری استفاده می‌کنیم. هیچ کوکی تحلیلی، تبلیغاتی یا ردیابی در این صفحه فعال نیست.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="cookieAccept" type="button" style="border:0;border-radius:9px;padding:7px 12px;background:#83e8d1;color:#08201e;font-size:11px;font-weight:800">پذیرش کوکی ترجیحی</button><button id="cookieReject" type="button" style="border:1px solid #ffffff25;border-radius:9px;padding:7px 12px;background:#ffffff08;color:#e8efff;font-size:11px">فقط ضروری‌ها</button></div></div></div></aside>
@@ -1108,7 +1137,8 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
     {id:"services",label:"خدمات",icon:"✦",selectors:["#services",".service-world",".story-world",".order-section"]},
     {id:"connections",label:"اتصالات",icon:"◈",selectors:["#connectHub"]},
     {id:"products",label:"محصولات",icon:"▦",selectors:["#productsPage"]},
-    {id:"contact",label:"ارتباط",icon:"✉",selectors:["#contactPage"]}
+    {id:"contact",label:"ارتباط",icon:"✉",selectors:["#contactPage"]},
+    {id:"wallet",label:"کیف پول",icon:"◈",selectors:["#walletPage"]}
   ];
   const views={};
   definitions.forEach((definition,index)=>{
@@ -1207,6 +1237,17 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
    if(count)count.textContent=new Intl.NumberFormat("fa-IR").format(services.length)+" خدمت";
   })
   .catch(()=>{host.innerHTML='<article class="catalog-item catalog-empty">دریافت فهرست خدمات ممکن نشد. لطفاً کمی بعد دوباره تلاش کن.</article>';if(count)count.textContent="عدم دسترسی"});
+})();
+</script>
+
+
+<script>
+(function(){
+ const button=document.getElementById("walletOpenSettings");
+ if(button)button.addEventListener("click",()=>{
+  document.querySelector('.workspace-tabs [data-view-target="connections"]')?.click();
+  document.querySelector('#connectHub .connect-tab[data-connect-tab="wallet"]')?.click();
+ });
 })();
 </script>
 
