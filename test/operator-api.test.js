@@ -24,3 +24,15 @@ test("operator API rejects missing token",async()=>{const r=await fetch(baseUrl+
 test("operator API lists orders with valid token",async()=>{const r=await fetch(baseUrl+"/api/operator/v1/orders",{headers:{Authorization:"Bearer test-secret"}});const b=await r.json();assert.equal(r.status,200);assert.equal(b.orders.length,1);});
 test("operator API validates order status",async()=>{const r=await fetch(baseUrl+"/api/operator/v1/orders/SUR-ABCDEF1234",{method:"PATCH",headers:{Authorization:"Bearer test-secret","Content-Type":"application/json"},body:JSON.stringify({status:"paid"})});assert.equal(r.status,400);});
 test("operator API records approved status changes transactionally",async()=>{const r=await fetch(baseUrl+"/api/operator/v1/orders/SUR-ABCDEF1234",{method:"PATCH",headers:{Authorization:"Bearer test-secret","Content-Type":"application/json"},body:JSON.stringify({status:"quoted",quotedAmount:12,quotedCurrency:"USD",operatorNote:"Scope confirmed"})});const b=await r.json();assert.equal(r.status,200);assert.equal(b.order.status,"quoted");});
+
+test("operator API rejects an incorrect token and never caches protected responses",async()=>{
+  const rejected=await fetch(baseUrl+"/api/operator/v1/orders",{headers:{Authorization:"Bearer wrong-secret"}});
+  assert.equal(rejected.status,401);
+  assert.equal(rejected.headers.get("cache-control"),"no-store");
+});
+test("operator API fails closed when no token is configured",async()=>{
+  const app=express();app.use("/api/operator/v1",createOperatorRouter({pool,getToken:()=>undefined}));
+  const isolated=createServer(app);await new Promise(r=>isolated.listen(0,"127.0.0.1",r));
+  try { const r=await fetch("http://127.0.0.1:"+isolated.address().port+"/api/operator/v1/orders",{headers:{Authorization:"Bearer test-secret"}});assert.equal(r.status,401); }
+  finally { await new Promise((r,j)=>isolated.close(e=>e?j(e):r())); }
+});
