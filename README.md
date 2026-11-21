@@ -134,3 +134,11 @@ The old `setup.js`, `suraya-master-setup.js`, and `setup-revenue.js` bootstrappe
 - The editorial calendar is local to the current browser in this release; it is not synced to PostgreSQL and does not schedule publishing.
 - Account OAuth, platform write scopes, automatic publishing, and verified analytics remain disabled until official adapters and security controls are implemented.
 - See `docs/social-operations-v1.md` for architecture, permission boundaries, and next implementation gates.
+
+
+## Central operations dashboard
+
+- Read-only operations overview: `/control-center.html`.
+- Reads `/api/status`, `/api/capabilities`, and `/api/services` to display server-reported health, enabled capabilities, and the active service catalogue.
+- Reports deterministic diagnostics for disabled capabilities; it does not run production repairs or claim autonomous AI control.
+- The Social Operations workspace is available at `/social-studio.html`.
