@@ -1251,4 +1251,111 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
 })();
 </script>
 
+
+<style>
+/* Global release-grade layout pass: edge-to-edge frame, editorial workspaces,
+   consistent responsive grids, and accessible navigation. */
+:root{--frame-gutter:clamp(14px,3vw,42px);--workspace-max:1380px}
+html,body{width:100%;max-width:100%;min-width:0}
+.wrap{width:100%;max-width:none;margin:0}
+.wrap>.nav{width:100%;padding-inline:var(--frame-gutter);border-radius:0 0 20px 20px}
+.app-view-host{width:100%;min-width:0;background:
+ radial-gradient(ellipse at 8% 8%,#2b8a8520,transparent 32%),
+ radial-gradient(ellipse at 94% 12%,#6655a51c,transparent 34%),
+ linear-gradient(155deg,#07111f,#0b1728 55%,#101b2d)}
+.app-view{width:100%;min-width:0;overscroll-behavior-y:contain;scroll-behavior:smooth}
+.app-view:not(#view-world)>:is(#services,.connect-hub,.catalog-page,.contact-page,.wallet-page,.order-section,.story-world,.real-map-section,.real-world-gallery){
+ width:min(var(--workspace-max),calc(100% - 2 * var(--frame-gutter)));
+ max-width:var(--workspace-max);margin-inline:auto
+}
+#view-services{padding-top:clamp(18px,3vw,38px)}
+#view-connections,#view-products,#view-contact,#view-wallet{padding-top:clamp(12px,2.4vw,28px)}
+#view-connections .connect-hub{padding-top:clamp(22px,3vw,42px)}
+#view-products .catalog-page,#view-contact .contact-page,#view-wallet .wallet-page{padding-top:clamp(18px,2vw,30px)}
+.nav{min-height:72px;backdrop-filter:blur(24px)}
+.brand-mark{position:relative;isolation:isolate}
+.brand-mark:after{content:"";position:absolute;inset:-5px;border:1px solid #9af0dc55;border-radius:18px;box-shadow:0 0 24px #79e8d722;z-index:-1}
+.workspace-tabs{width:100%;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:clamp(3px,1vw,12px);padding:9px max(12px,var(--frame-gutter)) max(9px,env(safe-area-inset-bottom));}
+.workspace-tabs button{min-width:0;width:100%;padding:9px 6px;white-space:nowrap}
+.workspace-tabs button.active{position:relative}
+.workspace-tabs button.active:after{content:"";position:absolute;inset:auto 22% -9px;height:2px;border-radius:9px;background:linear-gradient(90deg,transparent,#8debd5,transparent);box-shadow:0 0 12px #8debd5}
+.app-view.active{animation:workspaceEnter .28s cubic-bezier(.2,.75,.25,1)}
+@keyframes workspaceEnter{from{opacity:.72;transform:translateY(7px)}to{opacity:1;transform:none}}
+.catalog-page,.contact-page,.wallet-page,.connect-hub{min-width:0}
+.catalog-hero,.contact-hero,.wallet-page-hero{position:relative;overflow:hidden}
+.catalog-hero:after,.contact-hero:after,.wallet-page-hero:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 20%,#ffffff08 48%,transparent 72%);transform:translateX(100%);animation:heroSheen 11s ease-in-out infinite}
+@keyframes heroSheen{0%,65%,100%{transform:translateX(100%)}82%{transform:translateX(-100%)}}
+.catalog-item,.contact-method,.social-link,.wallet-overview-card,.connect-card{min-width:0;backdrop-filter:blur(12px)}
+.catalog-item:focus-within,.contact-method:focus-visible,.social-link:focus-visible{outline:2px solid var(--accent-live);outline-offset:3px}
+.catalog-item h3,.contact-method strong,.social-link b{overflow-wrap:anywhere}
+.social-link-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.wallet-overview-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.workspace-tabs button:focus-visible{outline:2px solid #9af0dc;outline-offset:2px}
+.app-view-host[data-swipe-ready="true"]{touch-action:pan-y pinch-zoom}
+@media(min-width:1100px){
+ .workspace-tabs{padding-inline:clamp(80px,14vw,240px)}
+ .workspace-tabs button{font-size:12px}
+ .world-intro{min-height:min(900px,calc(100dvh - 150px))}
+}
+@media(max-width:850px){
+ .workspace-tabs{padding-inline:12px}
+ .social-link-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .wallet-overview-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+ :root{--frame-gutter:14px}
+ .wrap>.nav{min-height:58px;padding-inline:14px}
+ .brand-mark{width:38px;height:38px;border-radius:13px}
+ .brand b{font-size:17px}
+ .brand small{font-size:8px}
+ .nav-links{gap:9px;font-size:9px}
+ .workspace-tabs{gap:2px;padding:7px 5px max(7px,env(safe-area-inset-bottom))}
+ .workspace-tabs button{padding:5px 1px;white-space:normal;font-size:9px;line-height:1.35}
+ .workspace-tabs button .tab-icon{font-size:17px}
+ .app-view{padding-bottom:10px}
+ .catalog-page,.contact-page,.wallet-page{padding-bottom:30px}
+ .catalog-hero,.contact-hero,.wallet-page-hero{padding:18px;border-radius:19px}
+ .social-link-grid{grid-template-columns:1fr}
+ .connect-hub{padding-inline:0}
+ .world-intro{border-radius:0}
+}
+@media(prefers-reduced-motion:reduce){
+ .app-view.active,.catalog-hero:after,.contact-hero:after,.wallet-page-hero:after{animation:none!important}
+}
+</style>
+<script>
+/* Touch-swipe and keyboard navigation between complete workspaces. Vertical
+   scrolling and interactive controls keep their native behavior. */
+(function(){
+ const host=document.getElementById("surayaWorkspace");
+ const tabs=document.querySelector(".workspace-tabs");
+ if(!host||!tabs||host.dataset.swipeReady==="true")return;
+ host.dataset.swipeReady="true";
+ const order=Array.from(host.querySelectorAll("[data-workspace-view]")).map(view=>view.dataset.workspaceView);
+ const ignored='a,button,input,textarea,select,summary,[contenteditable="true"],.leaflet-container,[role="dialog"]';
+ let start=null;
+ host.addEventListener("pointerdown",event=>{
+  if(event.pointerType==="mouse"||event.button!==0||event.target.closest(ignored))return;
+  start={x:event.clientX,y:event.clientY,id:event.pointerId};
+ },{passive:true});
+ host.addEventListener("pointerup",event=>{
+  if(!start||start.id!==event.pointerId){start=null;return}
+  const dx=event.clientX-start.x,dy=event.clientY-start.y;
+  start=null;
+  if(Math.abs(dx)<68||Math.abs(dx)<Math.abs(dy)*1.35)return;
+  const active=order.findIndex(id=>host.querySelector('[data-workspace-view="'+id+'"]')?.classList.contains("active"));
+  const next=Math.max(0,Math.min(order.length-1,active+(dx<0?1:-1)));
+  if(next!==active)tabs.querySelectorAll("[data-view-target]").forEach(button=>{if(button.dataset.viewTarget===order[next])button.click()});
+ },{passive:true});
+ host.addEventListener("pointercancel",()=>{start=null},{passive:true});
+ document.addEventListener("keydown",event=>{
+  if(event.altKey||event.ctrlKey||event.metaKey||event.target.closest(ignored))return;
+  if(event.key!=="ArrowLeft"&&event.key!=="ArrowRight")return;
+  const active=order.findIndex(id=>host.querySelector('[data-workspace-view="'+id+'"]')?.classList.contains("active"));
+  const next=Math.max(0,Math.min(order.length-1,active+(event.key==="ArrowLeft"?1:-1)));
+  if(next!==active){event.preventDefault();tabs.querySelectorAll("[data-view-target]").forEach(button=>{if(button.dataset.viewTarget===order[next])button.click()})}
+ });
+})();
+</script>
+
 </body></html>
