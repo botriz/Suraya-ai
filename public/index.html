@@ -521,6 +521,45 @@ button:focus-visible,a:focus-visible{outline:2px solid #9af1dc;outline-offset:3p
  .btn,.workspace-tabs button,.real-world-card{transition:none!important}
 }
 
+
+/* Product catalog, contact center, and extensible social directory */
+.catalog-page,.contact-page{padding:34px 0 64px;max-width:1180px;margin:0 auto}
+.catalog-hero,.contact-hero{padding:25px 28px;border:1px solid #b8d8ef2a;border-radius:26px;background:radial-gradient(ellipse at 85% 0%,#8debd51b,transparent 40%),linear-gradient(145deg,#14263ceF,#0a1626f5);box-shadow:0 24px 65px #0004}
+.catalog-hero h2,.contact-hero h2{font-size:clamp(25px,4vw,38px);margin:8px 0}
+.catalog-hero p,.contact-hero p{font-size:13px;color:#b9c9dc;max-width:680px;margin:0}
+.catalog-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:20px;color:#98abc2;font-size:11px}
+.catalog-live{display:flex;align-items:center;gap:8px;color:#a5efdc}
+.catalog-live i{width:7px;height:7px;border-radius:50%;background:#79edc6;box-shadow:0 0 13px #79edc6}
+.catalog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-top:19px}
+.catalog-item{position:relative;overflow:hidden;min-height:190px;padding:19px;border:1px solid #b8d8ef2a;border-radius:21px;background:linear-gradient(150deg,#152840,#0c1728);box-shadow:0 16px 45px #0003;transition:transform .22s,border-color .22s}
+.catalog-item:hover{transform:translateY(-4px);border-color:#8debd56b}
+.catalog-item:before{content:"";position:absolute;width:150px;height:150px;left:-75px;bottom:-95px;border-radius:50%;background:#8debd512;filter:blur(8px)}
+.catalog-kind{font-size:10px;color:#9bead8;border:1px solid #8debd53c;border-radius:99px;padding:3px 9px;display:inline-block}
+.catalog-item h3{font-size:16px;margin:12px 0 6px}
+.catalog-item p{font-size:11px;color:#aebed0;line-height:1.9;min-height:42px;margin:0 0 15px}
+.catalog-meta{display:flex;justify-content:space-between;align-items:center;gap:8px;color:#e2edf9;font-size:12px}
+.catalog-meta strong{font-size:15px;color:#a4f0db}
+.catalog-loading,.catalog-empty{grid-column:1/-1;text-align:center;color:#aebed0}
+.catalog-footnote,.social-note{font-size:10px;line-height:2;color:#8296af;margin-top:15px}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:18px 0 35px}
+.contact-method{display:flex;align-items:center;gap:14px;padding:19px;border:1px solid #b8d8ef2b;border-radius:19px;background:linear-gradient(140deg,#152941,#0c1728);transition:transform .2s,border-color .2s;min-width:0}
+.contact-method:hover,.social-link:hover{transform:translateY(-3px);border-color:#8debd56b}
+.contact-symbol{width:48px;height:48px;flex:0 0 48px;display:grid;place-items:center;border-radius:16px;background:#8debd51a;color:#a3f1dc;font-size:23px}
+.contact-method small,.social-link small{display:block;color:#91a6bf;font-size:10px}
+.contact-method strong{display:block;font-size:14px;direction:ltr;text-align:right;overflow-wrap:anywhere}
+.contact-arrow{margin-right:auto;color:#9debd8;font-size:17px}
+.social-directory{padding:24px;border:1px solid #b8d8ef2a;border-radius:25px;background:linear-gradient(145deg,#12243a,#0a1525)}
+.social-directory-head{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:17px}
+.social-directory-head h3{font-size:21px;margin:5px 0}
+.social-directory-head p{font-size:11px;color:#aebed0;margin:0;max-width:690px}
+.social-total{font-size:10px;color:#a5efdc;border:1px solid #8debd54a;padding:5px 11px;border-radius:99px;white-space:nowrap}
+.social-link-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.social-link{display:flex;align-items:center;gap:12px;padding:13px;border:1px solid #ffffff17;border-radius:15px;background:#ffffff06;transition:transform .2s,border-color .2s;min-width:0}
+.social-mark{width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;border-radius:12px;background:#9dbaff16;color:#d7eaff;font-size:19px;font-weight:800}
+.social-link b{font-size:12px}
+@media(max-width:850px){.catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.catalog-page,.contact-page{padding:18px 0 42px}.catalog-hero,.contact-hero{padding:20px;border-radius:21px}.catalog-grid{grid-template-columns:1fr}.catalog-item{min-height:165px}.contact-grid{grid-template-columns:1fr}.social-directory{padding:17px}.social-link-grid{grid-template-columns:1fr}.social-directory-head{align-items:flex-start}.contact-method{padding:15px}}
+
 </style></head>
 <body><div class="wrap">
 <nav class="nav"><a class="brand" href="/"><span class="brand-mark">ث</span><span><b>ثریا</b><small>جهان خدمات هوشمند · SURAYA</small></span></a><div class="nav-links"><a href="/creator.html">استودیو سازندگان</a><a href="/world/">جهان دیجیتال</a></div><button class="nav-cta" id="navAccount" type="button">حساب کاربری</button></nav>
@@ -730,6 +769,35 @@ button:focus-visible,a:focus-visible{outline:2px solid #9af1dc;outline-offset:3p
 <section class="story-world" id="sampleWork" aria-live="polite"><div class="story-shell" id="storyShell"><div class="story-head"><div><div class="eyebrow">از ایده تا تجربهٔ قابل لمس</div><h2>ببین این متخصص چه می‌سازد</h2></div><span class="story-stamp">نمونهٔ نمایشی · نه ادعای نتیجهٔ واقعی</span></div><div class="story-grid"><article class="story-narrative"><div class="eyebrow">روایت مسئله و راه‌حل</div><h3 id="storyTitle">هر تغییر بزرگ، از یک قدم کوچک شروع می‌شود.</h3><p id="storyText">یک خدمت را از فهرست انتخاب کن تا داستان کوتاه و نمونه‌کار همان تخصص را ببینی.</p><div class="story-points" id="storyPoints"><span>شفاف</span><span>کاربردی</span><span>قابل بررسی</span></div></article><article class="story-artifact"><div class="artifact-top"><div class="artifact-brand"><span class="artifact-logo" id="artifactLogo"></span><span id="artifactBrand">کارگاه خلاق ثریا</span></div><span class="artifact-type" id="artifactType">پیش‌نمایش نمونه‌کار</span></div><div class="artifact-content"><h4 id="artifactTitle">یک نمونهٔ واقعی‌نما، با برچسب نمونه</h4><p id="artifactText">اینجا خروجی نمونهٔ همان خدمت نمایش داده می‌شود؛ بدون ادعای مشتری یا آمار ساختگی.</p></div><div class="artifact-bottom"><span id="artifactMeta">قابل شخصی‌سازی برای سفارش شما</span><span>✦ ثریا</span></div></article></div><div class="sample-disclaimer">این نمونه‌ها برای نمایش کیفیت و سبک خروجی ساخته شده‌اند؛ مطالعهٔ موردی مشتری واقعی یا تضمین فروش، بازدید و موفقیت نیستند.</div></div></section>
 <section class="order-section" id="orderSection"><div class="section-intro"><div><div class="eyebrow">گام بعدی · برآورد و درخواست</div><h2>پیش‌فاکتور انتخاب تو</h2><p>مبلغ فقط پس از انتخاب خدمت نمایش داده می‌شود.</p></div></div><div class="order-layout"><div class="order-card"><h2>تکمیل درخواست</h2><p class="muted">اطلاعات تماس و توضیحات را وارد کن تا درخواست در سامانه ثبت شود.</p><form id="orderForm"><div class="form-grid"><div class="field"><label for="customerName">نام *</label><input id="customerName" name="name" minlength="2" maxlength="120" autocomplete="name" required></div><div class="field"><label for="customerEmail">ایمیل (اختیاری)</label><input id="customerEmail" name="email" type="email" maxlength="254" autocomplete="email"></div><div class="field full"><label for="customerDetails">جزئیات و خواسته‌ها</label><textarea id="customerDetails" name="details" maxlength="4000" placeholder="هدف، مخاطب، زمان‌بندی یا جزئیات موردنیاز را بنویس…"></textarea></div></div><button class="btn submit" id="submitButton" type="submit">ثبت درخواست و دریافت کد پیگیری</button><div id="result" role="status" aria-live="polite"></div></form></div>
 <aside class="invoice-card"><div class="invoice-kicker">SURAYA · SERVICE ESTIMATE</div><h2>پیش‌فاکتور خدمات</h2><p class="muted">خلاصهٔ خدمت انتخاب‌شده</p><div class="invoice-line"><span>شرح خدمت</span><span id="invoiceTitle">—</span></div><div class="invoice-line"><span>نوع محاسبه</span><span id="invoiceBilling">—</span></div><div class="invoice-line"><span>مبلغ برآوردی</span><span id="invoicePrice">—</span></div><div class="invoice-total"><span>جمع برآورد</span><strong id="invoiceTotal">—</strong></div><span class="invoice-state">پیش‌فاکتور · در انتظار تأیید</span><p class="invoice-foot">این برآورد از کاتالوگ رسمی خدمات سامانه خوانده می‌شود. ثبت درخواست به معنی پرداخت نیست. در حال حاضر درگاه پرداخت آنلاین و صدور فاکتور مالیاتی به این نسخه متصل نشده‌اند؛ مبلغ نهایی و روش پرداخت پیش از شروع کار تأیید می‌شود.</p></aside></div></section>
+
+<section class="catalog-page" id="productsPage" aria-labelledby="productsTitle">
+ <div class="catalog-hero"><span class="eyebrow">SURAYA PRODUCTS & SERVICES</span><h2 id="productsTitle">محصولات و خدمات ثریا</h2><p>فهرست یکپارچهٔ محصولات و خدمات؛ هر خدمت تازه‌ای که به سامانه اضافه شود، در این صفحه نیز قابل مشاهده خواهد بود.</p><div class="catalog-toolbar"><span class="catalog-live"><i></i> دریافت زنده از کاتالوگ سامانه</span><span id="catalogCount">در حال بارگذاری…</span></div></div>
+ <div class="catalog-grid" id="productsCatalog" aria-live="polite"><article class="catalog-item catalog-loading">در حال دریافت فهرست محصولات و خدمات…</article></div>
+ <p class="catalog-footnote">قیمت‌ها و شرایط نمایش‌داده‌شده از کاتالوگ عمومی سایت دریافت می‌شوند. ثبت سفارش به معنی پرداخت نیست؛ قیمت نهایی پیش از شروع کار تأیید خواهد شد.</p>
+</section>
+<section class="contact-page" id="contactPage" aria-labelledby="contactTitle">
+ <div class="contact-hero"><span class="eyebrow">CONTACT & COMMUNITY</span><h2 id="contactTitle">ارتباط با ثریا</h2><p>برای همکاری، پشتیبانی، پیشنهاد محصول یا پیگیری درخواست‌ها از راه‌های زیر با ما در تماس باش.</p></div>
+ <div class="contact-grid">
+  <a class="contact-method" href="mailto:Tabbotriz@gmail.com"><span class="contact-symbol">✉</span><span><small>ایمیل پشتیبانی و همکاری</small><strong>Tabbotriz@gmail.com</strong></span><span class="contact-arrow">↗</span></a>
+  <a class="contact-method" href="tel:+989143018580"><span class="contact-symbol">☎</span><span><small>تماس تلفنی</small><strong dir="ltr">+98 914 301 8580</strong></span><span class="contact-arrow">↗</span></a>
+ </div>
+ <div class="social-directory">
+  <div class="social-directory-head"><div><span class="eyebrow">FIND US ONLINE</span><h3>شبکه‌های اجتماعی</h3><p>برای ورود به هر پلتفرم، کلید مربوط به آن را انتخاب کن. نشانی اختصاصی صفحه‌های رسمی ثریا بعداً از پنل مدیریت قابل تنظیم خواهد بود.</p></div><span class="social-total">۱۰ شبکه</span></div>
+  <div class="social-link-grid">
+   <a class="social-link" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer"><span class="social-mark">▶</span><span><b>YouTube</b><small>ویدئو و آموزش</small></span><span class="contact-arrow">↗</span></a>
+   <a class="social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"><span class="social-mark">◎</span><span><b>Instagram</b><small>تصاویر و اخبار</small></span><span class="contact-arrow">↗</span></a>
+   <a class="social-link" href="https://t.me/" target="_blank" rel="noopener noreferrer"><span class="social-mark">➤</span><span><b>Telegram</b><small>کانال و پشتیبانی</small></span><span class="contact-arrow">↗</span></a>
+   <a class="social-link" href="https://rubika.ir/" target="_blank" rel="noopener noreferrer"><span class="social-mark">ر</span><span><b>Rubika</b><small>شبکهٔ اجتماعی</small></span><span class="contact-arrow">↗</span></a>
+   <a class="social-link" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer"><span class="social-mark">f</span><span><b>Facebook</b><small>جامعه و خبرها</small></span><span class="contact-arrow">↗</span></a>
+   <a class="social-link" href="https://x.com/" target="_blank" rel="noopener noreferrer"><span class="social-mark">𝕏</span><span><b>X</b><small>به‌روزرسانی‌ها</small></span><span class="contact-arrow">↗</span></a>
+   <a class="social-link" href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer"><span class="social-mark">♪</span><span><b>TikTok</b><small>ویدئوهای کوتاه</small></span><span class="contact-arrow">↗</span></a>
+   <a class="social-link" href="https://www.snapchat.com/" target="_blank" rel="noopener noreferrer"><span class="social-mark">👻</span><span><b>Snapchat</b><small>داستان و رسانه</small></span><span class="contact-arrow">↗</span></a>
+   <a class="social-link" href="https://www.whatsapp.com/" target="_blank" rel="noopener noreferrer"><span class="social-mark">◉</span><span><b>WhatsApp</b><small>پیام‌رسانی</small></span><span class="contact-arrow">↗</span></a>
+   <a class="social-link" href="https://eitaa.com/" target="_blank" rel="noopener noreferrer"><span class="social-mark">ا</span><span><b>Eitaa</b><small>کانال و پیام‌رسان</small></span><span class="contact-arrow">↗</span></a>
+  </div>
+  <p class="social-note">این کلیدها فعلاً به صفحهٔ اصلی هر پلتفرم می‌روند، نه حساب اختصاصی ثریا. برای اتصال به صفحه‌های واقعی خودت باید نشانی هر حساب را در اختیارم بگذاری.</p>
+ </div>
+</section>
 <footer class="bottom-note"><span>ثریا · جهان خدمات هوشمند</span><span><a href="/creator.html">استودیو سازندگان</a>　·　<a href="/world/">جهان دیجیتال</a>　·　حریم خصوصی و انتخاب آگاهانه</span></footer></div>
 <aside class="cookie-toast" id="cookieToast" aria-label="تنظیمات کوکی" style="display:none;position:fixed;z-index:30;bottom:14px;left:14px;right:14px;max-width:680px;margin:auto;padding:15px 17px;border:1px solid #b9d5ff35;border-radius:18px;background:#091322f5;box-shadow:0 18px 60px #0009;backdrop-filter:blur(18px)"><div style="display:flex;gap:12px;align-items:flex-start"><span style="font-size:24px">🍪</span><div style="flex:1"><b style="font-size:13px">انتخاب حریم خصوصی تو</b><p style="font-size:11px;color:#a8b5c9;margin:3px 0 10px">فقط برای ثبت انتخاب حریم خصوصی از کوکی ضروری استفاده می‌کنیم. هیچ کوکی تحلیلی، تبلیغاتی یا ردیابی در این صفحه فعال نیست.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="cookieAccept" type="button" style="border:0;border-radius:9px;padding:7px 12px;background:#83e8d1;color:#08201e;font-size:11px;font-weight:800">پذیرش کوکی ترجیحی</button><button id="cookieReject" type="button" style="border:1px solid #ffffff25;border-radius:9px;padding:7px 12px;background:#ffffff08;color:#e8efff;font-size:11px">فقط ضروری‌ها</button></div></div></div></aside>
 <script>
@@ -1038,7 +1106,9 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
   const definitions=[
     {id:"world",label:"جهان",icon:"✧",selectors:[".world-intro",".real-map-section",".real-world-gallery",".bottom-note"]},
     {id:"services",label:"خدمات",icon:"✦",selectors:["#services",".service-world",".story-world",".order-section"]},
-    {id:"connections",label:"اتصالات",icon:"◈",selectors:["#connectHub"]}
+    {id:"connections",label:"اتصالات",icon:"◈",selectors:["#connectHub"]},
+    {id:"products",label:"محصولات",icon:"▦",selectors:["#productsPage"]},
+    {id:"contact",label:"ارتباط",icon:"✉",selectors:["#contactPage"]}
   ];
   const views={};
   definitions.forEach((definition,index)=>{
@@ -1116,6 +1186,27 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
   if("serviceWorker" in navigator){
     window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}),{once:true});
   }
+})();
+</script>
+
+
+<script>
+/* Product catalog reads the same server catalogue as the order form. */
+(function(){
+ const host=document.getElementById("productsCatalog");
+ const count=document.getElementById("catalogCount");
+ if(!host)return;
+ const safe=(value)=>String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+ const money=(value,currency)=>Number.isFinite(Number(value))?new Intl.NumberFormat("fa-IR",{maximumFractionDigits:2}).format(Number(value))+" "+safe(currency||"USD"):"استعلام قیمت";
+ fetch("/api/services",{headers:{Accept:"application/json"}})
+  .then(r=>{if(!r.ok)throw new Error("catalog unavailable");return r.json()})
+  .then(data=>{
+   const services=data?.services&&typeof data.services==="object"?Object.entries(data.services):[];
+   if(!services.length){host.innerHTML='<article class="catalog-item catalog-empty">فعلاً موردی برای نمایش ثبت نشده است.</article>';if(count)count.textContent="۰ مورد";return}
+   host.innerHTML=services.map(([code,item])=>'<article class="catalog-item"><span class="catalog-kind">خدمت ثریا</span><h3>'+safe(item.title||code)+'</h3><p>'+safe(item.description||"برای دریافت جزئیات و ثبت درخواست این خدمت اقدام کن.")+'</p><div class="catalog-meta"><strong>'+money(item.price,item.currency)+'</strong><span>'+(item.billing==="monthly"?"اشتراک دوره‌ای":"پرداخت یک‌باره")+'</span></div></article>').join("");
+   if(count)count.textContent=new Intl.NumberFormat("fa-IR").format(services.length)+" خدمت";
+  })
+  .catch(()=>{host.innerHTML='<article class="catalog-item catalog-empty">دریافت فهرست خدمات ممکن نشد. لطفاً کمی بعد دوباره تلاش کن.</article>';if(count)count.textContent="عدم دسترسی"});
 })();
 </script>
 
