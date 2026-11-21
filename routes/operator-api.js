@@ -1,4 +1,5 @@
 import express from "express";
+import crypto from "node:crypto";
 
 const allowedStatuses = new Set(["pending", "quoted", "accepted", "in_progress", "delivered", "cancelled"]);
 
@@ -6,10 +7,15 @@ export function createOperatorRouter({ pool, getToken }) {
   const router = express.Router();
 
   function authorize(req, res, next) {
+    res.set("Cache-Control", "no-store");
     const expected = getToken();
-    const supplied = req.get("authorization")?.match(/^Bearer\s+(.+)$/i)?.[1] || "";
-    if (!expected || supplied.length !== expected.length ||
-        !Buffer.from(supplied).equals(Buffer.from(expected))) {
+    const supplied = req.get("authorization")?.match(/^Bearer\\s+(.+)$/i)?.[1] || "";
+    const expectedBytes = typeof expected === "string" ? Buffer.from(expected, "utf8") : Buffer.alloc(0);
+    const suppliedBytes = Buffer.from(supplied, "utf8");
+    const valid = expectedBytes.length > 0 &&
+      suppliedBytes.length === expectedBytes.length &&
+      crypto.timingSafeEqual(suppliedBytes, expectedBytes);
+    if (!valid) {
       return res.status(401).json({ ok: false, error: "دسترسی مدیر تأیید نشد." });
     }
     next();
