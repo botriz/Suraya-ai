@@ -352,6 +352,73 @@ body{height:100dvh;min-height:0;overflow:hidden}
 }
 @media(prefers-reduced-motion:reduce){.app-view.active{animation:none}}
 
+
+/* Distinct visual interiors for account folders; content and existing controls remain unchanged. */
+.hub-window .hub-section{
+  position:relative;
+  overflow:hidden;
+  border:1px solid var(--folder-line,#ffffff18);
+  border-radius:18px;
+  margin:12px 0;
+  background:var(--folder-surface,linear-gradient(145deg,#ffffff0a,#ffffff03));
+  box-shadow:0 8px 24px #0002;
+  transition:border-color .22s,background .22s,box-shadow .22s;
+}
+.hub-window .hub-section>summary{
+  display:flex;
+  align-items:center;
+  min-height:58px;
+  padding:11px 62px 11px 16px;
+  background:linear-gradient(100deg,var(--folder-wash,#ffffff08),transparent 76%);
+}
+.hub-window .hub-section>summary h3{
+  margin:0;
+  font-size:14px;
+  line-height:1.7;
+  font-weight:800;
+  color:var(--folder-title,#edf6ff);
+}
+.hub-window .hub-section>summary:focus-visible{
+  outline:2px solid var(--folder-accent,#8cebd7);
+  outline-offset:-3px;
+  border-radius:16px;
+}
+.hub-window .hub-section[open]{
+  border-color:var(--folder-line,var(--guardian-line,#8cebd766));
+  box-shadow:0 14px 34px #0004,0 0 24px var(--folder-glow,#8cebd710);
+}
+.hub-window .hub-section-body{
+  position:relative;
+  padding:16px 15px 18px;
+  border-top:1px solid var(--folder-line,#ffffff16);
+  background:linear-gradient(145deg,var(--folder-wash,#ffffff08),#07111d88 76%);
+}
+.hub-window .hub-section-body:before{
+  content:"";
+  display:block;
+  width:46px;
+  height:3px;
+  margin:0 0 13px;
+  border-radius:99px;
+  background:var(--folder-accent,#8cebd7);
+  box-shadow:0 0 13px var(--folder-glow,#8cebd733);
+}
+.hub-window .hub-section[data-folder-theme="forest"]{--folder-accent:#80e8b8;--folder-line:#80e8b84a;--folder-title:#c9ffe5;--folder-wash:#2c9a6920;--folder-surface:linear-gradient(145deg,#123a3028,#0d1a25 82%);--folder-glow:#80e8b81c}
+.hub-window .hub-section[data-folder-theme="water"]{--folder-accent:#78d9ff;--folder-line:#78d9ff4a;--folder-title:#d1f3ff;--folder-wash:#2987b520;--folder-surface:linear-gradient(145deg,#102f482d,#0d1a25 82%);--folder-glow:#78d9ff1c}
+.hub-window .hub-section[data-folder-theme="sun"]{--folder-accent:#ffd28a;--folder-line:#ffd28a4a;--folder-title:#fff0cf;--folder-wash:#b47a2520;--folder-surface:linear-gradient(145deg,#45351b2d,#0d1a25 82%);--folder-glow:#ffd28a1c}
+.hub-window .hub-section[data-folder-theme="wind"]{--folder-accent:#b7caff;--folder-line:#b7caff4a;--folder-title:#e2eaff;--folder-wash:#5d78b520;--folder-surface:linear-gradient(145deg,#26334b2d,#0d1a25 82%);--folder-glow:#b7caff1c}
+.hub-window .hub-section[data-folder-theme="crystal"]{--folder-accent:#c4a8ff;--folder-line:#c4a8ff4a;--folder-title:#eee3ff;--folder-wash:#8762bd20;--folder-surface:linear-gradient(145deg,#35274b2d,#0d1a25 82%);--folder-glow:#c4a8ff1c}
+.hub-window .hub-section[open]>.hub-section-body{animation:folderInteriorEnter .28s ease-out}
+@keyframes folderInteriorEnter{from{opacity:.55;transform:translateY(-4px)}to{opacity:1;transform:none}}
+@media(max-width:600px){
+ .hub-window .hub-section{border-radius:15px;margin:10px 0}
+ .hub-window .hub-section>summary{min-height:55px;padding-block:9px}
+ .hub-window .hub-section-body{padding:13px 10px 15px}
+}
+@media(prefers-reduced-motion:reduce){
+ .hub-window .hub-section,.hub-window .hub-section[open]>.hub-section-body{animation:none!important;transition:none!important}
+}
+
 </style></head>
 <body><div class="wrap">
 <nav class="nav"><a class="brand" href="/"><span class="brand-mark">ث</span><span><b>ثریا</b><small>جهان خدمات هوشمند · SURAYA</small></span></a><div class="nav-links"><a href="/creator.html">استودیو سازندگان</a><a href="/world/">جهان دیجیتال</a></div><button class="nav-cta" id="navAccount" type="button">حساب کاربری</button></nav>
