@@ -9,6 +9,7 @@ import { createHealthRouter } from "./health/health-router.js";
 import { createOperatorRouter } from "./routes/operator-api.js";
 import { createCreatorRouter } from "./routes/creator-api.js";
 import { createContentEngine } from "./ai/content-engine.js";
+import { createCentralPlanner } from "./core/central-planner.js";
 import { buildCapabilities } from "./health/capabilities.js";
 
 dotenv.config();
@@ -35,6 +36,7 @@ const services = {
 };
 
 const contentEngine = createContentEngine();
+const centralPlanner = createCentralPlanner();
 
 const pool = process.env.DATABASE_URL
   ? new Pool({
@@ -141,7 +143,7 @@ app.get("/api/capabilities", (_req, res) => {
 });
 
 app.use("/api/world/v1", createWorldRouter({ pool, isDatabaseReady: () => worldDatabaseReady }));
-app.use("/api/operator/v1", createOperatorRouter({ pool, getToken: () => process.env.SURAYA_OPERATOR_TOKEN }));
+app.use("/api/operator/v1", createOperatorRouter({ pool, getToken: () => process.env.SURAYA_OPERATOR_TOKEN, planner: centralPlanner, getSystemSnapshot: currentCapabilities, rateLimit }));
 app.use("/api/creator/v1", createCreatorRouter({ engine: contentEngine, rateLimit }));
 
 app.get("/api/services", (_req, res) => {

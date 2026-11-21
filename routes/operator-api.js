@@ -1,21 +1,62 @@
 import express from "express";
+import crypto from "node:crypto";
 
 const allowedStatuses = new Set(["pending", "quoted", "accepted", "in_progress", "delivered", "cancelled"]);
 
-export function createOperatorRouter({ pool, getToken }) {
+export function createOperatorRouter({ pool, getToken, planner = null, getSystemSnapshot = () => ({}), rateLimit = (_req, _res, next) => next() }) {
   const router = express.Router();
 
   function authorize(req, res, next) {
+    res.set("Cache-Control", "no-store");
     const expected = getToken();
     const supplied = req.get("authorization")?.match(/^Bearer\s+(.+)$/i)?.[1] || "";
-    if (!expected || supplied.length !== expected.length ||
-        !Buffer.from(supplied).equals(Buffer.from(expected))) {
+    const expectedBytes = typeof expected === "string" ? Buffer.from(expected, "utf8") : Buffer.alloc(0);
+    const suppliedBytes = Buffer.from(supplied, "utf8");
+    const valid = expectedBytes.length > 0 &&
+      suppliedBytes.length === expectedBytes.length &&
+      crypto.timingSafeEqual(suppliedBytes, expectedBytes);
+    if (!valid) {
       return res.status(401).json({ ok: false, error: "دسترسی مدیر تأیید نشد." });
     }
     next();
   }
 
   router.use(authorize);
+
+
+  router.get("/central/status", (_req, res) => {
+    res.set("Cache-Control", "no-store");
+    res.json({
+      ok: true,
+      mode: "advisory",
+      plannerConfigured: Boolean(planner?.isConfigured?.()),
+      executionEnabled: false,
+      capabilities: getSystemSnapshot(),
+      uptimeSeconds: Math.floor(process.uptime())
+    });
+  });
+
+  router.post("/central/plan", rateLimit, async (req, res) => {
+    const goal = typeof req.body?.goal === "string" ? req.body.goal.trim() : "";
+    if (goal.length < 6 || goal.length > 1200) {
+      return res.status(400).json({ ok: false, code: "CENTRAL_INVALID_GOAL", error: "هدف باید بین ۶ تا ۱۲۰۰ نویسه باشد." });
+    }
+    if (!planner?.isConfigured?.()) {
+      return res.status(503).json({ ok: false, code: "CENTRAL_NOT_CONFIGURED", error: "برنامه‌ریز هوشمند هنوز پیکربندی نشده است." });
+    }
+    try {
+      const plan = await planner.plan({ goal, systemContext: { service: "Suraya", capabilities: getSystemSnapshot() } });
+      return res.json({ ok: true, plan });
+    } catch (error) {
+      const status = error.code === "CENTRAL_NOT_CONFIGURED" ? 503 :
+        error.code === "CENTRAL_INVALID_GOAL" ? 400 : 502;
+      return res.status(status).json({
+        ok: false,
+        code: error.code || "CENTRAL_PLANNING_FAILED",
+        error: error.message || "تهیه برنامه انجام نشد."
+      });
+    }
+  });
 
   router.get("/orders", async (req, res) => {
     if (!pool) return res.status(503).json({ ok: false, error: "پایگاه داده در دسترس نیست." });
