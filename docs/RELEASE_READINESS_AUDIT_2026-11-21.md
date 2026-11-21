@@ -29,12 +29,12 @@ This is an initial repository triage, not a claim that every repository has rece
 
 | Repository | Initial finding | Handling |
 |---|---|---|
-| `botriz/Botriz` | Private repository with a root structure very similar to the main Suraya application. | Compare commit histories and file-level differences before choosing a source of truth; do not deploy it accidentally. |
+| `botriz/Botriz` | Private, older Ata/Suraya codebase with overlapping file names but materially different server and package manifests. | Treat as a separate legacy branch; compare its unique features and secrets/configuration before selectively porting anything. Do not deploy it as the production source. |
 | `suraya-supercore-js/Suraya-ai` | Older static-site/prototype copy of Suraya. | Archive or document as legacy after confirming no unique production assets are needed. |
 | `suraya-supercore-js/-` | Small legacy supercore prototype with local in-memory state and fixed suggestions. | Do not connect to production authority or financial operations. |
 | `suraya-supercore-js/-11` | Render webhook example project. | Reference only; requires its own Render plan/webhook setup and is not the Suraya application. |
 | `botriz/copilot--` | Separate repository; scope not yet established. | Keep separate until its intended product role is confirmed. |
-| `botriz/metamcp` | MetaMCP aggregator/orchestrator codebase, apparently a third-party project fork. | Do not merge into the Suraya runtime without an explicit dependency, licensing, maintenance, and threat-model review. |
+| `botriz/metamcp` | Separate MetaMCP aggregator/orchestrator codebase, not part of the deployed Suraya runtime. | Do not merge into the Suraya runtime without an explicit dependency, licensing, maintenance, and threat-model review. |
 | `botriz/Sources01` | README-only repository. | No release artifact identified. |
 | `botriz/betriz-core` and `botriz/Betriz` | Minimal HTML prototypes. | Compare purpose and content; not production services yet. |
 | `botriz/betriz-paper-wallet` | README-only repository. | No wallet implementation or release artifact identified. |
