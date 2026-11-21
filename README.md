@@ -124,3 +124,13 @@ The old `setup.js`, `suraya-master-setup.js`, and `setup-revenue.js` bootstrappe
 - فایل ویدئوی پس‌زمینه در این نسخه وجود ندارد؛ این بخش عمداً خارج از محدودهٔ انتشار فعلی است.
 
 وب‌اپ را می‌توان از مرورگر سازگار روی صفحهٔ اصلی گوشی نصب کرد. حالت آفلاین فقط پوستهٔ سایت را نگه می‌دارد؛ ثبت سفارش، تولید محتوا و سایر درخواست‌های API برای کارکردن به اتصال شبکه نیاز دارند.
+
+
+## Social Operations workspace
+
+- Unified social operations UI: `/social-studio.html`, linked from the `social_monthly` and `social_content` service entries.
+- Includes platform directory, AI draft workspace, browser-local editorial calendar, analytics readiness, and central health/capability view.
+- Draft generation calls `POST /api/creator/v1/draft`; it requires the provider to be configured through the hosting environment.
+- The editorial calendar is local to the current browser in this release; it is not synced to PostgreSQL and does not schedule publishing.
+- Account OAuth, platform write scopes, automatic publishing, and verified analytics remain disabled until official adapters and security controls are implemented.
+- See `docs/social-operations-v1.md` for architecture, permission boundaries, and next implementation gates.
