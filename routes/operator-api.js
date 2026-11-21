@@ -9,7 +9,7 @@ export function createOperatorRouter({ pool, getToken }) {
   function authorize(req, res, next) {
     res.set("Cache-Control", "no-store");
     const expected = getToken();
-    const supplied = req.get("authorization")?.match(/^Bearer\\s+(.+)$/i)?.[1] || "";
+    const supplied = req.get("authorization")?.match(/^Bearer\s+(.+)$/i)?.[1] || "";
     const expectedBytes = typeof expected === "string" ? Buffer.from(expected, "utf8") : Buffer.alloc(0);
     const suppliedBytes = Buffer.from(supplied, "utf8");
     const valid = expectedBytes.length > 0 &&
