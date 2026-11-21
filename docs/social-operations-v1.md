@@ -35,3 +35,10 @@ Future operator integration must use a deterministic tool registry with read/pro
 4. Read-only analytics adapters with provenance and timestamps.
 5. Central operator integration for health diagnostics and safe, tested remediations.
 6. Independent security review before enabling account write scopes or publishing.
+
+
+## Central operations dashboard
+- Read-only overview: `/control-center.html`.
+- It consumes `/api/status`, `/api/capabilities` and `/api/services` and reports the current server-declared state.
+- It derives transparent diagnostic notes from disabled capabilities; it does not execute repairs or imply that an AI agent is already authorized to change production.
+- The page is linked from the Products & Services workspace and the Social Operations workspace.
