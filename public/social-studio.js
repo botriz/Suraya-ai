@@ -43,6 +43,16 @@
    renderDraft(data.draft,[],null);setStatus("draftStatus","پیش‌نویس آماده شد؛ پیش از استفاده آن را بررسی کن.");
   }catch(err){setStatus("draftStatus",err.message||"ارتباط با سرویس برقرار نشد.",true)}finally{btn.disabled=false}
  });
+ $("generateResearchBtn").addEventListener("click",async()=>{
+  const btn=$("generateResearchBtn");btn.disabled=true;setStatus("draftStatus","در حال جست‌وجو و ارزیابی دامنه‌های معتبر و ساخت پیش‌نویس مستند…");
+  try{
+   const result=await authFetch("/api/creator/v1/research-draft",{method:"POST",body:JSON.stringify({topic:$("topic").value.trim(),category:$("topicCategory").value,audience:$("audience").value.trim(),objective:$("objective").value,brandVoice:$("brandVoice").value.trim(),platform:$("platform").value,tone:$("tone").value,language:$("language").value})});
+   renderDraft(result.draft,result.sources,result.researchId);
+   setStatus("draftStatus","پیش‌نویس منبع‌محور ساخته شد؛ "+result.sources.length+" منبع مستقل از دامنه‌های مجاز بررسی شده‌اند. پیش از انتشار، منابع را بازبینی کن.");
+  }catch(error){latestResearchId=null;setStatus("draftStatus",error.message,true)}
+  finally{btn.disabled=false}
+ });
+ ["topic","topicCategory","audience","brandVoice","platform","tone","language"].forEach(id=>$(id).addEventListener("input",()=>{latestResearchId=null}));
  async function loadCalendar(){
   const host=$("planList");if(!operatorToken){host.replaceChildren(el("div","برای مشاهدهٔ تقویم سرور، ابتدا ورود مدیر را انجام بده.","empty"));return}
   try{
