@@ -236,6 +236,7 @@ if (pool) {
   pool.on("error", (error) => {
     databaseReady = false;
     worldDatabaseReady = false;
+    socialOperationsReady = false;
     databaseError = error.message;
     console.error("Database pool error:", error.message);
   });
