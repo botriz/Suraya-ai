@@ -122,6 +122,24 @@
    e.currentTarget.reset();$("segmentCriteria").value='{"language":"fa","interest":"education"}';setStatus("segmentStatus","تعریف بخش مخاطبان ذخیره شد؛ دادهٔ واقعی مخاطبان هنوز متصل نیست.");await loadSegments();
   }catch(err){setStatus("segmentStatus",err.message,true)}
  });
+ $("uploadMediaBtn").addEventListener("click",async()=>{
+  const btn=$("uploadMediaBtn"),file=$("mediaFile").files?.[0];
+  if(!operatorToken){setStatus("uploadStatus","برای بارگذاری فایل ابتدا ورود مدیر را انجام بده.",true);return}
+  if(!file){setStatus("uploadStatus","ابتدا یک فایل تصویر یا ویدئو انتخاب کن.",true);return}
+  if(file.size>500*1024*1024){setStatus("uploadStatus","حداکثر حجم فایل ۵۰۰ مگابایت است.",true);return}
+  btn.disabled=true;setStatus("uploadStatus","در حال دریافت نشانی امن بارگذاری…");
+  try{
+   const signed=await authFetch("/api/social/v1/media/upload-url",{method:"POST",body:JSON.stringify({fileName:file.name,contentType:file.type,sizeBytes:file.size})});
+   setStatus("uploadStatus","در حال بارگذاری فایل به فضای ذخیره‌سازی…");
+   const uploaded=await fetch(signed.uploadUrl,{method:"PUT",headers:signed.headers,body:file});
+   if(!uploaded.ok)throw new Error("فضای ذخیره‌سازی فایل را نپذیرفت؛ تنظیمات CORS و دسترسی را بررسی کن.");
+   setStatus("uploadStatus","در حال تأیید دسترسی عمومی فایل…");
+   const confirmed=await authFetch("/api/social/v1/media/"+signed.asset.id+"/confirm",{method:"POST",body:"{}"});
+   $("mediaUrl").value=confirmed.publicUrl;$("mediaType").value=file.type.startsWith("video/")?"video":"image";
+   setStatus("uploadStatus","فایل بارگذاری و تأیید شد؛ اکنون می‌توانی آن را به پیش‌نویس پیوست کنی.");
+  }catch(error){setStatus("uploadStatus",error.message||"بارگذاری فایل ناموفق بود.",true)}
+  finally{btn.disabled=false}
+ });
  async function refreshHealth(){
   $("healthDetails").replaceChildren(el("div","در حال دریافت وضعیت…","empty"));
   try{
