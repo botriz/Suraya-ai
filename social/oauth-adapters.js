@@ -34,7 +34,7 @@ export function createAuthorizationUrl(platform,{state,codeVerifier,env=process.
     url.searchParams.set("scope","openid email profile https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/yt-analytics.readonly");
     url.searchParams.set("access_type","offline");url.searchParams.set("prompt","consent");
   }else if(c.kind==="tiktok"){
-    url.searchParams.set("client_key",c.id);url.searchParams.set("redirect_uri",redirectUri);url.searchParams.set("response_type","code");url.searchParams.set("state",state);url.searchParams.set("scope","user.info.basic,video.upload,video.publish");
+    url.searchParams.set("client_key",c.id);url.searchParams.set("redirect_uri",redirectUri);url.searchParams.set("response_type","code");url.searchParams.set("state",state);url.searchParams.set("scope","user.info.basic,user.info.stats,video.list,video.upload,video.publish");
   }else{
     url.searchParams.set("client_id",c.id);url.searchParams.set("redirect_uri",redirectUri);url.searchParams.set("response_type","code");url.searchParams.set("state",state);
     url.searchParams.set("scope","tweet.read tweet.write users.read offline.access");
