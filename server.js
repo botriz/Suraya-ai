@@ -9,6 +9,7 @@ import { createHealthRouter } from "./health/health-router.js";
 import { createOperatorRouter } from "./routes/operator-api.js";
 import { createCreatorRouter } from "./routes/creator-api.js";
 import { createSocialOperationsRouter } from "./routes/social-operations-api.js";
+import { startSocialPublishingWorker } from "./social/publishing-worker.js";
 import { createContentEngine } from "./ai/content-engine.js";
 import { buildCapabilities } from "./health/capabilities.js";
 
@@ -213,8 +214,18 @@ app.use((_req, res) => {
 });
 
 await initializeDatabase();
-app.listen(PORT, HOST, () => {
+const socialPublishingWorker = databaseReady && socialOperationsReady
+  ? startSocialPublishingWorker({ pool })
+  : null;
+const server = app.listen(PORT, HOST, () => {
   console.log(`Suraya running on ${HOST}:${PORT}`);
+});
+process.once("SIGTERM", () => {
+  socialPublishingWorker?.stop();
+  server.close(() => {
+    if (pool) pool.end().finally(() => process.exit(0));
+    else process.exit(0);
+  });
 });
 
 if (pool) {
