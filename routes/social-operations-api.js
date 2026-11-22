@@ -4,6 +4,7 @@ import { oauthConfigured, createAuthorizationUrl, exchangeAndIdentify, revokePro
 import { encryptSocialToken, decryptSocialToken, sha256, isSocialEncryptionKeyValid } from "../social/token-crypto.js";
 import { verifyTelegramDestination } from "../social/publish-adapters.js";
 import { fetchVerifiedAudienceSnapshot } from "../social/audience-adapters.js";
+import { createPresignedMediaUpload } from "../social/media-storage.js";
 const PLATFORMS = ["instagram","youtube","telegram","rubika","facebook","x","tiktok","snapchat","whatsapp","eitaa"];
 const POST_STATES = new Set(["draft","in_review","approved","scheduled","publishing","published","failed","cancelled"]);
 
@@ -275,6 +276,38 @@ export function createSocialOperationsRouter({ pool, getToken }) {
     const limit=Math.min(100,Math.max(1,Number.parseInt(req.query.limit,10)||50));
     try {const r=await pool.query("SELECT actor,action,resource_type,resource_id,outcome,details,created_at FROM suraya_social_audit_events ORDER BY created_at DESC LIMIT $1",[limit]);res.json({ok:true,events:r.rows});}
     catch(e){console.error("Social audit read failed:",e.message);res.status(500).json({ok:false,error:"دریافت گزارش ممیزی ناموفق بود."});}
+  });
+
+  router.post("/media/upload-url",async(req,res)=>{
+    const originalName=typeof req.body?.fileName==="string"?req.body.fileName:"media";
+    const contentType=typeof req.body?.contentType==="string"?req.body.contentType:"";
+    const sizeBytes=Number(req.body?.sizeBytes);
+    try{
+      const upload=createPresignedMediaUpload({originalName,contentType,sizeBytes});
+      const saved=await pool.query(
+        "INSERT INTO suraya_social_media_assets(storage_key,public_url,original_name,content_type,size_bytes,status) VALUES($1,$2,$3,$4,$5,'pending') RETURNING id,status,content_type,size_bytes",
+        [upload.key,upload.publicUrl,upload.originalName,upload.contentType,upload.sizeBytes]);
+      res.status(201).json({ok:true,asset:saved.rows[0],uploadUrl:upload.uploadUrl,publicUrl:upload.publicUrl,headers:upload.headers,expiresInSeconds:upload.expiresInSeconds});
+    }catch(error){
+      const invalid=error.message==="Unsupported media type."||error.message.startsWith("Media size");
+      res.status(invalid?400:503).json({ok:false,error:invalid?error.message:"فضای ذخیره‌سازی رسانه پیکربندی نشده یا در دسترس نیست."});
+    }
+  });
+
+  router.post("/media/:id/confirm",async(req,res)=>{
+    const id=Number.parseInt(req.params.id,10);
+    if(!Number.isSafeInteger(id)||id<1)return res.status(400).json({ok:false,error:"شناسهٔ فایل معتبر نیست."});
+    try{
+      const found=await pool.query("SELECT id,public_url,size_bytes,status FROM suraya_social_media_assets WHERE id=$1",[id]);
+      if(!found.rowCount)return res.status(404).json({ok:false,error:"فایل پیدا نشد."});
+      const asset=found.rows[0];
+      if(asset.status==="uploaded")return res.json({ok:true,asset,publicUrl:asset.public_url});
+      const head=await fetch(asset.public_url,{method:"HEAD",redirect:"error",signal:AbortSignal.timeout(15000)});
+      const length=Number(head.headers.get("content-length")||0);
+      if(!head.ok||length&&length!==Number(asset.size_bytes))return res.status(409).json({ok:false,error:"فایل در فضای عمومی تأیید نشد؛ آپلود یا دسترسی عمومی را بررسی کن."});
+      const saved=await pool.query("UPDATE suraya_social_media_assets SET status='uploaded',updated_at=NOW() WHERE id=$1 RETURNING id,status,public_url,content_type,size_bytes",[id]);
+      res.json({ok:true,asset:saved.rows[0],publicUrl:asset.public_url});
+    }catch(error){console.error("Media upload confirmation failed:",error.message);res.status(502).json({ok:false,error:"تأیید فایل آپلودشده ناموفق بود."});}
   });
 
   router.get("/calendar",async(req,res)=>{
