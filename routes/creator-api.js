@@ -15,7 +15,7 @@ export function createCreatorRouter({ engine = createContentEngine(), rateLimit 
     if (audience.length > 240) return res.status(400).json({ ok: false, error: "مخاطب هدف نباید بیشتر از ۲۴۰ نویسه باشد." });
     if (brandVoice.length > 240) return res.status(400).json({ ok: false, error: "راهنمای لحن برند نباید بیشتر از ۲۴۰ نویسه باشد." });
     if (!["awareness", "engagement", "leads", "sales", "education"].includes(objective)) return res.status(400).json({ ok: false, error: "هدف کمپین معتبر نیست." });
-    if (!["instagram", "youtube", "rubika", "telegram", "linkedin"].includes(platform)) return res.status(400).json({ ok: false, error: "سکوی انتخاب‌شده پشتیبانی نمی‌شود." });
+    if (!["instagram", "youtube", "rubika", "telegram", "facebook", "x", "tiktok", "snapchat", "whatsapp", "eitaa"].includes(platform)) return res.status(400).json({ ok: false, error: "سکوی انتخاب‌شده پشتیبانی نمی‌شود." });
     if (!["professional", "friendly", "educational", "sales"].includes(tone)) return res.status(400).json({ ok: false, error: "لحن انتخاب‌شده معتبر نیست." });
     if (!["fa", "en", "ar", "tr"].includes(language)) return res.status(400).json({ ok: false, error: "زبان انتخاب‌شده پشتیبانی نمی‌شود." });
     if (!engine.isConfigured()) return res.status(503).json({ ok: false, code: "AI_NOT_CONFIGURED", error: "موتور تولید محتوا هنوز به ارائه‌دهنده هوش مصنوعی متصل نشده است." });
