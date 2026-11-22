@@ -218,7 +218,7 @@ export function createSocialOperationsRouter({ pool, getToken }) {
     const client=await pool.connect();
     try {
       await client.query("BEGIN");
-      const r=await client.query("SELECT p.id,p.public_id,p.platform,p.status,p.media_url,p.media_type,a.id AS account_id,a.connection_status FROM suraya_social_posts p LEFT JOIN LATERAL (SELECT id,connection_status FROM suraya_social_accounts WHERE platform=p.platform AND connection_status='connected' ORDER BY connected_at DESC NULLS LAST LIMIT 1) a ON TRUE WHERE p.public_id=$1 FOR UPDATE",[id]);
+      const r=await client.query("SELECT p.id,p.public_id,p.platform,p.status,p.media_url,p.media_type,p.caption,p.hashtags,p.title,a.id AS account_id,a.connection_status FROM suraya_social_posts p LEFT JOIN LATERAL (SELECT id,connection_status FROM suraya_social_accounts WHERE platform=p.platform AND connection_status='connected' ORDER BY connected_at DESC NULLS LAST LIMIT 1) a ON TRUE WHERE p.public_id=$1 FOR UPDATE",[id]);
       if(!r.rowCount){await client.query("ROLLBACK");return res.status(404).json({ok:false,error:"محتوا پیدا نشد."});}
       const row=r.rows[0];
       if(row.status!=="approved"){await client.query("ROLLBACK");return res.status(409).json({ok:false,error:"ابتدا باید محتوا تأیید شود."});}
@@ -226,7 +226,7 @@ export function createSocialOperationsRouter({ pool, getToken }) {
       if(!["telegram","facebook","instagram","tiktok","x"].includes(row.platform)){await client.query("ROLLBACK");return res.status(503).json({ok:false,code:"PUBLISH_ADAPTER_NOT_READY",error:"آداپتور انتشار این شبکه هنوز فعال نیست."});}
       if(row.platform==="instagram"&&(!row.media_url||!["image","video"].includes(row.media_type))){await client.query("ROLLBACK");return res.status(400).json({ok:false,code:"INSTAGRAM_MEDIA_REQUIRED",error:"انتشار اینستاگرام به پیوند عمومی تصویر یا ویدئو نیاز دارد."});}
       if(row.platform==="tiktok"&&(!row.media_url||row.media_type!=="video")){await client.query("ROLLBACK");return res.status(400).json({ok:false,code:"TIKTOK_VIDEO_REQUIRED",error:"انتشار TikTok به پیوند عمومی ویدئو و دامنهٔ تأییدشده نیاز دارد."});}
-      if(row.platform==="x"&&(row.media_url||((req.body?.text||"").length>280))){await client.query("ROLLBACK");return res.status(400).json({ok:false,code:"X_TEXT_ONLY",error:"این نسخهٔ آداپتور X فقط متن تا ۲۸۰ نویسه را منتشر می‌کند."});}
+      if(row.platform==="x"&&(row.media_url||([row.caption,row.hashtags].filter(Boolean).join("\\n\\n").trim()||row.title).length>280)){await client.query("ROLLBACK");return res.status(400).json({ok:false,code:"X_TEXT_ONLY",error:"این نسخهٔ آداپتور X فقط متن تا ۲۸۰ نویسه را منتشر می‌کند."});}
       const scheduledAt=new Date(when).toISOString();
       await client.query("UPDATE suraya_social_posts SET status='scheduled',scheduled_at=$2,account_id=$3,updated_at=NOW() WHERE id=$1",[row.id,scheduledAt,row.account_id]);
       await client.query("INSERT INTO suraya_social_jobs(job_type,post_id,status,run_after,max_attempts,idempotency_key,payload) VALUES('publish_post',$1,'queued',$2,1,$3,$4::jsonb) ON CONFLICT(idempotency_key) DO NOTHING",[row.id,scheduledAt,"publish:"+row.public_id,JSON.stringify({platform:row.platform})]);
