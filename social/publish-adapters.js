@@ -1,3 +1,4 @@
+const META_VERSION=process.env.SOCIAL_META_API_VERSION||"v22.0";
 import { decryptSocialToken } from "./token-crypto.js";
 
 async function telegramCall(botToken,method,body) {
