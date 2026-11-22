@@ -94,3 +94,25 @@ test("YouTube upload uses a resumable upload and only fetches allowlisted HTTPS 
     assert.ok(calls.some(x=>x.method==="PUT"&&x.url.includes("upload.youtube.test")));
   }finally{globalThis.fetch=original;for(const k of keys){if(previous[k]===undefined)delete process.env[k];else process.env[k]=previous[k]}}
 });
+
+
+test("TikTok direct video publishing requires the configured verified media host",async()=>{
+  const original=globalThis.fetch,keys=["SURAYA_SOCIAL_TOKEN_ENCRYPTION_KEY","SOCIAL_TIKTOK_MEDIA_DOMAIN"];
+  const previous=Object.fromEntries(keys.map(k=>[k,process.env[k]]));
+  process.env.SURAYA_SOCIAL_TOKEN_ENCRYPTION_KEY=Buffer.alloc(32,11).toString("base64");
+  process.env.SOCIAL_TIKTOK_MEDIA_DOMAIN="cdn.example.test";
+  const encrypted=encryptSocialToken({access_token:"tiktok-user-token"});
+  const calls=[];
+  globalThis.fetch=async(url)=>{
+    const value=String(url);calls.push(value);
+    const data=value.includes("creator_info")?{data:{creator_info:{privacy_level_options:["PUBLIC_TO_EVERYONE"]}}}:
+      value.includes("video/init")?{data:{publish_id:"tiktok-publish-1"}}:
+      {data:{status:"PUBLISH_COMPLETE"}};
+    return new Response(JSON.stringify(data),{status:200,headers:{"Content-Type":"application/json"}});
+  };
+  try{
+    const result=await publishSocialPost({platform:"tiktok",tokenCiphertext:encrypted,post:{title:"Clip",caption:"Caption",media_url:"https://cdn.example.test/clip.mp4",media_type:"video"}});
+    assert.equal(result.externalPostId,"tiktok-publish-1");
+    assert.equal(calls.length,3);
+  }finally{globalThis.fetch=original;for(const k of keys){if(previous[k]===undefined)delete process.env[k];else process.env[k]=previous[k]}}
+});
