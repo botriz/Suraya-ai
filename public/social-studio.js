@@ -22,8 +22,8 @@
   return data;
  }
  function el(tag,text,className){const node=document.createElement(tag);if(text!==undefined)node.textContent=text;if(className)node.className=className;return node}
- function renderDraft(draft){
-  latestDraft=draft;const host=$("draftOutput");host.className="result";host.replaceChildren();
+ function renderDraft(draft,sources=[],researchId=null){
+  latestDraft=draft;latestResearchId=researchId;const host=$("draftOutput");host.className="result";host.replaceChildren();
   [["عنوان",draft.title],["کپشن",draft.caption],["هشتگ‌ها",draft.hashtags],["سناریو",draft.script],["دعوت به اقدام",draft.cta]].forEach(([label,value])=>{
    const wrap=el("div");wrap.style.marginBottom="12px";wrap.append(el("h3",label),el("pre",value));host.append(wrap);
   });
