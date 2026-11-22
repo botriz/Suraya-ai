@@ -80,6 +80,8 @@ async function initializeDatabase() {
       )
     `);
     await pool.query(await readFile(path.join(__dirname, "migrations", "002_revenue_operations.sql"), "utf8"));
+    await pool.query(await readFile(path.join(__dirname, "migrations", "003_social_operations.sql"), "utf8"));
+    socialOperationsReady = true;
     databaseReady = true;
     databaseError = "";
     console.log("Suraya order database ready");
