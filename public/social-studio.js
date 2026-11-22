@@ -66,7 +66,7 @@
  });
  async function loadPlans(){
   const host=$("planCatalog");try{const d=await authFetch("/api/social/v1/plans");host.replaceChildren();
-   d.plans.forEach(p=>{const row=el("div",undefined,"entry"),left=el("span"),name=el("b",p.name+" · "+p.code),limits=el("small","حساب: "+p.limits.connected_accounts+" · پیش‌نویس ماهانه: "+p.limits.ai_drafts_per_month+" · ویدئو: "+p.limits.video_minutes_per_month+" دقیقه");left.append(name,limits);row.append(left,el("b",p.monthly_price+" "+p.currency+"/ماه"));host.append(row)});
+   d.plans.forEach(p=>{const row=el("div",undefined,"entry"),left=el("span"),name=el("b",p.name+" · "+p.code),features=Object.entries(p.features||{}).filter(([,enabled])=>enabled).map(([key])=>key).join("، "),limits=el("small","حساب: "+p.limits.connected_accounts+" · پیش‌نویس ماهانه: "+p.limits.ai_drafts_per_month+" · ویدئو: "+p.limits.video_minutes_per_month+" دقیقه · امکانات: "+features);left.append(name,limits);row.append(left,el("b","قیمت پیشنهادی: "+p.monthly_price+" "+p.currency+"/ماه"));host.append(row)});
    host.append(el("small","تعرفه‌ها تعریف شده‌اند؛ پرداخت، فعال‌سازی و اعمال محدودیت اشتراک تا اتصال درگاه و حساب مشتری غیرفعال است."));
   }catch(e){host.replaceChildren(el("div",e.message,"empty"))}
  }
