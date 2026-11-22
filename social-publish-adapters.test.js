@@ -67,7 +67,7 @@ test("X text publishing sends a post through the authenticated v2 API",async()=>
     const result=await publishSocialPost({platform:"x",tokenCiphertext:encrypted,post:{title:"Title",caption:"Short post",hashtags:"#suraya",media_type:"none"}});
     assert.equal(result.externalPostId,"x-post-1");
     assert.equal(sent.headers.Authorization,"Bearer x-user-token");
-    assert.equal(sent.body.text,"Short post\\n\\n#suraya");
+    assert.equal(sent.body.text,["Short post","#suraya"].join("\n\n"));
   }finally{globalThis.fetch=original;if(envKey===undefined)delete process.env.SURAYA_SOCIAL_TOKEN_ENCRYPTION_KEY;else process.env.SURAYA_SOCIAL_TOKEN_ENCRYPTION_KEY=envKey}
 });
 
