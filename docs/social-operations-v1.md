@@ -31,7 +31,7 @@ Future operator integration must use a deterministic tool registry with read/pro
 ## Next implementation gates
 1. Durable authenticated social workspace and PostgreSQL-backed editorial calendar.
 2. Official OAuth/API adapters per platform, starting with the first customer-approved targets.
-3. Approval queue and scheduled job worker with idempotency, retries, dead-letter handling and kill switch.
+- Campaign brief inputs: audience, objective and brand voice are validated by the server and passed to the content engine as untrusted data; the model is instructed not to treat brief text as system instructions.\n3. Approval queue and scheduled job worker with idempotency, retries, dead-letter handling and kill switch.
 4. Read-only analytics adapters with provenance and timestamps.
 5. Central operator integration for health diagnostics and safe, tested remediations.
 6. Independent security review before enabling account write scopes or publishing.
