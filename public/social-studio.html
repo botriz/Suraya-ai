@@ -39,7 +39,7 @@ footer{display:flex;justify-content:space-between;gap:12px;padding:24px 4px 0;co
  <article class="health"><small>انتشار خودکار</small><strong>غیرفعال</strong><em>تا زمان اتصال امن و تأیید مالک</em></article>
 </section>
 <nav class="tabs" aria-label="بخش‌های مرکز مدیریت">
- <button class="active" data-tab="overview">نمای کلی</button><button data-tab="accounts">حساب‌ها و شبکه‌ها</button><button data-tab="studio">کارگاه تولید محتوا</button><button data-tab="calendar">تقویم محتوا</button><button data-tab="analytics">عملکرد و رشد</button><button data-tab="control">هوش مرکزی و سلامت</button>
+ <button class="active" data-tab="overview">نمای کلی</button><button data-tab="accounts">حساب‌ها و شبکه‌ها</button><button data-tab="studio">کارگاه تولید محتوا</button><button data-tab="calendar">تقویم محتوا</button><button data-tab="analytics">عملکرد و رشد</button><button data-tab="management">مدیریت و اشتراک‌ها</button><button data-tab="control">هوش مرکزی و سلامت</button>
 </nav>
 <section class="panel active" id="panel-overview">
  <div class="grid">
@@ -47,7 +47,7 @@ footer{display:flex;justify-content:space-between;gap:12px;padding:24px 4px 0;co
    <div class="list"><div class="entry"><span><b>۱ · تعریف هدف و مخاطب</b><small>استراتژی، زبان، لحن و شاخص موفقیت</small></span><span>01</span></div><div class="entry"><span><b>۲ · تولید و بازبینی محتوا</b><small>پیش‌نویس متناسب با هر پلتفرم</small></span><span>02</span></div><div class="entry"><span><b>۳ · برنامه‌ریزی و تأیید</b><small>تقویم تحریریه و تأیید پیش از انتشار</small></span><span>03</span></div><div class="entry"><span><b>۴ · انتشار از مسیر رسمی</b><small>فقط پس از OAuth و مجوز محدود مشتری</small></span><span>04</span></div><div class="entry"><span><b>۵ · تحلیل و بهینه‌سازی</b><small>بر اساس آمار واقعی پلتفرم‌ها</small></span><span>05</span></div></div>
   </article>
   <article class="card"><h2>وضعیت فعلی قابلیت‌ها</h2><p class="muted">هیچ حساب یا آماری بدون اتصال معتبر، متصل فرض نمی‌شود.</p>
-   <div class="list"><div class="entry"><span><b>تولید پیش‌نویس</b><small>از API موجود Creator</small></span><span id="draftState">بررسی…</span></div><div class="entry"><span><b>ذخیره برنامه در این دستگاه</b><small>فقط مرورگر فعلی؛ هنوز همگام‌سازی سروری ندارد</small></span><span>آماده</span></div><div class="entry"><span><b>زمان‌بندی و انتشار واقعی</b><small>در انتظار صف پردازش و مجوز رسمی</small></span><span>غیرفعال</span></div><div class="entry"><span><b>درآمد و کیف پول</b><small>فقط دادهٔ مالی تأییدشده باید نمایش داده شود</small></span><span>غیرفعال</span></div></div>
+   <div class="list"><div class="entry"><span><b>تولید پیش‌نویس</b><small>از API موجود Creator</small></span><span id="draftState">بررسی…</span></div><div class="entry"><span><b>ذخیره تقویم در PostgreSQL</b><small>نیازمند ورود مدیر و پایگاه داده</small></span><span>آماده</span></div><div class="entry"><span><b>زمان‌بندی و انتشار واقعی</b><small>در انتظار صف پردازش و مجوز رسمی</small></span><span>غیرفعال</span></div><div class="entry"><span><b>درآمد و کیف پول</b><small>فقط دادهٔ مالی تأییدشده باید نمایش داده شود</small></span><span>غیرفعال</span></div></div>
    <div class="notice">این پنل، رابط کاری اولیه و متصل به وضعیت واقعی سرور است. برنامه‌های ذخیره‌شده در این مرحله فقط روی همین مرورگر باقی می‌مانند؛ به حساب کاربری یا دستگاه دیگر منتقل نمی‌شوند.</div>
   </article>
  </div>
@@ -75,14 +75,30 @@ footer{display:flex;justify-content:space-between;gap:12px;padding:24px 4px 0;co
 </section>
 <section class="panel" id="panel-calendar">
  <div class="grid">
-  <article class="card"><h2>افزودن به برنامهٔ تحریریه</h2><p class="muted">این تقویم در نسخهٔ فعلی روی همین مرورگر ذخیره می‌شود و زمان‌بندی انتشار واقعی انجام نمی‌دهد.</p>
-   <form id="planForm"><div class="field"><label for="planTitle">عنوان محتوا</label><input id="planTitle" maxlength="160" required></div><div class="row"><div class="field"><label for="planPlatform">پلتفرم</label><select id="planPlatform"><option>Instagram</option><option>YouTube</option><option>Telegram</option><option>Rubika</option><option>Facebook</option><option>X</option><option>TikTok</option><option>Snapchat</option><option>WhatsApp</option><option>Eitaa</option></select></div><div class="field"><label for="planDate">تاریخ پیشنهادی</label><input id="planDate" type="date" required></div></div><div class="field"><label for="planNotes">یادداشت یا پیوند پیش‌نویس</label><textarea id="planNotes" maxlength="1200"></textarea></div><button class="btn">ثبت در برنامهٔ محلی</button><div class="status" id="planStatus" role="status"></div></form>
+  <article class="card"><h2>افزودن به برنامهٔ تحریریه</h2><p class="muted">تقویم با API مدیریتی در PostgreSQL ذخیره می‌شود؛ ثبت در تقویم به‌معنی زمان‌بندی یا انتشار خودکار نیست.</p>
+   <form id="planForm"><div class="field"><label for="planTitle">عنوان محتوا</label><input id="planTitle" maxlength="160" required></div><div class="row"><div class="field"><label for="planPlatform">پلتفرم</label><select id="planPlatform"><option>Instagram</option><option>YouTube</option><option>Telegram</option><option>Rubika</option><option>Facebook</option><option>X</option><option>TikTok</option><option>Snapchat</option><option>WhatsApp</option><option>Eitaa</option></select></div><div class="field"><label for="planDate">تاریخ پیشنهادی</label><input id="planDate" type="date" required></div></div><div class="field"><label for="planNotes">یادداشت یا پیوند پیش‌نویس</label><textarea id="planNotes" maxlength="1200"></textarea></div><button class="btn">ذخیره در تقویم سرور</button><div class="status" id="planStatus" role="status"></div></form>
   </article>
-  <article class="card"><h2>برنامهٔ محتوا</h2><p class="muted">موارد ثبت‌شده در این دستگاه؛ نه صف انتشار سرور.</p><div id="planList" class="list"><div class="empty">هنوز موردی ثبت نشده است.</div></div></article>
+  <article class="card"><h2>برنامهٔ محتوا</h2><p class="muted">موارد ثبت‌شده در PostgreSQL؛ انتشار مستقل از تقویم است.</p><div id="planList" class="list"><div class="empty">هنوز موردی ثبت نشده است.</div></div></article>
  </div>
 </section>
 <section class="panel" id="panel-analytics">
  <article class="card"><h2>داشبورد عملکرد</h2><p class="muted">برای جلوگیری از نمایش آمار ساختگی، تا اتصال رسمی شبکه‌ها هیچ عددی حدس زده نمی‌شود.</p><div class="empty">دادهٔ تحلیلی متصل نیست. پس از فعال‌شدن مجوزهای خواندن آمار، شاخص‌هایی مانند دسترسی، بازدید، تعامل، رشد دنبال‌کننده و تبدیل سفارش نمایش داده می‌شوند.</div></article>
+</section>
+
+<section class="panel" id="panel-management">
+ <div class="grid">
+  <article class="card">
+   <h2>ورود امن مدیر عملیات</h2>
+   <p class="muted">توکن مدیر فقط در حافظهٔ همین صفحه نگهداری می‌شود و در localStorage یا فایل‌های مرورگر ذخیره نمی‌شود. برای عملیات مدیریتی از توکن امن سمت سرور استفاده کن.</p>
+   <form id="operatorForm"><div class="field"><label for="operatorToken">توکن دسترسی مدیر</label><input id="operatorToken" type="password" autocomplete="off" spellcheck="false" maxlength="512" required placeholder="توکن تنظیم‌شده در SURAYA_OPERATOR_TOKEN"></div><button class="btn">اتصال به پنل مدیریت</button><button type="button" class="btn secondary" id="operatorLogout">خروج و پاک‌کردن توکن</button><div id="operatorStatus" class="status" role="status"></div></form>
+  </article>
+  <article class="card"><h2>پلن‌های اشتراک</h2><p class="muted">سطوح دسترسی و سقف‌های پیشنهادی سرویس. تا اتصال درگاه پرداخت، هیچ مبلغی دریافت و هیچ اشتراکی فعال نمی‌شود.</p><div id="planCatalog" class="list"><div class="empty">برای مشاهدهٔ پلن‌ها، ورود مدیر لازم است.</div></div></article>
+ </div>
+ <div class="grid" style="margin-top:15px">
+  <article class="card"><h2>حساب‌های متصل و وضعیت مجوزها</h2><p class="muted">اتصال از مسیر OAuth رسمی هر پلتفرم انجام می‌شود؛ این پنل رمز عبور حساب‌های اجتماعی را دریافت نمی‌کند.</p><div id="connectedAccounts" class="list"><div class="empty">ابتدا ورود مدیر را انجام بده.</div></div></article>
+  <article class="card"><h2>محتوای ذخیره‌شده</h2><p class="muted">پیش‌نویس‌ها و وضعیت تأیید در PostgreSQL ثبت می‌شوند؛ انتشار واقعی فقط با آداپتور رسمی فعال می‌شود.</p><div id="managedPosts" class="list"><div class="empty">ابتدا ورود مدیر را انجام بده.</div></div></article>
+ </div>
+ <article class="card" style="margin-top:15px"><h2>بخش‌بندی مخاطبان</h2><p class="muted">می‌توان معیارهای بخش‌بندی را تعریف کرد؛ جمع‌آوری داده و هدف‌گیری مخاطب تا اخذ مجوز رسمی پلتفرم و رضایت کاربر غیرفعال است.</p><form id="segmentForm"><div class="row"><div class="field"><label for="segmentName">نام بخش</label><input id="segmentName" maxlength="160" required placeholder="مثلاً مشتریان علاقه‌مند به آموزش"></div><div class="field"><label for="segmentDescription">توضیح</label><input id="segmentDescription" maxlength="500" placeholder="توضیح کاربرد این گروه"></div></div><div class="field"><label for="segmentCriteria">معیارها (JSON)</label><textarea id="segmentCriteria" rows="3">{"language":"fa","interest":"education"}</textarea></div><button class="btn">ذخیرهٔ بخش مخاطبان</button><div id="segmentStatus" class="status" role="status"></div></form><div id="segmentList" class="list"></div></article>
 </section>
 <section class="panel" id="panel-control">
  <div class="grid">
