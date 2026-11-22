@@ -142,3 +142,14 @@ CREATE TABLE IF NOT EXISTS suraya_social_calendar_items (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 CREATE INDEX IF NOT EXISTS suraya_social_calendar_date_idx ON suraya_social_calendar_items(scheduled_for,status);
+
+
+CREATE TABLE IF NOT EXISTS suraya_social_oauth_states (
+  state_hash CHAR(64) PRIMARY KEY,
+  platform VARCHAR(32) NOT NULL,
+  code_verifier TEXT,
+  expires_at TIMESTAMPTZ NOT NULL,
+  consumed_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS suraya_social_oauth_states_expiry_idx ON suraya_social_oauth_states(expires_at);
