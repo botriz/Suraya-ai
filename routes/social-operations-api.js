@@ -2,6 +2,7 @@ import express from "express";
 import { timingSafeEqual, randomBytes } from "node:crypto";
 import { oauthConfigured, createAuthorizationUrl, exchangeAndIdentify } from "../social/oauth-adapters.js";
 import { encryptSocialToken, sha256 } from "../social/token-crypto.js";
+import { verifyTelegramDestination } from "../social/publish-adapters.js";
 const PLATFORMS = ["instagram","youtube","telegram","rubika","facebook","x","tiktok","snapchat","whatsapp","eitaa"];
 const POST_STATES = new Set(["draft","in_review","approved","scheduled","publishing","published","failed","cancelled"]);
 
@@ -85,6 +86,19 @@ export function createSocialOperationsRouter({ pool, getToken }) {
   router.post("/accounts/:platform/connect",async(req,res)=>{
     const platform=String(req.params.platform||"").toLowerCase();
     if(!PLATFORMS.includes(platform)) return res.status(400).json({ok:false,error:"سکوی اجتماعی معتبر نیست."});
+    if(platform==="telegram"){
+      const botToken=process.env.SOCIAL_TELEGRAM_BOT_TOKEN||"",chatId=process.env.SOCIAL_TELEGRAM_CHAT_ID||"";
+      if(!botToken||!chatId||!process.env.SURAYA_SOCIAL_TOKEN_ENCRYPTION_KEY) return res.status(503).json({ok:false,code:"TELEGRAM_NOT_CONFIGURED",error:"توکن ربات و شناسهٔ کانال تلگرام و کلید رمزنگاری باید در تنظیمات امن سرور پیکربندی شوند."});
+      try{
+        const verified=await verifyTelegramDestination(botToken,chatId);
+        const encrypted=encryptSocialToken({botToken,chatId:String(verified.chat.id)});
+        const saved=await pool.query(
+          "INSERT INTO suraya_social_accounts(platform,account_label,external_account_id,connection_status,token_ciphertext,token_key_version,scopes,account_metadata,connected_at) VALUES('telegram',$1,$2,'connected',$3,'v1',$4,$5::jsonb,NOW()) ON CONFLICT(platform,external_account_id) DO UPDATE SET account_label=EXCLUDED.account_label,connection_status='connected',token_ciphertext=EXCLUDED.token_ciphertext,token_key_version='v1',scopes=EXCLUDED.scopes,account_metadata=EXCLUDED.account_metadata,connected_at=NOW(),updated_at=NOW() RETURNING id,platform,account_label,external_account_id,connection_status",
+          [verified.chat.title||verified.chat.username||"Telegram destination",String(verified.chat.id),encrypted,["sendMessage","sendPhoto","sendVideo"],JSON.stringify({chatType:verified.chat.type,botUsername:verified.bot.username,botId:verified.bot.id})]);
+        await pool.query("INSERT INTO suraya_social_audit_events(actor,action,resource_type,resource_id,outcome,details) VALUES('operator','account.telegram_connected','social_account',$1,'success',$2::jsonb)",[String(verified.chat.id),JSON.stringify({platform:"telegram"})]);
+        return res.json({ok:true,account:saved.rows[0],provider:"telegram"});
+      }catch(error){console.error("Telegram connection verification failed:",error.message);return res.status(502).json({ok:false,code:"TELEGRAM_VERIFY_FAILED",error:"اتصال ربات به مقصد تلگرام تأیید نشد؛ دسترسی ربات و شناسهٔ مقصد را بررسی کن."});}
+    }
     if(!["instagram","facebook","youtube","tiktok","x"].includes(platform)) return res.status(501).json({ok:false,code:"OAUTH_ADAPTER_UNAVAILABLE",error:"اتصال رسمی این شبکه هنوز آداپتور قابل انتشار ندارد."});
     if(!oauthConfigured(platform)) return res.status(503).json({ok:false,code:"OAUTH_NOT_CONFIGURED",error:"اعتبارنامهٔ برنامهٔ توسعه‌دهنده، نشانی HTTPS سایت و کلید رمزنگاری ۳۲ بایتی سمت سرور باید در تنظیمات امن Render پیکربندی شوند."});
     try{
@@ -149,17 +163,21 @@ export function createSocialOperationsRouter({ pool, getToken }) {
     const id=String(req.params.publicId||"");
     const when=Date.parse(req.body?.scheduledAt);
     if(!/^SPOST-[A-F0-9]{12}$/.test(id)||!Number.isFinite(when)||when<Date.now()+60000) return res.status(400).json({ok:false,error:"شناسه یا زمان‌بندی معتبر نیست؛ زمان باید حداقل یک دقیقه در آینده باشد."});
-    // No fake scheduling: queue only if an actual publishing adapter and connected account exist.
     const client=await pool.connect();
     try {
       await client.query("BEGIN");
-      const r=await client.query("SELECT p.id,p.platform,p.status,a.id AS account_id,a.connection_status FROM suraya_social_posts p LEFT JOIN LATERAL (SELECT id,connection_status FROM suraya_social_accounts WHERE platform=p.platform AND connection_status='connected' ORDER BY connected_at DESC NULLS LAST LIMIT 1) a ON TRUE WHERE p.public_id=$1 FOR UPDATE",[id]);
+      const r=await client.query("SELECT p.id,p.public_id,p.platform,p.status,a.id AS account_id,a.connection_status FROM suraya_social_posts p LEFT JOIN LATERAL (SELECT id,connection_status FROM suraya_social_accounts WHERE platform=p.platform AND connection_status='connected' ORDER BY connected_at DESC NULLS LAST LIMIT 1) a ON TRUE WHERE p.public_id=$1 FOR UPDATE",[id]);
       if(!r.rowCount){await client.query("ROLLBACK");return res.status(404).json({ok:false,error:"محتوا پیدا نشد."});}
       const row=r.rows[0];
       if(row.status!=="approved"){await client.query("ROLLBACK");return res.status(409).json({ok:false,error:"ابتدا باید محتوا تأیید شود."});}
       if(!row.account_id||row.connection_status!=="connected"){await client.query("ROLLBACK");return res.status(409).json({ok:false,code:"ACCOUNT_NOT_CONNECTED",error:"برای زمان‌بندی انتشار، ابتدا حساب رسمی این شبکه باید متصل شود."});}
-      await client.query("ROLLBACK");
-      return res.status(503).json({ok:false,code:"PUBLISH_ADAPTER_NOT_READY",error:"حساب متصل است اما آداپتور رسمی انتشار و صف اجرایی هنوز برای این شبکه فعال نشده است؛ انتشار انجام نشد."});
+      if(row.platform!=="telegram"){await client.query("ROLLBACK");return res.status(503).json({ok:false,code:"PUBLISH_ADAPTER_NOT_READY",error:"آداپتور انتشار این شبکه هنوز فعال نیست؛ فقط تلگرام در این نسخه به صف انتشار واقعی متصل شده است."});}
+      const scheduledAt=new Date(when).toISOString();
+      await client.query("UPDATE suraya_social_posts SET status='scheduled',scheduled_at=$2,account_id=$3,updated_at=NOW() WHERE id=$1",[row.id,scheduledAt,row.account_id]);
+      await client.query("INSERT INTO suraya_social_jobs(job_type,post_id,status,run_after,idempotency_key,payload) VALUES('publish_post',$1,'queued',$2,$3,$4::jsonb) ON CONFLICT(idempotency_key) DO NOTHING",[row.id,scheduledAt,"publish:"+row.public_id,JSON.stringify({platform:row.platform})]);
+      await audit(client,"operator","post.scheduled","social_post",id,"success",{platform:row.platform,scheduledAt});
+      await client.query("COMMIT");
+      res.json({ok:true,postId:id,status:"scheduled",scheduledAt,workerEnabled:true});
     } catch(e){await client.query("ROLLBACK").catch(()=>{});console.error("Social post schedule failed:",e.message);res.status(500).json({ok:false,error:"زمان‌بندی محتوا ناموفق بود."});}
     finally{client.release();}
   });
