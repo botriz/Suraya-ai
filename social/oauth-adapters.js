@@ -85,3 +85,26 @@ export async function exchangeAndIdentify(platform,{code,codeVerifier,env=proces
   const user=profile.data;if(!user?.id)throw new Error("X profile could not be verified.");
   return {accounts:[{platform:"x",externalId:user.id,label:user.name||user.username||"X account",token,metadata:{username:user.username||null}}],scopes:(token.scope||"").split(" ").filter(Boolean),expiresAt:token.expires_in?new Date(Date.now()+Number(token.expires_in)*1000):null};
 }
+
+export async function revokeProviderAccess(platform,token,env=process.env) {
+  const config=configFor[platform]?.();
+  if(!config) throw new Error("Provider revocation is not supported.");
+  if(platform==="facebook"||platform==="instagram") {
+    await fetchJson("https://graph.facebook.com/"+META_VERSION+"/me/permissions?access_token="+encodeURIComponent(token.access_token),{method:"DELETE"});
+    return true;
+  }
+  if(platform==="youtube") {
+    const value=token.refresh_token||token.access_token;
+    await fetchJson("https://oauth2.googleapis.com/revoke",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:form({token:value})});
+    return true;
+  }
+  if(platform==="tiktok") {
+    await fetchJson("https://open.tiktokapis.com/v2/oauth/revoke/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:form({client_key:config.id,client_secret:config.secret,token:token.access_token})});
+    return true;
+  }
+  if(platform==="x") {
+    await fetchJson("https://api.x.com/2/oauth2/revoke",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded",Authorization:"Basic "+Buffer.from(config.id+":"+config.secret).toString("base64")},body:form({token:token.refresh_token||token.access_token,token_type_hint:token.refresh_token?"refresh_token":"access_token",client_id:config.id})});
+    return true;
+  }
+  throw new Error("Provider revocation is not supported.");
+}
