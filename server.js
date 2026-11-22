@@ -13,6 +13,7 @@ import { startSocialPublishingWorker } from "./social/publishing-worker.js";
 import { oauthConfigured } from "./social/oauth-adapters.js";
 import { isSocialEncryptionKeyValid } from "./social/token-crypto.js";
 import { createContentEngine } from "./ai/content-engine.js";
+import { createResearchEngine } from "./ai/research-engine.js";
 import { buildCapabilities } from "./health/capabilities.js";
 
 dotenv.config();
@@ -39,6 +40,7 @@ const services = {
 };
 
 const contentEngine = createContentEngine();
+const researchEngine = createResearchEngine();
 
 const pool = process.env.DATABASE_URL
   ? new Pool({
@@ -64,7 +66,7 @@ function currentCapabilities() {
     operatorTokenConfigured: Boolean(process.env.SURAYA_OPERATOR_TOKEN),
     socialOperationsReady,
     socialOAuthReady: isSocialEncryptionKeyValid() && ["instagram","facebook","youtube","tiktok","x"].some(platform => oauthConfigured(platform)),
-    telegramPublishingReady: Boolean(process.env.SOCIAL_TELEGRAM_BOT_TOKEN && process.env.SOCIAL_TELEGRAM_CHAT_ID && isSocialEncryptionKeyValid())
+    telegramPublishingReady: Boolean(process.env.SOCIAL_TELEGRAM_BOT_TOKEN && process.env.SOCIAL_TELEGRAM_CHAT_ID && isSocialEncryptionKeyValid()),\n    sourceGroundedResearchReady: researchEngine.isConfigured()
   });
 }
 
@@ -152,7 +154,7 @@ app.get("/api/capabilities", (_req, res) => {
 
 app.use("/api/world/v1", createWorldRouter({ pool, isDatabaseReady: () => worldDatabaseReady }));
 app.use("/api/operator/v1", createOperatorRouter({ pool, getToken: () => process.env.SURAYA_OPERATOR_TOKEN }));
-app.use("/api/creator/v1", createCreatorRouter({ engine: contentEngine, rateLimit }));
+app.use("/api/creator/v1", createCreatorRouter({ engine: contentEngine, researchEngine, pool, rateLimit }));
 app.use("/api/social/v1", createSocialOperationsRouter({ pool, getToken: () => process.env.SURAYA_OPERATOR_TOKEN }));
 
 app.get("/api/services", (_req, res) => {
