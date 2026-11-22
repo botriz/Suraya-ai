@@ -3,7 +3,9 @@ export function buildCapabilities({
   worldDatabaseReady = false,
   contentEngineReady = false,
   operatorTokenConfigured = false,
-  socialOperationsReady = false
+  socialOperationsReady = false,
+  socialOAuthReady = false,
+  telegramPublishingReady = false
 } = {}) {
   const database = Boolean(databaseReady);
   const socialReady = database && Boolean(socialOperationsReady) && Boolean(operatorTokenConfigured);
@@ -15,8 +17,9 @@ export function buildCapabilities({
     socialWorkspace: socialReady,
     persistentSocialCalendar: socialReady,
     socialAudienceInsights: false,
+    socialOAuth: Boolean(socialOAuthReady) && socialReady,
+    telegramPublishing: Boolean(telegramPublishingReady) && socialReady,
     payments: false,
-    socialOAuth: false,
     cryptoWallet: false,
     personalWallet: false,
     persistentUserAccounts: false,
