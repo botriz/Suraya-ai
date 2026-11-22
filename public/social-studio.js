@@ -21,7 +21,7 @@
  $("draftForm").addEventListener("submit",async e=>{
   e.preventDefault();const btn=$("generateBtn");btn.disabled=true;setStatus("draftStatus","در حال درخواست از موتور تولید محتوا…");
   try{
-   const response=await fetch("/api/creator/v1/draft",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({topic:$("topic").value.trim(),platform:$("platform").value,tone:$("tone").value,language:$("language").value})});
+   const response=await fetch("/api/creator/v1/draft",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({topic:$("topic").value.trim(),audience:$("audience").value.trim(),objective:$("objective").value,brandVoice:$("brandVoice").value.trim(),platform:$("platform").value,tone:$("tone").value,language:$("language").value})});
    const data=await response.json();if(!response.ok||!data.ok)throw new Error(data.error||"تولید پیش‌نویس انجام نشد.");
    renderDraft(data.draft);setStatus("draftStatus","پیش‌نویس آماده شد؛ پیش از استفاده آن را بررسی کن.");
   }catch(err){setStatus("draftStatus",err.message||"ارتباط با سرویس برقرار نشد.",true)}
