@@ -42,3 +42,28 @@ Future operator integration must use a deterministic tool registry with read/pro
 - It consumes `/api/status`, `/api/capabilities` and `/api/services` and reports the current server-declared state.
 - It derives transparent diagnostic notes from disabled capabilities; it does not execute repairs or imply that an AI agent is already authorized to change production.
 - The page is linked from the Products & Services workspace and the Social Operations workspace.
+
+
+## Persistent operations foundation (v1)
+
+Migration `003_social_operations.sql` adds:
+- social account connection records with status/scope metadata; access tokens are never returned by the API
+- persistent posts with review states and idempotency fields
+- verified-source audience snapshot storage and operator-defined audience segments
+- a persistent PostgreSQL editorial calendar
+- a job queue schema and append-only operational audit events
+- subscription plan catalogue and customer subscription records
+
+Protected API routes under `/api/social/v1` use the existing `SURAYA_OPERATOR_TOKEN` bearer authorization:
+- `GET /overview`, `GET /accounts`, `POST /accounts/:platform/connect`
+- `GET|POST /posts`, `POST /posts/:publicId/approve`, `POST /posts/:publicId/schedule`
+- `GET|POST|DELETE /calendar`
+- `GET|POST /segments`, `GET /audit`, `GET /plans`
+
+The operator token is entered only for the current page session and is not written to browser storage. OAuth connection deliberately fails closed until the platform's reviewed adapter, redirect flow, scopes, encrypted token storage and revocation handling exist. A configured client ID alone does not enable publishing. Scheduling returns an explicit unavailable response until a connected account and a verified publishing adapter are both available.
+
+The four plan definitions (Starter, Creator, Pro, Agency) currently define proposed monthly limits and feature flags. They are catalogue data only: no payment provider, customer login, subscription activation, entitlement enforcement, or charge is enabled. Prices must be reviewed before commercial launch.
+
+Audience segments store operator-defined criteria only. Real audience metrics and targeting remain disabled until official read scopes, platform policy review, user consent, retention limits and data-deletion flows are implemented. No scraping, inferred sensitive traits, or fabricated metrics are used.
+
+The job queue schema is present for the next worker phase; no worker claims jobs and no automatic post publishing or live-stream control is enabled in this release.
