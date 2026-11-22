@@ -55,7 +55,7 @@ export function startSocialPublishingWorker({pool,intervalMs=5000,onError=error=
   }
   const timer=setInterval(tick,intervalMs);
   timer.unref?.();
-  void pool.query("UPDATE suraya_social_jobs SET status='failed',last_error='Worker restarted during execution; verify the provider result manually before retrying.',updated_at=NOW() WHERE status='running' AND updated_at<NOW()-INTERVAL '5 minutes'")
+  void pool.query("UPDATE suraya_social_jobs SET status='failed',last_error='Worker restarted during execution; verify the provider result manually before retrying.',updated_at=NOW() WHERE status='running' AND updated_at<NOW()-INTERVAL '20 minutes'")
     .then(()=>pool.query("UPDATE suraya_social_posts SET status='failed',failure_code='PUBLISH_RESULT_UNCERTAIN',failure_message='Worker restarted during execution; provider result requires manual verification.',updated_at=NOW() WHERE id IN (SELECT post_id FROM suraya_social_jobs WHERE status='failed' AND last_error LIKE 'Worker restarted during execution%') AND status='scheduled'"))
     .catch(onError).finally(()=>{recovering=false;void tick()});
   return {async stop(){stopped=true;clearInterval(timer);while(busy)await new Promise(resolve=>setTimeout(resolve,50))}};
