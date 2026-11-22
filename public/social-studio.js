@@ -31,7 +31,7 @@
   const copy=el("button","کپی بستهٔ محتوا","btn secondary");copy.addEventListener("click",()=>navigator.clipboard?.writeText(Object.entries(draft).map(([k,v])=>k+": "+v).join("\n\n")));
   const schedule=el("button","افزودن عنوان به تقویم","btn secondary");schedule.addEventListener("click",()=>{$("planTitle").value=draft.title;document.querySelector('[data-tab="calendar"]').click();$("planDate").focus()});
   const save=el("button","ذخیرهٔ پیش‌نویس در سرور","btn");save.disabled=!operatorToken;save.title=operatorToken?"":"ابتدا در بخش مدیریت وارد شو";
-  save.addEventListener("click",async()=>{save.disabled=true;try{const r=await authFetch("/api/social/v1/posts",{method:"POST",body:JSON.stringify({platform:$("platform").value,title:draft.title,caption:draft.caption,hashtags:draft.hashtags,script:draft.script,mediaType:$("mediaType").value,mediaUrl:$("mediaUrl").value.trim()}})});setStatus("draftStatus","پیش‌نویس با شناسهٔ "+r.post.public_id+" در PostgreSQL ذخیره شد.");await loadPosts()}catch(e){setStatus("draftStatus",e.message,true)}finally{save.disabled=!operatorToken}});
+  save.addEventListener("click",async()=>{save.disabled=true;try{const r=await authFetch("/api/social/v1/posts",{method:"POST",body:JSON.stringify({platform:$("platform").value,title:draft.title,caption:draft.caption,hashtags:draft.hashtags,script:draft.script,mediaType:$("mediaType").value,mediaUrl:$("mediaUrl").value.trim()})});setStatus("draftStatus","پیش‌نویس با شناسهٔ "+r.post.public_id+" در PostgreSQL ذخیره شد.");await loadPosts()}catch(e){setStatus("draftStatus",e.message,true)}finally{save.disabled=!operatorToken}});
   actions.append(copy,schedule,save);host.append(actions);
  }
  $("draftForm").addEventListener("submit",async e=>{
