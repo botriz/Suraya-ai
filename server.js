@@ -3,13 +3,18 @@ import dotenv from "dotenv";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import pg from "pg";
-import { readFile } from "node:fs/promises";
 import { createWorldRouter } from "./world/world-api.js";
 import { createHealthRouter } from "./health/health-router.js";
 import { createOperatorRouter } from "./routes/operator-api.js";
 import { createCreatorRouter } from "./routes/creator-api.js";
+import { createSocialOperationsRouter } from "./routes/social-operations-api.js";
+import { startSocialPublishingWorker } from "./social/publishing-worker.js";
+import { oauthConfigured } from "./social/oauth-adapters.js";
+import { isSocialEncryptionKeyValid } from "./social/token-crypto.js";
 import { createContentEngine } from "./ai/content-engine.js";
+import { createResearchEngine } from "./ai/research-engine.js";
 import { buildCapabilities } from "./health/capabilities.js";
+import { runMigrations } from "./db/migrations.js";
 
 dotenv.config();
 
@@ -35,6 +40,7 @@ const services = {
 };
 
 const contentEngine = createContentEngine();
+const researchEngine = createResearchEngine();
 
 const pool = process.env.DATABASE_URL
   ? new Pool({
@@ -49,6 +55,7 @@ const pool = process.env.DATABASE_URL
 let databaseReady = false;
 let databaseError = "DATABASE_URL is not configured";
 let worldDatabaseReady = false;
+let socialOperationsReady = false;
 const requestBuckets = new Map();
 
 function currentCapabilities() {
@@ -56,7 +63,12 @@ function currentCapabilities() {
     databaseReady,
     worldDatabaseReady,
     contentEngineReady: contentEngine.isConfigured(),
-    operatorTokenConfigured: Boolean(process.env.SURAYA_OPERATOR_TOKEN)
+    operatorTokenConfigured: Boolean(process.env.SURAYA_OPERATOR_TOKEN),
+    socialOperationsReady,
+    socialOAuthReady: isSocialEncryptionKeyValid() && ["instagram","facebook","youtube","tiktok","x"].some(platform => oauthConfigured(platform)),
+    telegramPublishingReady: Boolean(process.env.SOCIAL_TELEGRAM_BOT_TOKEN && process.env.SOCIAL_TELEGRAM_CHAT_ID && isSocialEncryptionKeyValid()),
+    sourceGroundedResearchReady: researchEngine.isConfigured(),
+    mediaStorageReady: Boolean(process.env.SURAYA_S3_ENDPOINT && process.env.SURAYA_S3_PUBLIC_BASE_URL && process.env.SURAYA_S3_BUCKET && process.env.SURAYA_S3_ACCESS_KEY_ID && process.env.SURAYA_S3_SECRET_ACCESS_KEY)
   });
 }
 
@@ -76,20 +88,14 @@ async function initializeDatabase() {
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
       )
     `);
-    await pool.query(await readFile(path.join(__dirname, "migrations", "002_revenue_operations.sql"), "utf8"));
+    await runMigrations(pool, { migrationsDir: path.join(__dirname, "migrations") });
+    socialOperationsReady = true;
+    worldDatabaseReady = true;
     databaseReady = true;
     databaseError = "";
     console.log("Suraya order database ready");
 
-    try {
-      const worldMigration = await readFile(path.join(__dirname, "migrations", "001_world_foundation.sql"), "utf8");
-      await pool.query(worldMigration);
-      worldDatabaseReady = true;
-      console.log("Suraya digital world schema ready");
-    } catch (worldError) {
-      worldDatabaseReady = false;
-      console.error("Suraya digital world initialization failed:", worldError.message);
-    }
+    console.log("Suraya digital world schema ready");
   } catch (error) {
     databaseReady = false;
     databaseError = error.message;
@@ -142,7 +148,8 @@ app.get("/api/capabilities", (_req, res) => {
 
 app.use("/api/world/v1", createWorldRouter({ pool, isDatabaseReady: () => worldDatabaseReady }));
 app.use("/api/operator/v1", createOperatorRouter({ pool, getToken: () => process.env.SURAYA_OPERATOR_TOKEN }));
-app.use("/api/creator/v1", createCreatorRouter({ engine: contentEngine, rateLimit }));
+app.use("/api/creator/v1", createCreatorRouter({ engine: contentEngine, researchEngine, pool, getOperatorToken: () => process.env.SURAYA_OPERATOR_TOKEN, rateLimit }));
+app.use("/api/social/v1", createSocialOperationsRouter({ pool, getToken: () => process.env.SURAYA_OPERATOR_TOKEN }));
 
 app.get("/api/services", (_req, res) => {
   res.json({ ok: true, services });
@@ -207,14 +214,25 @@ app.use((_req, res) => {
 });
 
 await initializeDatabase();
-app.listen(PORT, HOST, () => {
+const socialPublishingWorker = databaseReady && socialOperationsReady
+  ? startSocialPublishingWorker({ pool })
+  : null;
+const server = app.listen(PORT, HOST, () => {
   console.log(`Suraya running on ${HOST}:${PORT}`);
+});
+process.once("SIGTERM", () => {
+  socialPublishingWorker?.stop();
+  server.close(() => {
+    if (pool) pool.end().finally(() => process.exit(0));
+    else process.exit(0);
+  });
 });
 
 if (pool) {
   pool.on("error", (error) => {
     databaseReady = false;
     worldDatabaseReady = false;
+    socialOperationsReady = false;
     databaseError = error.message;
     console.error("Database pool error:", error.message);
   });
