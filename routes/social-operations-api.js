@@ -218,12 +218,13 @@ export function createSocialOperationsRouter({ pool, getToken }) {
     const client=await pool.connect();
     try {
       await client.query("BEGIN");
-      const r=await client.query("SELECT p.id,p.public_id,p.platform,p.status,a.id AS account_id,a.connection_status FROM suraya_social_posts p LEFT JOIN LATERAL (SELECT id,connection_status FROM suraya_social_accounts WHERE platform=p.platform AND connection_status='connected' ORDER BY connected_at DESC NULLS LAST LIMIT 1) a ON TRUE WHERE p.public_id=$1 FOR UPDATE",[id]);
+      const r=await client.query("SELECT p.id,p.public_id,p.platform,p.status,p.media_url,p.media_type,a.id AS account_id,a.connection_status FROM suraya_social_posts p LEFT JOIN LATERAL (SELECT id,connection_status FROM suraya_social_accounts WHERE platform=p.platform AND connection_status='connected' ORDER BY connected_at DESC NULLS LAST LIMIT 1) a ON TRUE WHERE p.public_id=$1 FOR UPDATE",[id]);
       if(!r.rowCount){await client.query("ROLLBACK");return res.status(404).json({ok:false,error:"محتوا پیدا نشد."});}
       const row=r.rows[0];
       if(row.status!=="approved"){await client.query("ROLLBACK");return res.status(409).json({ok:false,error:"ابتدا باید محتوا تأیید شود."});}
       if(!row.account_id||row.connection_status!=="connected"){await client.query("ROLLBACK");return res.status(409).json({ok:false,code:"ACCOUNT_NOT_CONNECTED",error:"برای زمان‌بندی انتشار، ابتدا حساب رسمی این شبکه باید متصل شود."});}
-      if(row.platform!=="telegram"){await client.query("ROLLBACK");return res.status(503).json({ok:false,code:"PUBLISH_ADAPTER_NOT_READY",error:"آداپتور انتشار این شبکه هنوز فعال نیست؛ فقط تلگرام در این نسخه به صف انتشار واقعی متصل شده است."});}
+      if(!["telegram","facebook","instagram"].includes(row.platform)){await client.query("ROLLBACK");return res.status(503).json({ok:false,code:"PUBLISH_ADAPTER_NOT_READY",error:"آداپتور انتشار این شبکه هنوز فعال نیست."});}
+      if(row.platform==="instagram"&&(!row.media_url||!["image","video"].includes(row.media_type))){await client.query("ROLLBACK");return res.status(400).json({ok:false,code:"INSTAGRAM_MEDIA_REQUIRED",error:"انتشار اینستاگرام به پیوند عمومی تصویر یا ویدئو نیاز دارد."});}
       const scheduledAt=new Date(when).toISOString();
       await client.query("UPDATE suraya_social_posts SET status='scheduled',scheduled_at=$2,account_id=$3,updated_at=NOW() WHERE id=$1",[row.id,scheduledAt,row.account_id]);
       await client.query("INSERT INTO suraya_social_jobs(job_type,post_id,status,run_after,max_attempts,idempotency_key,payload) VALUES('publish_post',$1,'queued',$2,1,$3,$4::jsonb) ON CONFLICT(idempotency_key) DO NOTHING",[row.id,scheduledAt,"publish:"+row.public_id,JSON.stringify({platform:row.platform})]);
