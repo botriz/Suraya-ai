@@ -66,7 +66,8 @@ function currentCapabilities() {
     operatorTokenConfigured: Boolean(process.env.SURAYA_OPERATOR_TOKEN),
     socialOperationsReady,
     socialOAuthReady: isSocialEncryptionKeyValid() && ["instagram","facebook","youtube","tiktok","x"].some(platform => oauthConfigured(platform)),
-    telegramPublishingReady: Boolean(process.env.SOCIAL_TELEGRAM_BOT_TOKEN && process.env.SOCIAL_TELEGRAM_CHAT_ID && isSocialEncryptionKeyValid()),\n    sourceGroundedResearchReady: researchEngine.isConfigured()
+    telegramPublishingReady: Boolean(process.env.SOCIAL_TELEGRAM_BOT_TOKEN && process.env.SOCIAL_TELEGRAM_CHAT_ID && isSocialEncryptionKeyValid()),
+    sourceGroundedResearchReady: researchEngine.isConfigured()
   });
 }
 
