@@ -99,3 +99,22 @@ Facebook/Instagram, YouTube, TikTok and X authorization are implemented, but the
 ## Verified audience snapshots
 
 The operator can request a fresh aggregate snapshot for connected Meta, YouTube, TikTok and X accounts through `POST /api/social/v1/accounts/:id/insights/sync`, and read stored history through `GET /api/social/v1/accounts/:id/insights`. The API records the provider source and capture time with a verified flag only after a successful authenticated provider response. Available metrics vary by platform and granted scopes; unavailable demographic reports are omitted rather than fabricated. The current implementation stores aggregate channel/profile statistics and YouTube age-group/gender viewer percentages where the provider returns them. It does not scrape followers, identify individuals, infer sensitive traits or automatically target people.
+
+
+## Publishing adapter coverage
+
+The queue worker currently supports:
+- Telegram: text, image and video through Bot API, after bot/destination verification.
+- Facebook Pages: text, image and video through Meta Graph API.
+- Instagram professional accounts: image and Reels publishing through Meta media containers, including processing-state polling.
+- YouTube: resumable video upload through the YouTube Data API. Media must be served from a host explicitly listed in `SURAYA_MEDIA_ALLOWED_HOSTS`; Google access tokens are refreshed with the stored refresh token.
+- TikTok: video direct-post through Content Posting API using `PULL_FROM_URL`; the media host must exactly match `SOCIAL_TIKTOK_MEDIA_DOMAIN` and be verified in the TikTok developer app.
+- X: text-only posts up to 280 characters through API v2. Media upload is not enabled.
+
+All publishing requires an approved post and a connected account. A job is attempted once; ambiguous failures are marked failed for manual verification rather than retried automatically. The worker claims jobs with PostgreSQL `SKIP LOCKED` and records provider results and audit events. Do not treat a queued post as published.
+
+Additional Render environment settings:
+- `SURAYA_MEDIA_ALLOWED_HOSTS`: comma-separated exact hostnames from which the server may fetch YouTube video sources.
+- `SOCIAL_TIKTOK_MEDIA_DOMAIN`: exact hostname verified in the TikTok developer application for URL-pull publishing.
+
+The app currently accepts public HTTPS media URLs; it does not yet upload files from a user's device into object storage or render a new clip. The creator model generates copy and a script, not a rendered video file.
