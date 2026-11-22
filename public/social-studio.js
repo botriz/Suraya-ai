@@ -9,7 +9,7 @@
  const PLATFORMS=["instagram","youtube","telegram","rubika","facebook","x","tiktok","snapchat","whatsapp","eitaa"];
  const PLATFORM_LABELS={instagram:"Instagram",youtube:"YouTube",telegram:"Telegram",rubika:"Rubika",facebook:"Facebook",x:"X",tiktok:"TikTok",snapchat:"Snapchat",whatsapp:"WhatsApp",eitaa:"Eitaa"};
  const PLATFORM_GLYPHS={instagram:"◎",youtube:"▶",telegram:"➤",rubika:"ر",facebook:"f",x:"𝕏",tiktok:"♪",snapchat:"👻",whatsapp:"◉",eitaa:"e"};
- let operatorToken="",latestDraft=null;
+ let operatorToken="",latestDraft=null,latestResearchId=null;
  function setStatus(id,message,error=false){const el=$(id);if(!el)return;el.textContent=message;el.classList.toggle("error",error)}
  async function authFetch(url,options={}){
   if(!operatorToken)throw new Error("ابتدا با توکن مدیر وارد شو.");
@@ -27,11 +27,12 @@
   [["عنوان",draft.title],["کپشن",draft.caption],["هشتگ‌ها",draft.hashtags],["سناریو",draft.script],["دعوت به اقدام",draft.cta]].forEach(([label,value])=>{
    const wrap=el("div");wrap.style.marginBottom="12px";wrap.append(el("h3",label),el("pre",value));host.append(wrap);
   });
+  if(sources.length){const section=el("div");section.style.marginTop="14px";section.append(el("h3","منابع بررسی‌شده از دامنه‌های مجاز"));sources.forEach((source,index)=>{const row=el("div");const link=el("a","["+String(index+1)+"] "+source.title);link.href=source.url;link.target="_blank";link.rel="noopener noreferrer";link.style.color="var(--mint)";const meta=el("small",source.domain+" · "+source.excerpt);meta.style.display="block";row.append(link,meta);section.append(row)});section.append(el("small","مجازبودن دامنه بررسی شده است؛ متن منبع و ادعاها پیش از انتشار باید توسط مدیر بازبینی شوند."));host.append(section)}
   const actions=el("div",undefined,"result-actions");
   const copy=el("button","کپی بستهٔ محتوا","btn secondary");copy.addEventListener("click",()=>navigator.clipboard?.writeText(Object.entries(draft).map(([k,v])=>k+": "+v).join("\n\n")));
   const schedule=el("button","افزودن عنوان به تقویم","btn secondary");schedule.addEventListener("click",()=>{$("planTitle").value=draft.title;document.querySelector('[data-tab="calendar"]').click();$("planDate").focus()});
   const save=el("button","ذخیرهٔ پیش‌نویس در سرور","btn");save.disabled=!operatorToken;save.title=operatorToken?"":"ابتدا در بخش مدیریت وارد شو";
-  save.addEventListener("click",async()=>{save.disabled=true;try{const r=await authFetch("/api/social/v1/posts",{method:"POST",body:JSON.stringify({platform:$("platform").value,title:draft.title,caption:draft.caption,hashtags:draft.hashtags,script:draft.script,mediaType:$("mediaType").value,mediaUrl:$("mediaUrl").value.trim()})});setStatus("draftStatus","پیش‌نویس با شناسهٔ "+r.post.public_id+" در PostgreSQL ذخیره شد.");await loadPosts()}catch(e){setStatus("draftStatus",e.message,true)}finally{save.disabled=!operatorToken}});
+  save.addEventListener("click",async()=>{save.disabled=true;try{const r=await authFetch("/api/social/v1/posts",{method:"POST",body:JSON.stringify({platform:$("platform").value,title:draft.title,caption:draft.caption,hashtags:draft.hashtags,script:draft.script,mediaType:$("mediaType").value,mediaUrl:$("mediaUrl").value.trim(),researchId:latestResearchId,topicCategory:$("topicCategory").value})});setStatus("draftStatus","پیش‌نویس با شناسهٔ "+r.post.public_id+" در PostgreSQL ذخیره شد.");await loadPosts()}catch(e){setStatus("draftStatus",e.message,true)}finally{save.disabled=!operatorToken}});
   actions.append(copy,schedule,save);host.append(actions);
  }
  $("draftForm").addEventListener("submit",async e=>{
@@ -39,7 +40,7 @@
   try{
    const response=await fetch("/api/creator/v1/draft",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({topic:$("topic").value.trim(),audience:$("audience").value.trim(),objective:$("objective").value,brandVoice:$("brandVoice").value.trim(),platform:$("platform").value,tone:$("tone").value,language:$("language").value})});
    const data=await response.json();if(!response.ok||!data.ok)throw new Error(data.error||"تولید پیش‌نویس انجام نشد.");
-   renderDraft(data.draft);setStatus("draftStatus","پیش‌نویس آماده شد؛ پیش از استفاده آن را بررسی کن.");
+   renderDraft(data.draft,[],null);setStatus("draftStatus","پیش‌نویس آماده شد؛ پیش از استفاده آن را بررسی کن.");
   }catch(err){setStatus("draftStatus",err.message||"ارتباط با سرویس برقرار نشد.",true)}finally{btn.disabled=false}
  });
  async function loadCalendar(){
