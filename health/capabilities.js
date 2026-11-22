@@ -16,7 +16,7 @@ export function buildCapabilities({
     digitalWorldReadApi: database && Boolean(worldDatabaseReady),
     socialWorkspace: socialReady,
     persistentSocialCalendar: socialReady,
-    socialAudienceInsights: false,
+    socialAudienceInsights: Boolean(socialOAuthReady) && socialReady,
     socialOAuth: Boolean(socialOAuthReady) && socialReady,
     telegramPublishing: Boolean(telegramPublishingReady) && socialReady,
     payments: false,
