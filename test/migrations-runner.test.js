@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { mkdtemp, mkdir, writeFile, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { runMigrations } from "./db/migrations.js";
+import { runMigrations } from "../db/migrations.js";
 
 function fakePool() {
   const applied = new Map();
