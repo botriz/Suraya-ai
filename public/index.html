@@ -419,6 +419,166 @@ body{height:100dvh;min-height:0;overflow:hidden}
  .hub-window .hub-section,.hub-window .hub-section[open]>.hub-section-body{animation:none!important;transition:none!important}
 }
 
+
+
+/* Premium operations-workspace visual pass: editorial hierarchy, realistic imagery,
+   restrained motion, and responsive service navigation. */
+:root{
+  --surface-0:#080f1b;--surface-1:#101c2c;--surface-2:#14253a;
+  --stroke-soft:#b8d8ef24;--text-secondary:#a9bbcf;
+  --accent-live:#8debd5;--accent-cool:#a9c8ff;
+}
+body{background:
+  radial-gradient(ellipse at 8% 4%,#286b7440,transparent 31%),
+  radial-gradient(ellipse at 92% 13%,#51448635,transparent 34%),
+  linear-gradient(145deg,#070d17 0%,#0b1726 48%,#101a2b 100%)}
+.nav{position:sticky;top:0;z-index:900;padding:13px 18px;background:#081321d9;
+  border:1px solid var(--stroke-soft);border-radius:0 0 18px 18px;
+  backdrop-filter:blur(20px);box-shadow:0 12px 35px #0003}
+.nav-links{gap:26px}
+.hero{padding-top:42px}
+.hero h1{letter-spacing:-.035em}
+.hero p,.section-intro p{color:var(--text-secondary)}
+.app-view-host{position:relative;isolation:isolate}
+.app-view{scrollbar-width:thin;scrollbar-color:#64899a55 transparent}
+.app-view::-webkit-scrollbar{width:7px}
+.app-view::-webkit-scrollbar-thumb{background:#7597ad55;border-radius:99px}
+.workspace-tabs{z-index:1000;backdrop-filter:blur(22px);background:#091523e8;
+  border:1px solid #b8d8ef30;box-shadow:0 18px 55px #0007}
+.workspace-tabs button{transition:background .2s,border-color .2s,transform .2s}
+.workspace-tabs button:hover{transform:translateY(-2px)}
+.workspace-tabs button.active{background:linear-gradient(130deg,#7ce6d123,#9aabff1d);
+  border-color:#8debd56b;box-shadow:inset 0 1px #ffffff12,0 5px 22px #6bdcc51c}
+.section-intro{align-items:center;margin:22px 0}
+.section-intro h2,.list-heading h2{letter-spacing:-.02em}
+.service-world{gap:20px;align-items:stretch}
+.stage,.service-list-panel,.order-card,.invoice-card{
+  border-color:#b8d8ef30;box-shadow:0 26px 70px #0005, inset 0 1px #ffffff08;
+}
+.stage{background:linear-gradient(155deg,#13243adf,#0b1728f2 76%)}
+.service-list-panel{background:linear-gradient(155deg,#14243aeF,#0c1728f5)}
+.service-row{grid-template-columns:70px minmax(0,1fr) 22px;padding:14px 8px}
+.service-row:hover,.service-row.active{background:linear-gradient(100deg,#8debd510,#a9a0ff18)}
+.service-row.active{box-shadow:inset -3px 0 var(--accent-live)}
+.avatar-small{position:relative;border:1px solid #d3eff02b;border-radius:15px;
+  background-size:cover;background-position:center;box-shadow:0 7px 20px #0005}
+.avatar-small svg{opacity:0;visibility:hidden}
+.service-row:nth-child(1) .avatar-small{background-image:linear-gradient(145deg,#071a26aa,#071a2640),url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=240&h=260&fit=crop")}
+.service-row:nth-child(2) .avatar-small{background-image:linear-gradient(145deg,#071a26aa,#071a2640),url("https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=240&h=260&fit=crop")}
+.service-row:nth-child(3) .avatar-small{background-image:linear-gradient(145deg,#071a26aa,#071a2640),url("https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=240&h=260&fit=crop")}
+.service-row:nth-child(4) .avatar-small{background-image:linear-gradient(145deg,#071a26aa,#071a2640),url("https://images.unsplash.com/photo-1557804506-669a67965ba0?w=240&h=260&fit=crop")}
+.service-row:nth-child(5) .avatar-small{background-image:linear-gradient(145deg,#071a26aa,#071a2640),url("https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=240&h=260&fit=crop")}
+.service-row:nth-child(6) .avatar-small{background-image:linear-gradient(145deg,#071a26aa,#071a2640),url("https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=240&h=260&fit=crop")}
+@keyframes cinematicKenBurns{0%,100%{transform:scale(1.015) translate3d(0,0,0)}50%{transform:scale(1.075) translate3d(-1.1%,.6%,0)}}
+.real-world-photo img{animation:cinematicKenBurns 24s ease-in-out infinite;will-change:transform}
+.real-world-card:nth-child(2) .real-world-photo img{animation-delay:-7s}
+.real-world-card:nth-child(3) .real-world-photo img{animation-delay:-14s}
+.real-world-card{border-color:#b8d8ef30;background:linear-gradient(155deg,#14253a,#0c1727)}
+.real-world-card:hover{transform:translateY(-4px);border-color:#8debd57a}
+.real-world-photo{background:#102337}
+.real-world-photo:after{background:linear-gradient(transparent 20%,#061321ed)}
+.hero-scene{overflow:hidden;border:1px solid #b8d8ef20;border-radius:28px;
+  background:linear-gradient(140deg,#071a2b66,#0b182c66)}
+.hero-scene:before{content:"";position:absolute;inset:8% 5%;border-radius:24px;
+  background:linear-gradient(180deg,#07162518,#0716259c),
+  url("https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=1200&h=900&fit=crop") center/cover;
+  filter:saturate(.82) contrast(1.05);animation:cinematicKenBurns 30s ease-in-out infinite}
+.hero-character{opacity:0;pointer-events:none}
+.hero-scene .scene-orbit{z-index:2;border-color:#d5f4ff35}
+.hero-scene .spark{z-index:3}
+.stage-art{overflow:hidden;border-radius:24px;margin:0 18px}
+.stage-art:before{content:"";position:absolute;inset:0;border-radius:24px;
+  background:linear-gradient(180deg,#07162522,#071625a8),
+  url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&h=850&fit=crop") center/cover;
+  animation:cinematicKenBurns 28s ease-in-out infinite}
+.character-large{opacity:0;pointer-events:none}
+.stage-rings{z-index:2;pointer-events:none}
+.stage-caption{padding-top:15px}
+.selection{border-color:#8debd55c;box-shadow:0 12px 32px #0002}
+.btn{box-shadow:0 8px 24px #6edbc522;transition:transform .2s,filter .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.06);box-shadow:0 12px 30px #6edbc533}
+button:focus-visible,a:focus-visible{outline:2px solid #9af1dc;outline-offset:3px}
+.hub-window,.service-drawer{border-color:#b8d8ef40;box-shadow:0 28px 90px #000c}
+@media(max-width:850px){
+ .hero{grid-template-columns:1fr;gap:18px;padding-top:28px}
+ .hero-scene{min-height:280px}
+ .service-world{grid-template-columns:1fr}
+ .stage{min-height:440px}
+ .service-list-panel{padding:18px}
+}
+@media(max-width:600px){
+ .nav{padding:10px 12px}
+ .nav-links{gap:12px;font-size:11px}
+ .hero{padding-top:20px}
+ .hero-scene{height:240px;min-height:240px}
+ .service-row{grid-template-columns:58px minmax(0,1fr) 18px;gap:10px;padding:11px 5px}
+ .avatar-small{width:56px;height:58px}
+ .stage-art{height:245px;margin:0 12px}
+ .real-world-photo img{animation-duration:32s}
+}
+@media(prefers-reduced-motion:reduce){
+ .real-world-photo img,.hero-scene:before,.stage-art:before{animation:none!important;transform:none!important}
+ .btn,.workspace-tabs button,.real-world-card{transition:none!important}
+}
+
+
+/* Product catalog, contact center, and extensible social directory */
+.catalog-page,.contact-page{padding:34px 0 64px;max-width:1180px;margin:0 auto}
+.catalog-hero,.contact-hero{padding:25px 28px;border:1px solid #b8d8ef2a;border-radius:26px;background:radial-gradient(ellipse at 85% 0%,#8debd51b,transparent 40%),linear-gradient(145deg,#14263ceF,#0a1626f5);box-shadow:0 24px 65px #0004}
+.catalog-hero h2,.contact-hero h2{font-size:clamp(25px,4vw,38px);margin:8px 0}
+.catalog-hero p,.contact-hero p{font-size:13px;color:#b9c9dc;max-width:680px;margin:0}
+.catalog-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:20px;color:#98abc2;font-size:11px}
+.catalog-live{display:flex;align-items:center;gap:8px;color:#a5efdc}
+.catalog-live i{width:7px;height:7px;border-radius:50%;background:#79edc6;box-shadow:0 0 13px #79edc6}
+.catalog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-top:19px}
+.catalog-item{position:relative;overflow:hidden;min-height:190px;padding:19px;border:1px solid #b8d8ef2a;border-radius:21px;background:linear-gradient(150deg,#152840,#0c1728);box-shadow:0 16px 45px #0003;transition:transform .22s,border-color .22s}
+.catalog-item:hover{transform:translateY(-4px);border-color:#8debd56b}
+.catalog-item:before{content:"";position:absolute;width:150px;height:150px;left:-75px;bottom:-95px;border-radius:50%;background:#8debd512;filter:blur(8px)}
+.catalog-kind{font-size:10px;color:#9bead8;border:1px solid #8debd53c;border-radius:99px;padding:3px 9px;display:inline-block}
+.catalog-item h3{font-size:16px;margin:12px 0 6px}
+.catalog-item p{font-size:11px;color:#aebed0;line-height:1.9;min-height:42px;margin:0 0 15px}
+.catalog-meta{display:flex;justify-content:space-between;align-items:center;gap:8px;color:#e2edf9;font-size:12px}
+.catalog-meta strong{font-size:15px;color:#a4f0db}
+.catalog-loading,.catalog-empty{grid-column:1/-1;text-align:center;color:#aebed0}
+.catalog-footnote,.social-note{font-size:10px;line-height:2;color:#8296af;margin-top:15px}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:18px 0 35px}
+.contact-method{display:flex;align-items:center;gap:14px;padding:19px;border:1px solid #b8d8ef2b;border-radius:19px;background:linear-gradient(140deg,#152941,#0c1728);transition:transform .2s,border-color .2s;min-width:0}
+.contact-method:hover,.social-link:hover{transform:translateY(-3px);border-color:#8debd56b}
+.contact-symbol{width:48px;height:48px;flex:0 0 48px;display:grid;place-items:center;border-radius:16px;background:#8debd51a;color:#a3f1dc;font-size:23px}
+.contact-method small,.social-link small{display:block;color:#91a6bf;font-size:10px}
+.contact-method strong{display:block;font-size:14px;direction:ltr;text-align:right;overflow-wrap:anywhere}
+.contact-arrow{margin-right:auto;color:#9debd8;font-size:17px}
+.social-directory{padding:24px;border:1px solid #b8d8ef2a;border-radius:25px;background:linear-gradient(145deg,#12243a,#0a1525)}
+.social-directory-head{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:17px}
+.social-directory-head h3{font-size:21px;margin:5px 0}
+.social-directory-head p{font-size:11px;color:#aebed0;margin:0;max-width:690px}
+.social-total{font-size:10px;color:#a5efdc;border:1px solid #8debd54a;padding:5px 11px;border-radius:99px;white-space:nowrap}
+.social-link-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.social-link{display:flex;align-items:center;gap:12px;padding:13px;border:1px solid #ffffff17;border-radius:15px;background:#ffffff06;transition:transform .2s,border-color .2s;min-width:0}
+.social-mark{width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;border-radius:12px;background:#9dbaff16;color:#d7eaff;font-size:19px;font-weight:800}
+.social-link b{font-size:12px}
+@media(max-width:850px){.catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.catalog-page,.contact-page{padding:18px 0 42px}.catalog-hero,.contact-hero{padding:20px;border-radius:21px}.catalog-grid{grid-template-columns:1fr}.catalog-item{min-height:165px}.contact-grid{grid-template-columns:1fr}.social-directory{padding:17px}.social-link-grid{grid-template-columns:1fr}.social-directory-head{align-items:flex-start}.contact-method{padding:15px}}
+
+
+.wallet-page{max-width:1180px;margin:0 auto;padding:32px 0 60px}
+.wallet-page-hero{padding:26px;border:1px solid #b8d8ef30;border-radius:26px;background:radial-gradient(ellipse at 85% 0%,#8debd51c,transparent 42%),linear-gradient(145deg,#14263cef,#0a1626f5);box-shadow:0 22px 65px #0004}
+.wallet-page-hero h2{font-size:clamp(25px,4vw,38px);margin:8px 0}
+.wallet-page-hero>p{max-width:760px;color:#b9c9dc;font-size:13px;margin:0}
+.wallet-safety{display:flex;align-items:center;gap:12px;margin-top:20px;padding:13px 15px;border:1px solid #8debd548;border-radius:16px;background:#8debd50b}
+.wallet-safety>span{font-size:25px;color:#a1f1dc}.wallet-safety b,.wallet-safety small{display:block}.wallet-safety b{font-size:12px;color:#b8f4e4}.wallet-safety small{font-size:10px;color:#aabbd0}
+.wallet-overview-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin:17px 0}
+.wallet-overview-card{padding:19px;border:1px solid #b8d8ef2a;border-radius:19px;background:linear-gradient(150deg,#152840,#0c1728);min-width:0}
+.wallet-overview-card span,.wallet-overview-card small{display:block;color:#9fb2c8;font-size:10px}
+.wallet-overview-card strong{display:block;font-size:15px;margin:9px 0;color:#e8f4ff}
+.wallet-next-steps{padding:21px;border:1px solid #b8d8ef28;border-radius:21px;background:#ffffff06}
+.wallet-next-steps h3{font-size:17px;margin:0 0 10px}
+.wallet-next-steps ol{padding-right:20px;color:#bdcadd;font-size:12px;line-height:2.2}
+.wallet-open-settings{margin-top:8px}
+.wallet-page-note{font-size:10px;color:#8fa3bc;line-height:2;margin-top:15px}
+@media(max-width:650px){.wallet-page{padding:18px 0 40px}.wallet-page-hero{padding:20px}.wallet-overview-grid{grid-template-columns:1fr}.wallet-overview-card{padding:15px}}
+
+.social-studio-link{display:inline-flex;align-items:center;justify-content:center;margin-top:14px;padding:9px 13px;border:1px solid #8debd54a;border-radius:11px;background:#8debd511;color:#a8f2df;font-size:11px;font-weight:800;transition:transform .2s,border-color .2s}.social-studio-link:hover{transform:translateY(-2px);border-color:#8debd5}
 </style></head>
 <body><div class="wrap">
 <nav class="nav"><a class="brand" href="/"><span class="brand-mark">ث</span><span><b>ثریا</b><small>جهان خدمات هوشمند · SURAYA</small></span></a><div class="nav-links"><a href="/creator.html">استودیو سازندگان</a><a href="/world/">جهان دیجیتال</a></div><button class="nav-cta" id="navAccount" type="button">حساب کاربری</button></nav>
@@ -622,12 +782,52 @@ body{height:100dvh;min-height:0;overflow:hidden}
 <section class="service-world">
 <div class="stage" aria-live="polite"><div class="stage-top"><span class="stage-tag">همراه منتخب تو</span><span class="stage-tag" id="stageIndex">آمادهٔ انتخاب</span></div><div class="stage-art"><div class="stage-rings"></div><div id="bigCharacter" class="character-large"></div></div><div class="stage-caption"><h3 id="stageName">جهان ثریا منتظر توست</h3><p id="stageDescription">از فهرست سمت راست یک تخصص را انتخاب کن تا همراه هوشمند و جزئیات آن را ببینی.</p><div class="stage-hint">انتخاب آگاهانه · جزئیات روشن · تصمیم با شما</div></div></div>
 <div class="service-list-panel"><div class="list-heading"><h2>فهرست خدمات ثریا</h2><span>برای مشاهده انتخاب کن</span></div><div class="service-list" id="serviceList"><div class="service-row"><span class="service-copy">در حال دریافت خدمات…</span></div></div>
-<div class="selection" id="selection"><div class="selection-head"><strong id="selectedTitle">خدمت انتخاب‌شده</strong><span>✓ انتخاب شد</span></div><p id="selectedDescription"></p><div class="selection-actions"><button class="btn" id="continueButton" type="button">مشاهده پیش‌فاکتور و ادامه ←</button><button class="text-btn" id="clearButton" type="button">لغو انتخاب</button></div></div></div>
+<div class="selection" id="selection"><div class="selection-head"><strong id="selectedTitle">خدمت انتخاب‌شده</strong><span>✓ انتخاب شد</span></div><p id="selectedDescription"></p><div class="selection-actions"><button class="btn" id="continueButton" type="button">مشاهده پیش‌فاکتور و ادامه ←</button><a class="btn secondary" id="openSocialStudio" href="/social-studio.html" hidden>ورود به مرکز مدیریت شبکه‌ها ↗</a><button class="text-btn" id="clearButton" type="button">لغو انتخاب</button></div></div></div>
 </section>
 
 <section class="story-world" id="sampleWork" aria-live="polite"><div class="story-shell" id="storyShell"><div class="story-head"><div><div class="eyebrow">از ایده تا تجربهٔ قابل لمس</div><h2>ببین این متخصص چه می‌سازد</h2></div><span class="story-stamp">نمونهٔ نمایشی · نه ادعای نتیجهٔ واقعی</span></div><div class="story-grid"><article class="story-narrative"><div class="eyebrow">روایت مسئله و راه‌حل</div><h3 id="storyTitle">هر تغییر بزرگ، از یک قدم کوچک شروع می‌شود.</h3><p id="storyText">یک خدمت را از فهرست انتخاب کن تا داستان کوتاه و نمونه‌کار همان تخصص را ببینی.</p><div class="story-points" id="storyPoints"><span>شفاف</span><span>کاربردی</span><span>قابل بررسی</span></div></article><article class="story-artifact"><div class="artifact-top"><div class="artifact-brand"><span class="artifact-logo" id="artifactLogo"></span><span id="artifactBrand">کارگاه خلاق ثریا</span></div><span class="artifact-type" id="artifactType">پیش‌نمایش نمونه‌کار</span></div><div class="artifact-content"><h4 id="artifactTitle">یک نمونهٔ واقعی‌نما، با برچسب نمونه</h4><p id="artifactText">اینجا خروجی نمونهٔ همان خدمت نمایش داده می‌شود؛ بدون ادعای مشتری یا آمار ساختگی.</p></div><div class="artifact-bottom"><span id="artifactMeta">قابل شخصی‌سازی برای سفارش شما</span><span>✦ ثریا</span></div></article></div><div class="sample-disclaimer">این نمونه‌ها برای نمایش کیفیت و سبک خروجی ساخته شده‌اند؛ مطالعهٔ موردی مشتری واقعی یا تضمین فروش، بازدید و موفقیت نیستند.</div></div></section>
 <section class="order-section" id="orderSection"><div class="section-intro"><div><div class="eyebrow">گام بعدی · برآورد و درخواست</div><h2>پیش‌فاکتور انتخاب تو</h2><p>مبلغ فقط پس از انتخاب خدمت نمایش داده می‌شود.</p></div></div><div class="order-layout"><div class="order-card"><h2>تکمیل درخواست</h2><p class="muted">اطلاعات تماس و توضیحات را وارد کن تا درخواست در سامانه ثبت شود.</p><form id="orderForm"><div class="form-grid"><div class="field"><label for="customerName">نام *</label><input id="customerName" name="name" minlength="2" maxlength="120" autocomplete="name" required></div><div class="field"><label for="customerEmail">ایمیل (اختیاری)</label><input id="customerEmail" name="email" type="email" maxlength="254" autocomplete="email"></div><div class="field full"><label for="customerDetails">جزئیات و خواسته‌ها</label><textarea id="customerDetails" name="details" maxlength="4000" placeholder="هدف، مخاطب، زمان‌بندی یا جزئیات موردنیاز را بنویس…"></textarea></div></div><button class="btn submit" id="submitButton" type="submit">ثبت درخواست و دریافت کد پیگیری</button><div id="result" role="status" aria-live="polite"></div></form></div>
 <aside class="invoice-card"><div class="invoice-kicker">SURAYA · SERVICE ESTIMATE</div><h2>پیش‌فاکتور خدمات</h2><p class="muted">خلاصهٔ خدمت انتخاب‌شده</p><div class="invoice-line"><span>شرح خدمت</span><span id="invoiceTitle">—</span></div><div class="invoice-line"><span>نوع محاسبه</span><span id="invoiceBilling">—</span></div><div class="invoice-line"><span>مبلغ برآوردی</span><span id="invoicePrice">—</span></div><div class="invoice-total"><span>جمع برآورد</span><strong id="invoiceTotal">—</strong></div><span class="invoice-state">پیش‌فاکتور · در انتظار تأیید</span><p class="invoice-foot">این برآورد از کاتالوگ رسمی خدمات سامانه خوانده می‌شود. ثبت درخواست به معنی پرداخت نیست. در حال حاضر درگاه پرداخت آنلاین و صدور فاکتور مالیاتی به این نسخه متصل نشده‌اند؛ مبلغ نهایی و روش پرداخت پیش از شروع کار تأیید می‌شود.</p></aside></div></section>
+
+<section class="catalog-page" id="productsPage" aria-labelledby="productsTitle">
+ <div class="catalog-hero"><span class="eyebrow">SURAYA PRODUCTS & SERVICES</span><h2 id="productsTitle">محصولات و خدمات ثریا</h2><p>فهرست یکپارچهٔ محصولات و خدمات؛ هر خدمت تازه‌ای که به سامانه اضافه شود، در این صفحه نیز قابل مشاهده خواهد بود.</p><p><a class="social-studio-link" href="/control-center.html">ورود به مرکز پایش و فرماندهی مرکزی ↗</a></p><div class="catalog-toolbar"><span class="catalog-live"><i></i> دریافت زنده از کاتالوگ سامانه</span><span id="catalogCount">در حال بارگذاری…</span></div></div>
+ <div class="catalog-grid" id="productsCatalog" aria-live="polite"><article class="catalog-item catalog-loading">در حال دریافت فهرست محصولات و خدمات…</article></div>
+ <p class="catalog-footnote">قیمت‌ها و شرایط نمایش‌داده‌شده از کاتالوگ عمومی سایت دریافت می‌شوند. ثبت سفارش به معنی پرداخت نیست؛ قیمت نهایی پیش از شروع کار تأیید خواهد شد.</p>
+</section>
+<section class="contact-page" id="contactPage" aria-labelledby="contactTitle">
+ <div class="contact-hero"><span class="eyebrow">CONTACT & COMMUNITY</span><h2 id="contactTitle">ارتباط با ثریا</h2><p>برای همکاری، پشتیبانی، پیشنهاد محصول یا پیگیری درخواست‌ها از راه‌های زیر با ما در تماس باش.</p></div>
+ <div class="contact-grid">
+  <a class="contact-method" href="mailto:Tabbotriz@gmail.com"><span class="contact-symbol">✉</span><span><small>ایمیل پشتیبانی و همکاری</small><strong>Tabbotriz@gmail.com</strong></span><span class="contact-arrow">↗</span></a>
+  <a class="contact-method" href="tel:+989143018580"><span class="contact-symbol">☎</span><span><small>تماس تلفنی</small><strong dir="ltr">+98 914 301 8580</strong></span><span class="contact-arrow">↗</span></a>
+ </div>
+ <div class="social-directory">
+  <div class="social-directory-head"><div><span class="eyebrow">FIND US ONLINE</span><h3>شبکه‌های اجتماعی</h3><p>برای ورود به هر پلتفرم، کلید مربوط به آن را انتخاب کن. نشانی اختصاصی صفحه‌های رسمی ثریا بعداً از پنل مدیریت قابل تنظیم خواهد بود.</p></div><span class="social-total">۱۰ شبکه</span></div>
+  <div class="social-link-grid">
+   <a class="social-link" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer"><span class="social-mark">▶</span><span><b>YouTube</b><small>ویدئو و آموزش</small></span><span class="contact-arrow">↗</span></a>
+   <a class="social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"><span class="social-mark">◎</span><span><b>Instagram</b><small>تصاویر و اخبار</small></span><span class="contact-arrow">↗</span></a>
+   <a class="social-link" href="https://t.me/" target="_blank" rel="noopener noreferrer"><span class="social-mark">➤</span><span><b>Telegram</b><small>کانال و پشتیبانی</small></span><span class="contact-arrow">↗</span></a>
+   <a class="social-link" href="https://rubika.ir/" target="_blank" rel="noopener noreferrer"><span class="social-mark">ر</span><span><b>Rubika</b><small>شبکهٔ اجتماعی</small></span><span class="contact-arrow">↗</span></a>
+   <a class="social-link" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer"><span class="social-mark">f</span><span><b>Facebook</b><small>جامعه و خبرها</small></span><span class="contact-arrow">↗</span></a>
+   <a class="social-link" href="https://x.com/" target="_blank" rel="noopener noreferrer"><span class="social-mark">𝕏</span><span><b>X</b><small>به‌روزرسانی‌ها</small></span><span class="contact-arrow">↗</span></a>
+   <a class="social-link" href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer"><span class="social-mark">♪</span><span><b>TikTok</b><small>ویدئوهای کوتاه</small></span><span class="contact-arrow">↗</span></a>
+   <a class="social-link" href="https://www.snapchat.com/" target="_blank" rel="noopener noreferrer"><span class="social-mark">👻</span><span><b>Snapchat</b><small>داستان و رسانه</small></span><span class="contact-arrow">↗</span></a>
+   <a class="social-link" href="https://www.whatsapp.com/" target="_blank" rel="noopener noreferrer"><span class="social-mark">◉</span><span><b>WhatsApp</b><small>پیام‌رسانی</small></span><span class="contact-arrow">↗</span></a>
+   <a class="social-link" href="https://eitaa.com/" target="_blank" rel="noopener noreferrer"><span class="social-mark">ا</span><span><b>Eitaa</b><small>کانال و پیام‌رسان</small></span><span class="contact-arrow">↗</span></a>
+  </div>
+  <p class="social-note">این کلیدها فعلاً به صفحهٔ اصلی هر پلتفرم می‌روند، نه حساب اختصاصی ثریا. برای اتصال به صفحه‌های واقعی خودت باید نشانی هر حساب را در اختیارم بگذاری.</p>
+ </div>
+</section>
+
+<section class="wallet-page" id="walletPage" aria-labelledby="walletPageTitle">
+ <div class="wallet-page-hero"><span class="eyebrow">SURAYA SECURE WALLET</span><h2 id="walletPageTitle">مرکز کیف پول ثریا</h2><p>نمای یکپارچه برای مشاهدهٔ کیف‌های متصل، دارایی‌ها و سوابق تراکنش؛ فعال‌سازی مالی پس از تکمیل احراز هویت، انتخاب شبکه و آزمون امنیتی انجام می‌شود.</p><div class="wallet-safety"><span>◈</span><div><b>حالت ایمن · بدون نگهداری کلید خصوصی</b><small>در این مرحله هیچ موجودی، آدرس یا تراکنش ساختگی نمایش داده نمی‌شود.</small></div></div></div>
+ <div class="wallet-overview-grid">
+  <article class="wallet-overview-card"><span>وضعیت کیف شخصی</span><strong>در انتظار راه‌اندازی امن</strong><small>پس از تکمیل حساب کاربری و انتخاب مدل کیف</small></article>
+  <article class="wallet-overview-card"><span>کیف‌های خارجی</span><strong>اتصال هنوز فعال نیست</strong><small>اتصال غیرامانی با امضای امن و مجوز محدود</small></article>
+  <article class="wallet-overview-card"><span>تاریخچه تراکنش‌ها</span><strong>هنوز تراکنشی ثبت نشده</strong><small>تاریخچه از دفترکل معتبر و زنجیره دریافت خواهد شد</small></article>
+ </div>
+ <div class="wallet-next-steps"><h3>پیش‌نیازهای فعال‌سازی واقعی</h3><ol><li>ثبت‌نام و احراز هویت حساب کاربری</li><li>انتخاب شبکه و دارایی‌های مورد پشتیبانی</li><li>راه‌اندازی دفترکل پایدار و کنترل تکرار تراکنش</li><li>اتصال کیف غیرامانی یا سرویس نگهداری کلیدِ بررسی‌شده</li><li>آزمون و ممیزی امنیتی پیش از پذیرش دارایی واقعی</li></ol><button type="button" class="btn wallet-open-settings" id="walletOpenSettings">مشاهده گزینه‌های کیف پول</button></div>
+ <p class="wallet-page-note">هوش مرکزی می‌تواند وضعیت و گزارش‌های کیف پول را تحلیل کند؛ اما نباید عبارت بازیابی، کلید خصوصی یا اختیار انتقال دارایی را در اختیار داشته باشد. هر انتقال مالی باید با امضای مالک و کنترل‌های مستقل انجام شود.</p>
+</section>
 <footer class="bottom-note"><span>ثریا · جهان خدمات هوشمند</span><span><a href="/creator.html">استودیو سازندگان</a>　·　<a href="/world/">جهان دیجیتال</a>　·　حریم خصوصی و انتخاب آگاهانه</span></footer></div>
 <aside class="cookie-toast" id="cookieToast" aria-label="تنظیمات کوکی" style="display:none;position:fixed;z-index:30;bottom:14px;left:14px;right:14px;max-width:680px;margin:auto;padding:15px 17px;border:1px solid #b9d5ff35;border-radius:18px;background:#091322f5;box-shadow:0 18px 60px #0009;backdrop-filter:blur(18px)"><div style="display:flex;gap:12px;align-items:flex-start"><span style="font-size:24px">🍪</span><div style="flex:1"><b style="font-size:13px">انتخاب حریم خصوصی تو</b><p style="font-size:11px;color:#a8b5c9;margin:3px 0 10px">فقط برای ثبت انتخاب حریم خصوصی از کوکی ضروری استفاده می‌کنیم. هیچ کوکی تحلیلی، تبلیغاتی یا ردیابی در این صفحه فعال نیست.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="cookieAccept" type="button" style="border:0;border-radius:9px;padding:7px 12px;background:#83e8d1;color:#08201e;font-size:11px;font-weight:800">پذیرش کوکی ترجیحی</button><button id="cookieReject" type="button" style="border:1px solid #ffffff25;border-radius:9px;padding:7px 12px;background:#ffffff08;color:#e8efff;font-size:11px">فقط ضروری‌ها</button></div></div></div></aside>
 <script>
@@ -660,7 +860,7 @@ const serviceDescriptions={social_content:"ایده‌پردازی، نوشتن 
 function serviceDescription(code,s){return s.description||serviceDescriptions[code]||"برای مشاهده جزئیات و انتخاب این خدمت لمس کن."}
 function renderList(){const list=$("serviceList");list.replaceChildren();const entries=Object.entries(catalog);if(!entries.length){list.textContent="در حال حاضر دریافت فهرست خدمات ممکن نیست. لطفاً صفحه را تازه‌سازی کن.";return}
 entries.forEach(([code,s],i)=>{const row=document.createElement("button");row.type="button";row.className="service-row"+(selected===code?" active":"");row.setAttribute("aria-pressed",selected===code?"true":"false");const avatar=document.createElement("span");avatar.className="avatar-small";avatar.style.setProperty("--avatar-bg","linear-gradient(145deg,"+(palettes[code]||palettes.social_content)[1]+","+(palettes[code]||palettes.social_content)[0]+"55)");avatar.innerHTML=character(code);const copy=document.createElement("span");copy.className="service-copy";const strong=document.createElement("strong");const logo=document.createElement("span");logo.className="service-logo";logo.style.setProperty("--avatar-bg","linear-gradient(145deg,"+(palettes[code]||palettes.social_content)[1]+","+(palettes[code]||palettes.social_content)[0]+"55)");logo.innerHTML=mark(code);const title=document.createElement("span");title.className="service-title";title.textContent=s.title;strong.append(logo,title);const small=document.createElement("small");small.textContent=serviceDescription(code,s);copy.append(strong,small);const arrow=document.createElement("span");arrow.className="row-arrow";arrow.textContent="‹";row.append(avatar,copy,arrow);row.addEventListener("click",()=>selectService(code));list.append(row)})}
-function selectService(code){if(window.surayaCanUse&&!window.surayaCanUse(code))return;const s=catalog[code];if(!s)return;selected=code;renderList();showStory(code);$("bigCharacter").innerHTML=character(code,true);$("stageName").textContent=s.title;$("stageDescription").textContent=serviceDescription(code,s);$("stageIndex").textContent="متخصص "+(Object.keys(catalog).indexOf(code)+1).toLocaleString("fa-IR");$("selectedTitle").textContent=s.title;$("selectedDescription").textContent=serviceDescription(code,s);$("selection").classList.add("show");const price=Number(s.price);const amount=Number.isFinite(price)?new Intl.NumberFormat("en-US",{style:"currency",currency:s.currency||"USD",maximumFractionDigits:2}).format(price):"پس از بررسی";$("invoiceTitle").textContent=s.title;$("invoiceBilling").textContent=s.billing==="monthly"?"اشتراک ماهانه":"پرداخت یک‌باره";$("invoicePrice").textContent=amount;$("invoiceTotal").textContent=amount;$("orderForm").dataset.service=code;$("result").textContent="";$("result").className=""}
+function selectService(code){if(window.surayaCanUse&&!window.surayaCanUse(code))return;const s=catalog[code];if(!s)return;selected=code;renderList();showStory(code);$("bigCharacter").innerHTML=character(code,true);$("stageName").textContent=s.title;$("stageDescription").textContent=serviceDescription(code,s);$("stageIndex").textContent="متخصص "+(Object.keys(catalog).indexOf(code)+1).toLocaleString("fa-IR");$("selectedTitle").textContent=s.title;$("selectedDescription").textContent=serviceDescription(code,s);const studioLink=$("openSocialStudio");if(studioLink)studioLink.hidden=!(code==="social_monthly"||code==="social_content");$("selection").classList.add("show");const price=Number(s.price);const amount=Number.isFinite(price)?new Intl.NumberFormat("en-US",{style:"currency",currency:s.currency||"USD",maximumFractionDigits:2}).format(price):"پس از بررسی";$("invoiceTitle").textContent=s.title;$("invoiceBilling").textContent=s.billing==="monthly"?"اشتراک ماهانه":"پرداخت یک‌باره";$("invoicePrice").textContent=amount;$("invoiceTotal").textContent=amount;$("orderForm").dataset.service=code;$("result").textContent="";$("result").className=""}
 window.surayaSelectService=selectService;
 $("continueButton").addEventListener("click",()=>{$("orderSection").classList.add("show");$("orderSection").scrollIntoView({behavior:"smooth",block:"start"})});$("clearButton").addEventListener("click",()=>{selected=null;renderList();$("selection").classList.remove("show");$("stageName").textContent="جهان ثریا منتظر توست";$("stageDescription").textContent="از فهرست سمت راست یک تخصص را انتخاب کن تا همراه هوشمند و جزئیات آن را ببینی.";$("bigCharacter").innerHTML="";$("stageIndex").textContent="آمادهٔ انتخاب";$("orderSection").classList.remove("show")});
 $("orderForm").addEventListener("submit",async e=>{e.preventDefault();if(!selected)return;const button=$("submitButton"),result=$("result");button.disabled=true;result.className="";result.textContent="در حال ثبت درخواست…";try{const payload=Object.fromEntries(new FormData(e.currentTarget));payload.service=selected;const response=await fetch("/api/order",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});const data=await response.json();if(!response.ok||!data.ok)throw new Error(data.error||"ثبت درخواست ناموفق بود.");result.textContent="درخواست با موفقیت ثبت شد. کد پیگیری: "+data.orderId+" · پیش‌فاکتور شما برای هماهنگی آماده است.";e.currentTarget.reset()}catch(err){result.className="error";result.textContent=err.message||"ارتباط با سامانه برقرار نشد."}finally{button.disabled=false}});
@@ -936,7 +1136,10 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
   const definitions=[
     {id:"world",label:"جهان",icon:"✧",selectors:[".world-intro",".real-map-section",".real-world-gallery",".bottom-note"]},
     {id:"services",label:"خدمات",icon:"✦",selectors:["#services",".service-world",".story-world",".order-section"]},
-    {id:"connections",label:"اتصالات",icon:"◈",selectors:["#connectHub"]}
+    {id:"connections",label:"اتصالات",icon:"◈",selectors:["#connectHub"]},
+    {id:"products",label:"محصولات",icon:"▦",selectors:["#productsPage"]},
+    {id:"contact",label:"ارتباط",icon:"✉",selectors:["#contactPage"]},
+    {id:"wallet",label:"کیف پول",icon:"◈",selectors:["#walletPage"]}
   ];
   const views={};
   definitions.forEach((definition,index)=>{
@@ -1014,6 +1217,145 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
   if("serviceWorker" in navigator){
     window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}),{once:true});
   }
+})();
+</script>
+
+
+<script>
+/* Product catalog reads the same server catalogue as the order form. */
+(function(){
+ const host=document.getElementById("productsCatalog");
+ const count=document.getElementById("catalogCount");
+ if(!host)return;
+ const safe=(value)=>String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+ const money=(value,currency)=>Number.isFinite(Number(value))?new Intl.NumberFormat("fa-IR",{maximumFractionDigits:2}).format(Number(value))+" "+safe(currency||"USD"):"استعلام قیمت";
+ fetch("/api/services",{headers:{Accept:"application/json"}})
+  .then(r=>{if(!r.ok)throw new Error("catalog unavailable");return r.json()})
+  .then(data=>{
+   const services=data?.services&&typeof data.services==="object"?Object.entries(data.services):[];
+   if(!services.length){host.innerHTML='<article class="catalog-item catalog-empty">فعلاً موردی برای نمایش ثبت نشده است.</article>';if(count)count.textContent="۰ مورد";return}
+   host.innerHTML=services.map(([code,item])=>'<article class="catalog-item"><span class="catalog-kind">خدمت ثریا</span><h3>'+safe(item.title||code)+'</h3><p>'+safe(item.description||"برای دریافت جزئیات و ثبت درخواست این خدمت اقدام کن.")+'</p><div class="catalog-meta"><strong>'+money(item.price,item.currency)+'</strong><span>'+(item.billing==="monthly"?"اشتراک دوره‌ای":"پرداخت یک‌باره")+'</span></div>'+((code==="social_monthly"||code==="social_content")?'<a class="social-studio-link" href="/social-studio.html">ورود به مرکز مدیریت شبکه‌ها ←</a>':"")+'</article>').join("");
+   if(count)count.textContent=new Intl.NumberFormat("fa-IR").format(services.length)+" خدمت";
+  })
+  .catch(()=>{host.innerHTML='<article class="catalog-item catalog-empty">دریافت فهرست خدمات ممکن نشد. لطفاً کمی بعد دوباره تلاش کن.</article>';if(count)count.textContent="عدم دسترسی"});
+})();
+</script>
+
+
+<script>
+(function(){
+ const button=document.getElementById("walletOpenSettings");
+ if(button)button.addEventListener("click",()=>{
+  document.querySelector('.workspace-tabs [data-view-target="connections"]')?.click();
+  document.querySelector('#connectHub .connect-tab[data-connect-tab="wallet"]')?.click();
+ });
+})();
+</script>
+
+
+<style>
+/* Global release-grade layout pass: edge-to-edge frame, editorial workspaces,
+   consistent responsive grids, and accessible navigation. */
+:root{--frame-gutter:clamp(14px,3vw,42px);--workspace-max:1380px}
+html,body{width:100%;max-width:100%;min-width:0}
+.wrap{width:100%;max-width:none;margin:0}
+.wrap>.nav{width:100%;padding-inline:var(--frame-gutter);border-radius:0 0 20px 20px}
+.app-view-host{width:100%;min-width:0;background:
+ radial-gradient(ellipse at 8% 8%,#2b8a8520,transparent 32%),
+ radial-gradient(ellipse at 94% 12%,#6655a51c,transparent 34%),
+ linear-gradient(155deg,#07111f,#0b1728 55%,#101b2d)}
+.app-view{width:100%;min-width:0;overscroll-behavior-y:contain;scroll-behavior:smooth}
+.app-view:not(#view-world)>:is(#services,.connect-hub,.catalog-page,.contact-page,.wallet-page,.order-section,.story-world,.real-map-section,.real-world-gallery){
+ width:min(var(--workspace-max),calc(100% - 2 * var(--frame-gutter)));
+ max-width:var(--workspace-max);margin-inline:auto
+}
+#view-services{padding-top:clamp(18px,3vw,38px)}
+#view-connections,#view-products,#view-contact,#view-wallet{padding-top:clamp(12px,2.4vw,28px)}
+#view-connections .connect-hub{padding-top:clamp(22px,3vw,42px)}
+#view-products .catalog-page,#view-contact .contact-page,#view-wallet .wallet-page{padding-top:clamp(18px,2vw,30px)}
+.nav{min-height:72px;backdrop-filter:blur(24px)}
+.brand-mark{position:relative;isolation:isolate}
+.brand-mark:after{content:"";position:absolute;inset:-5px;border:1px solid #9af0dc55;border-radius:18px;box-shadow:0 0 24px #79e8d722;z-index:-1}
+.workspace-tabs{width:100%;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:clamp(3px,1vw,12px);padding:9px max(12px,var(--frame-gutter)) max(9px,env(safe-area-inset-bottom));}
+.workspace-tabs button{min-width:0;width:100%;padding:9px 6px;white-space:nowrap}
+.workspace-tabs button.active{position:relative}
+.workspace-tabs button.active:after{content:"";position:absolute;inset:auto 22% -9px;height:2px;border-radius:9px;background:linear-gradient(90deg,transparent,#8debd5,transparent);box-shadow:0 0 12px #8debd5}
+.app-view.active{animation:workspaceEnter .28s cubic-bezier(.2,.75,.25,1)}
+@keyframes workspaceEnter{from{opacity:.72;transform:translateY(7px)}to{opacity:1;transform:none}}
+.catalog-page,.contact-page,.wallet-page,.connect-hub{min-width:0}
+.catalog-hero,.contact-hero,.wallet-page-hero{position:relative;overflow:hidden}
+.catalog-hero:after,.contact-hero:after,.wallet-page-hero:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 20%,#ffffff08 48%,transparent 72%);transform:translateX(100%);animation:heroSheen 11s ease-in-out infinite}
+@keyframes heroSheen{0%,65%,100%{transform:translateX(100%)}82%{transform:translateX(-100%)}}
+.catalog-item,.contact-method,.social-link,.wallet-overview-card,.connect-card{min-width:0;backdrop-filter:blur(12px)}
+.catalog-item:focus-within,.contact-method:focus-visible,.social-link:focus-visible{outline:2px solid var(--accent-live);outline-offset:3px}
+.catalog-item h3,.contact-method strong,.social-link b{overflow-wrap:anywhere}
+.social-link-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.wallet-overview-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.workspace-tabs button:focus-visible{outline:2px solid #9af0dc;outline-offset:2px}
+.app-view-host[data-swipe-ready="true"]{touch-action:pan-y pinch-zoom}
+@media(min-width:1100px){
+ .workspace-tabs{padding-inline:clamp(80px,14vw,240px)}
+ .workspace-tabs button{font-size:12px}
+ .world-intro{min-height:min(900px,calc(100dvh - 150px))}
+}
+@media(max-width:850px){
+ .workspace-tabs{padding-inline:12px}
+ .social-link-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .wallet-overview-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+ :root{--frame-gutter:14px}
+ .wrap>.nav{min-height:58px;padding-inline:14px}
+ .brand-mark{width:38px;height:38px;border-radius:13px}
+ .brand b{font-size:17px}
+ .brand small{font-size:8px}
+ .nav-links{gap:9px;font-size:9px}
+ .workspace-tabs{gap:2px;padding:7px 5px max(7px,env(safe-area-inset-bottom))}
+ .workspace-tabs button{padding:5px 1px;white-space:normal;font-size:9px;line-height:1.35}
+ .workspace-tabs button .tab-icon{font-size:17px}
+ .app-view{padding-bottom:10px}
+ .catalog-page,.contact-page,.wallet-page{padding-bottom:30px}
+ .catalog-hero,.contact-hero,.wallet-page-hero{padding:18px;border-radius:19px}
+ .social-link-grid{grid-template-columns:1fr}
+ .connect-hub{padding-inline:0}
+ .world-intro{border-radius:0}
+}
+@media(prefers-reduced-motion:reduce){
+ .app-view.active,.catalog-hero:after,.contact-hero:after,.wallet-page-hero:after{animation:none!important}
+}
+</style>
+<script>
+/* Touch-swipe and keyboard navigation between complete workspaces. Vertical
+   scrolling and interactive controls keep their native behavior. */
+(function(){
+ const host=document.getElementById("surayaWorkspace");
+ const tabs=document.querySelector(".workspace-tabs");
+ if(!host||!tabs||host.dataset.swipeReady==="true")return;
+ host.dataset.swipeReady="true";
+ const order=Array.from(host.querySelectorAll("[data-workspace-view]")).map(view=>view.dataset.workspaceView);
+ const ignored='a,button,input,textarea,select,summary,[contenteditable="true"],.leaflet-container,[role="dialog"]';
+ let start=null;
+ host.addEventListener("pointerdown",event=>{
+  if(event.pointerType==="mouse"||event.button!==0||event.target.closest(ignored))return;
+  start={x:event.clientX,y:event.clientY,id:event.pointerId};
+ },{passive:true});
+ host.addEventListener("pointerup",event=>{
+  if(!start||start.id!==event.pointerId){start=null;return}
+  const dx=event.clientX-start.x,dy=event.clientY-start.y;
+  start=null;
+  if(Math.abs(dx)<68||Math.abs(dx)<Math.abs(dy)*1.35)return;
+  const active=order.findIndex(id=>host.querySelector('[data-workspace-view="'+id+'"]')?.classList.contains("active"));
+  const next=Math.max(0,Math.min(order.length-1,active+(dx<0?1:-1)));
+  if(next!==active)tabs.querySelectorAll("[data-view-target]").forEach(button=>{if(button.dataset.viewTarget===order[next])button.click()});
+ },{passive:true});
+ host.addEventListener("pointercancel",()=>{start=null},{passive:true});
+ document.addEventListener("keydown",event=>{
+  if(event.altKey||event.ctrlKey||event.metaKey||event.target.closest(ignored))return;
+  if(event.key!=="ArrowLeft"&&event.key!=="ArrowRight")return;
+  const active=order.findIndex(id=>host.querySelector('[data-workspace-view="'+id+'"]')?.classList.contains("active"));
+  const next=Math.max(0,Math.min(order.length-1,active+(event.key==="ArrowLeft"?1:-1)));
+  if(next!==active){event.preventDefault();tabs.querySelectorAll("[data-view-target]").forEach(button=>{if(button.dataset.viewTarget===order[next])button.click()})}
+ });
 })();
 </script>
 
