@@ -94,3 +94,8 @@ OAuth state values are single-use, hashed in PostgreSQL and expire after ten min
 Telegram connection validates the bot using `getMe`, the destination using `getChat`, and bot membership/administrator permissions using `getChatMember`. Telegram is the only live publishing adapter in this phase. Approved Telegram posts can be scheduled into the PostgreSQL queue and published by the worker. A publish attempt is not automatically retried after an uncertain result, to avoid duplicate posts; such cases are marked failed for manual verification.
 
 Facebook/Instagram, YouTube, TikTok and X authorization are implemented, but their publishing/analytics adapters are not yet enabled. Snapchat, WhatsApp Business, Rubika and Eitaa still need separate provider approval and adapters. Connecting one provider does not grant access to the others.
+
+
+## Verified audience snapshots
+
+The operator can request a fresh aggregate snapshot for connected Meta, YouTube, TikTok and X accounts through `POST /api/social/v1/accounts/:id/insights/sync`, and read stored history through `GET /api/social/v1/accounts/:id/insights`. The API records the provider source and capture time with a verified flag only after a successful authenticated provider response. Available metrics vary by platform and granted scopes; unavailable demographic reports are omitted rather than fabricated. The current implementation stores aggregate channel/profile statistics and YouTube age-group/gender viewer percentages where the provider returns them. It does not scrape followers, identify individuals, infer sensitive traits or automatically target people.
