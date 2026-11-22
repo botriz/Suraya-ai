@@ -65,7 +65,9 @@ export function createResearchEngine({
       if(!response.ok)throw new Error("مدل هوش مصنوعی نتوانست منابع را به محتوا تبدیل کند.");
       const payload=await response.json().catch(()=>({}));
       const draft=parseDraft(payload?.choices?.[0]?.message?.content);
-      return {draft,sources,category,sourcePolicyPassed:true,provider:"tavily+ai",generatedAt:new Date().toISOString()};
+      const cited=[...new Set([...((draft.caption+" "+draft.script).matchAll(/\\[(\\d+)\\]/g))].map(match=>Number(match[1])).filter(n=>n>=1&&n<=sources.length))];
+      if(cited.length<2){const error=new Error("مدل به دو منبع مستقل در متن ارجاع نداده است؛ برای جلوگیری از انتشار ادعاهای بدون استناد، پیش‌نویس پذیرفته نشد.");error.code="CITATIONS_MISSING";throw error}
+      return {draft,sources,category,sourcePolicyPassed:true,citedSources:cited,provider:"tavily+ai",generatedAt:new Date().toISOString()};
     }
   };
 }
