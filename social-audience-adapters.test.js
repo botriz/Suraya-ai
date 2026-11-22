@@ -5,7 +5,7 @@ import { fetchVerifiedAudienceSnapshot } from "./social/audience-adapters.js";
 test("TikTok audience snapshot is based on the authenticated aggregate profile response",async()=>{
   const original=globalThis.fetch;
   globalThis.fetch=async url=>{
-    assert.match(String(url),/user\.info/);
+    assert.match(String(url),/user\/info/);
     return new Response(JSON.stringify({data:{user:{open_id:"user-123",display_name:"Creator",follower_count:1200,following_count:80,likes_count:9400,video_count:35}}}),{status:200,headers:{"Content-Type":"application/json"}});
   };
   try{
