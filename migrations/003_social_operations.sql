@@ -167,3 +167,17 @@ CREATE TABLE IF NOT EXISTS suraya_social_research_runs (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 CREATE INDEX IF NOT EXISTS suraya_social_research_created_idx ON suraya_social_research_runs(created_at DESC);
+
+
+CREATE TABLE IF NOT EXISTS suraya_social_media_assets (
+  id BIGSERIAL PRIMARY KEY,
+  storage_key TEXT NOT NULL UNIQUE,
+  public_url TEXT NOT NULL,
+  original_name VARCHAR(240) NOT NULL,
+  content_type VARCHAR(100) NOT NULL,
+  size_bytes BIGINT NOT NULL,
+  status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','uploaded','failed','deleted')),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS suraya_social_media_assets_status_idx ON suraya_social_media_assets(status,created_at DESC);
