@@ -1,7 +1,7 @@
 import express from "express";
 import { timingSafeEqual, randomBytes } from "node:crypto";
-import { oauthConfigured, createAuthorizationUrl, exchangeAndIdentify } from "../social/oauth-adapters.js";
-import { encryptSocialToken, sha256, isSocialEncryptionKeyValid } from "../social/token-crypto.js";
+import { oauthConfigured, createAuthorizationUrl, exchangeAndIdentify, revokeProviderAccess } from "../social/oauth-adapters.js";
+import { encryptSocialToken, decryptSocialToken, sha256, isSocialEncryptionKeyValid } from "../social/token-crypto.js";
 import { verifyTelegramDestination } from "../social/publish-adapters.js";
 const PLATFORMS = ["instagram","youtube","telegram","rubika","facebook","x","tiktok","snapchat","whatsapp","eitaa"];
 const POST_STATES = new Set(["draft","in_review","approved","scheduled","publishing","published","failed","cancelled"]);
@@ -110,6 +110,33 @@ export function createSocialOperationsRouter({ pool, getToken }) {
       const authorizationUrl=createAuthorizationUrl(platform,{state,codeVerifier});
       res.json({ok:true,authorizationUrl,expiresInSeconds:600,provider:platform});
     }catch(error){console.error("Social OAuth start failed:",platform,error.message);res.status(503).json({ok:false,error:"شروع اتصال امن این شبکه انجام نشد؛ تنظیمات OAuth را بررسی کن."});}
+  });
+
+  router.post("/accounts/:id/disconnect",async(req,res)=>{
+    const id=Number.parseInt(req.params.id,10);
+    if(!Number.isSafeInteger(id)||id<1)return res.status(400).json({ok:false,error:"شناسهٔ حساب معتبر نیست."});
+    try{
+      const found=await pool.query("SELECT id,platform,token_ciphertext FROM suraya_social_accounts WHERE id=$1 AND connection_status='connected'",[id]);
+      if(!found.rowCount)return res.status(404).json({ok:false,error:"حساب متصل پیدا نشد."});
+      const account=found.rows[0];
+      let providerRevoked=true;
+      if(account.platform==="telegram")providerRevoked=false;
+      else{
+        if(!account.token_ciphertext)return res.status(409).json({ok:false,error:"توکن حساب در دسترس نیست؛ لغو اتصال از پنل ارائه‌دهنده انجام شود."});
+        await revokeProviderAccess(account.platform,decryptSocialToken(account.token_ciphertext));
+      }
+      const client=await pool.connect();
+      try{
+        await client.query("BEGIN");
+        await client.query("UPDATE suraya_social_accounts SET connection_status='revoked',token_ciphertext=NULL,token_key_version=NULL,updated_at=NOW() WHERE id=$1",[id]);
+        await client.query("UPDATE suraya_social_jobs SET status='cancelled',updated_at=NOW() WHERE post_id IN (SELECT id FROM suraya_social_posts WHERE account_id=$1) AND status='queued'",[id]);
+        await client.query("UPDATE suraya_social_posts SET status='cancelled',updated_at=NOW() WHERE account_id=$1 AND status='scheduled'",[id]);
+        await audit(client,"operator","account.disconnected","social_account",String(id),"success",{platform:account.platform,providerRevoked});
+        await client.query("COMMIT");
+      }catch(error){await client.query("ROLLBACK").catch(()=>{});throw error}
+      finally{client.release()}
+      res.json({ok:true,disconnected:true,providerRevoked,notice:providerRevoked?"دسترسی از ارائه‌دهنده لغو شد.":"اتصال از ثریا حذف شد؛ برای باطل‌کردن توکن ربات تلگرام آن را در BotFather تعویض کن."});
+    }catch(error){console.error("Social account disconnect failed:",error.message);res.status(502).json({ok:false,error:"لغو امن دسترسی در ارائه‌دهنده انجام نشد؛ اتصال در ثریا دست‌نخورده باقی ماند."});}
   });
 
   router.get("/posts",async(req,res)=>{
