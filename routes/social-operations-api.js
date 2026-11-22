@@ -181,16 +181,28 @@ export function createSocialOperationsRouter({ pool, getToken }) {
     const script=typeof req.body?.script==="string"?req.body.script.trim():"";
     const mediaUrl=typeof req.body?.mediaUrl==="string"?req.body.mediaUrl.trim():"";
     const mediaType=["none","image","video","live"].includes(req.body?.mediaType)?req.body.mediaType:"none";
+    const researchId=typeof req.body?.researchId==="string"?req.body.researchId.trim():"";
+    const requestedCategory=typeof req.body?.topicCategory==="string"?req.body.topicCategory:"general";
     if(!PLATFORMS.includes(platform)) return res.status(400).json({ok:false,error:"سکوی اجتماعی معتبر نیست."});
     if(title.length<2||title.length>240||caption.length>12000||hashtags.length>3000||script.length>12000||mediaUrl.length>2000) return res.status(400).json({ok:false,error:"محتوای ارسالی معتبر نیست یا از حد مجاز بیشتر است."});
     if(mediaUrl && !/^https:\/\//i.test(mediaUrl)) return res.status(400).json({ok:false,error:"نشانی رسانه باید HTTPS باشد."});
+    if(!["general","science","health","law","finance","technology"].includes(requestedCategory))return res.status(400).json({ok:false,error:"حوزهٔ محتوا معتبر نیست."});
+    if(["science","health","law","finance"].includes(requestedCategory)&&!researchId)return res.status(422).json({ok:false,code:"SOURCES_REQUIRED",error:"برای محتوای علمی، سلامت، حقوقی یا مالی ابتدا پژوهش منبع‌محور با حداقل دو منبع معتبر انجام بده."});
     const client=await pool.connect();
     try {
       await client.query("BEGIN");
+      let metadata={topicCategory:requestedCategory};
+      if(researchId){
+        const research=await client.query("SELECT public_id,topic_category,source_policy_passed,sources,generated_draft FROM suraya_social_research_runs WHERE public_id=$1 AND created_at>NOW()-INTERVAL '30 days' FOR SHARE",[researchId]);
+        if(!research.rowCount){await client.query("ROLLBACK");return res.status(422).json({ok:false,code:"RESEARCH_NOT_FOUND",error:"گزارش پژوهش معتبر یا تازه نیست؛ دوباره پژوهش را اجرا کن."});}
+        const verified=research.rows[0];
+        if(!verified.source_policy_passed||!Array.isArray(verified.sources)||verified.sources.length<2){await client.query("ROLLBACK");return res.status(422).json({ok:false,code:"SOURCE_POLICY_FAILED",error:"گزارش پژوهش حداقل دو منبع معتبر مستقل ندارد."});}
+        metadata={topicCategory:verified.topic_category,researchId:verified.public_id,sourcePolicyPassed:true,sourceCount:verified.sources.length,sources:verified.sources};
+      }
       const r=await client.query(
-        "INSERT INTO suraya_social_posts(platform,account_id,title,caption,hashtags,script,media_url,media_type,created_by) VALUES($1,(SELECT id FROM suraya_social_accounts WHERE platform=$1 AND connection_status='connected' ORDER BY connected_at DESC NULLS LAST LIMIT 1),$2,$3,$4,$5,$6,$7,'operator') RETURNING public_id,platform,title,status,created_at",
-        [platform,title,caption,hashtags,script,mediaUrl||null,mediaType]);
-      await audit(client,"operator","post.created","social_post",r.rows[0].public_id,"success",{platform,mediaType});
+        "INSERT INTO suraya_social_posts(platform,account_id,title,caption,hashtags,script,media_url,media_type,created_by,metadata) VALUES($1,(SELECT id FROM suraya_social_accounts WHERE platform=$1 AND connection_status='connected' ORDER BY connected_at DESC NULLS LAST LIMIT 1),$2,$3,$4,$5,$6,$7,'operator',$8::jsonb) RETURNING public_id,platform,title,status,created_at,metadata",
+        [platform,title,caption,hashtags,script,mediaUrl||null,mediaType,JSON.stringify(metadata)]);
+      await audit(client,"operator","post.created","social_post",r.rows[0].public_id,"success",{platform,mediaType,researchId:metadata.researchId||null});
       await client.query("COMMIT");
       res.status(201).json({ok:true,post:r.rows[0]});
     } catch(e){await client.query("ROLLBACK").catch(()=>{});console.error("Social post create failed:",e.message);res.status(500).json({ok:false,error:"ذخیرهٔ پیش‌نویس ناموفق بود."});}
@@ -201,13 +213,18 @@ export function createSocialOperationsRouter({ pool, getToken }) {
     const id=String(req.params.publicId||"");
     if(!/^SPOST-[A-F0-9]{12}$/.test(id)) return res.status(400).json({ok:false,error:"شناسهٔ محتوا معتبر نیست."});
     const client=await pool.connect();
-    try {
+    try{
       await client.query("BEGIN");
-      const r=await client.query("UPDATE suraya_social_posts SET status='approved',approved_by='operator',approved_at=NOW(),updated_at=NOW() WHERE public_id=$1 AND status IN ('draft','in_review') RETURNING public_id,status,approved_at",[id]);
-      if(!r.rowCount){await client.query("ROLLBACK");return res.status(409).json({ok:false,error:"محتوا پیدا نشد یا در وضعیت قابل تأیید نیست."});}
-      await audit(client,"operator","post.approved","social_post",id,"success");
-      await client.query("COMMIT");res.json({ok:true,post:r.rows[0],published:false});
-    } catch(e){await client.query("ROLLBACK").catch(()=>{});console.error("Social post approval failed:",e.message);res.status(500).json({ok:false,error:"تأیید محتوا ناموفق بود."});}
+      const found=await client.query("SELECT id,status,metadata FROM suraya_social_posts WHERE public_id=$1 FOR UPDATE",[id]);
+      if(!found.rowCount){await client.query("ROLLBACK");return res.status(404).json({ok:false,error:"محتوا پیدا نشد."});}
+      const post=found.rows[0],category=post.metadata?.topicCategory||"general";
+      if(!["draft","in_review"].includes(post.status)){await client.query("ROLLBACK");return res.status(409).json({ok:false,error:"محتوا در وضعیت قابل تأیید نیست."});}
+      if(["science","health","law","finance"].includes(category)&&(!post.metadata?.sourcePolicyPassed||Number(post.metadata?.sourceCount)<2)){await client.query("ROLLBACK");return res.status(422).json({ok:false,code:"SOURCES_REQUIRED",error:"تأیید محتوای این حوزه بدون حداقل دو منبع معتبر و مستقل مجاز نیست."});}
+      const updated=await client.query("UPDATE suraya_social_posts SET status='approved',approved_by='operator',approved_at=NOW(),updated_at=NOW() WHERE id=$1 RETURNING public_id,status,approved_at",[post.id]);
+      await audit(client,"operator","post.approved","social_post",id,"success",{topicCategory:category,sourceCount:Number(post.metadata?.sourceCount)||0});
+      await client.query("COMMIT");
+      res.json({ok:true,post:updated.rows[0],published:false});
+    }catch(e){await client.query("ROLLBACK").catch(()=>{});console.error("Social post approval failed:",e.message);res.status(500).json({ok:false,error:"تأیید محتوا ناموفق بود."});}
     finally{client.release();}
   });
 
