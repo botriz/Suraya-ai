@@ -82,7 +82,7 @@ export function createSocialOperationsRouter({ pool, getToken }) {
     try {
       await client.query("BEGIN");
       const r=await client.query(
-        "INSERT INTO suraya_social_posts(platform,title,caption,hashtags,script,media_url,media_type,created_by) VALUES($1,$2,$3,$4,$5,$6,$7,'operator') RETURNING public_id,platform,title,status,created_at",
+        "INSERT INTO suraya_social_posts(platform,account_id,title,caption,hashtags,script,media_url,media_type,created_by) VALUES($1,(SELECT id FROM suraya_social_accounts WHERE platform=$1 AND connection_status='connected' ORDER BY connected_at DESC NULLS LAST LIMIT 1),$2,$3,$4,$5,$6,$7,'operator') RETURNING public_id,platform,title,status,created_at",
         [platform,title,caption,hashtags,script,mediaUrl||null,mediaType]);
       await audit(client,"operator","post.created","social_post",r.rows[0].public_id,"success",{platform,mediaType});
       await client.query("COMMIT");
