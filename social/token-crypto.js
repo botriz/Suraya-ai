@@ -9,6 +9,8 @@ function encryptionKey(env=process.env) {
   return key;
 }
 
+export function isSocialEncryptionKeyValid(env=process.env) { try { encryptionKey(env); return true; } catch { return false; } }
+
 export function encryptSocialToken(value,env=process.env) {
   const key=encryptionKey(env),iv=randomBytes(12),cipher=createCipheriv("aes-256-gcm",key,iv);
   const encrypted=Buffer.concat([cipher.update(JSON.stringify(value),"utf8"),cipher.final()]);
