@@ -197,6 +197,8 @@ export function createSocialOperationsRouter({ pool, getToken }) {
         if(!research.rowCount){await client.query("ROLLBACK");return res.status(422).json({ok:false,code:"RESEARCH_NOT_FOUND",error:"گزارش پژوهش معتبر یا تازه نیست؛ دوباره پژوهش را اجرا کن."});}
         const verified=research.rows[0];
         if(!verified.source_policy_passed||!Array.isArray(verified.sources)||verified.sources.length<2){await client.query("ROLLBACK");return res.status(422).json({ok:false,code:"SOURCE_POLICY_FAILED",error:"گزارش پژوهش حداقل دو منبع معتبر مستقل ندارد."});}
+        const generated=verified.generated_draft||{};
+        if(["science","health","law","finance"].includes(verified.topic_category)&&(title!==generated.title||caption!==generated.caption||hashtags!==generated.hashtags||script!==generated.script)){await client.query("ROLLBACK");return res.status(422).json({ok:false,code:"RESEARCH_CONTENT_MISMATCH",error:"محتوای این حوزه پس از پژوهش تغییر کرده است؛ برای حفظ استنادها، پس از ویرایش دوباره پژوهش و تولید محتوا را اجرا کن."});}
         metadata={topicCategory:verified.topic_category,researchId:verified.public_id,sourcePolicyPassed:true,sourceCount:verified.sources.length,sources:verified.sources};
       }
       const r=await client.query(
