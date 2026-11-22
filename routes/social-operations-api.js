@@ -1,5 +1,7 @@
 import express from "express";
-import { timingSafeEqual } from "node:crypto";
+import { timingSafeEqual, randomBytes } from "node:crypto";
+import { oauthConfigured, createAuthorizationUrl, exchangeAndIdentify } from "../social/oauth-adapters.js";
+import { encryptSocialToken, sha256 } from "../social/token-crypto.js";
 const PLATFORMS = ["instagram","youtube","telegram","rubika","facebook","x","tiktok","snapchat","whatsapp","eitaa"];
 const POST_STATES = new Set(["draft","in_review","approved","scheduled","publishing","published","failed","cancelled"]);
 
@@ -14,6 +16,38 @@ export function createSocialOperationsRouter({ pool, getToken }) {
     }
     next();
   }
+  // OAuth callbacks are public endpoints protected by one-time, short-lived state values.
+  router.get("/oauth/:platform/callback",async(req,res)=>{
+    const platform=String(req.params.platform||"").toLowerCase();
+    const state=typeof req.query.state==="string"?req.query.state:"";
+    const code=typeof req.query.code==="string"?req.query.code:"";
+    const providerError=typeof req.query.error==="string"?req.query.error:"";
+    const finish=kind=>res.redirect(302,"/social-studio.html?connection="+encodeURIComponent(kind));
+    if(!pool)return finish("database_unavailable");
+    if(providerError)return finish("provider_denied");
+    if(!state||!code||!["instagram","facebook","youtube","tiktok","x"].includes(platform))return finish("invalid_callback");
+    try{
+      const consumed=await pool.query(
+        "UPDATE suraya_social_oauth_states SET consumed_at=NOW() WHERE state_hash=$1 AND platform=$2 AND expires_at>NOW() AND consumed_at IS NULL RETURNING code_verifier",
+        [sha256(state),platform]);
+      if(!consumed.rowCount)return finish("invalid_or_expired_state");
+      const result=await exchangeAndIdentify(platform,{code,codeVerifier:consumed.rows[0].code_verifier});
+      for(const account of result.accounts){
+        const encrypted=encryptSocialToken(account.token);
+        await pool.query(
+          "INSERT INTO suraya_social_accounts(platform,account_label,external_account_id,connection_status,token_ciphertext,token_key_version,scopes,account_metadata,connected_at,token_expires_at) VALUES($1,$2,$3,'connected',$4,'v1',$5,$6::jsonb,NOW(),$7) ON CONFLICT(platform,external_account_id) DO UPDATE SET account_label=EXCLUDED.account_label,connection_status='connected',token_ciphertext=EXCLUDED.token_ciphertext,token_key_version='v1',scopes=EXCLUDED.scopes,account_metadata=EXCLUDED.account_metadata,connected_at=NOW(),token_expires_at=EXCLUDED.token_expires_at,updated_at=NOW()",
+          [account.platform,account.label,account.externalId,encrypted,result.scopes,JSON.stringify(account.metadata),result.expiresAt]);
+      }
+      await pool.query(
+        "INSERT INTO suraya_social_audit_events(actor,action,resource_type,outcome,details) VALUES($1,'account.oauth_connected','social_account','success',$2::jsonb)",
+        ["oauth:"+platform,JSON.stringify({count:result.accounts.length,platform})]);
+      return finish("connected");
+    }catch(error){
+      console.error("Social OAuth callback failed:",platform,error.message);
+      return finish("oauth_failed");
+    }
+  });
+
   router.use(authorize);
   router.use((_req,res,next)=>{ if(!pool) return res.status(503).json({ok:false,error:"پایگاه دادهٔ عملیات اجتماعی در دسترس نیست."}); next(); });
 
@@ -51,11 +85,17 @@ export function createSocialOperationsRouter({ pool, getToken }) {
   router.post("/accounts/:platform/connect",async(req,res)=>{
     const platform=String(req.params.platform||"").toLowerCase();
     if(!PLATFORMS.includes(platform)) return res.status(400).json({ok:false,error:"سکوی اجتماعی معتبر نیست."});
-    // OAuth adapters are intentionally fail-closed until the platform app credentials,
-    // redirect URI, scopes and token-encryption key are configured and verified.
-    const configured=Boolean(process.env[`SOCIAL_${platform.toUpperCase()}_CLIENT_ID`] && process.env[`SOCIAL_${platform.toUpperCase()}_CLIENT_SECRET`] && process.env.SURAYA_SOCIAL_TOKEN_ENCRYPTION_KEY);
-    if(!configured) return res.status(503).json({ok:false,code:"OAUTH_NOT_CONFIGURED",error:"اتصال رسمی این شبکه هنوز پیکربندی نشده است؛ ابتدا اپلیکیشن توسعه‌دهنده و کلید رمزنگاری امن سمت سرور لازم است."});
-    return res.status(501).json({ok:false,code:"OAUTH_ADAPTER_PENDING",error:"اعتبارنامه موجود است اما آداپتور و بازبینی OAuth این پلتفرم هنوز فعال نشده است."});
+    if(!["instagram","facebook","youtube","tiktok","x"].includes(platform)) return res.status(501).json({ok:false,code:"OAUTH_ADAPTER_UNAVAILABLE",error:"اتصال رسمی این شبکه هنوز آداپتور قابل انتشار ندارد."});
+    if(!oauthConfigured(platform)) return res.status(503).json({ok:false,code:"OAUTH_NOT_CONFIGURED",error:"اعتبارنامهٔ برنامهٔ توسعه‌دهنده، نشانی HTTPS سایت و کلید رمزنگاری ۳۲ بایتی سمت سرور باید در تنظیمات امن Render پیکربندی شوند."});
+    try{
+      const state=randomBytes(32).toString("base64url");
+      const codeVerifier=platform==="x"?randomBytes(48).toString("base64url"):null;
+      await pool.query(
+        "INSERT INTO suraya_social_oauth_states(state_hash,platform,code_verifier,expires_at) VALUES($1,$2,$3,NOW()+INTERVAL '10 minutes')",
+        [sha256(state),platform,codeVerifier]);
+      const authorizationUrl=createAuthorizationUrl(platform,{state,codeVerifier});
+      res.json({ok:true,authorizationUrl,expiresInSeconds:600,provider:platform});
+    }catch(error){console.error("Social OAuth start failed:",platform,error.message);res.status(503).json({ok:false,error:"شروع اتصال امن این شبکه انجام نشد؛ تنظیمات OAuth را بررسی کن."});}
   });
 
   router.get("/posts",async(req,res)=>{
