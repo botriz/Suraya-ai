@@ -174,7 +174,7 @@ export function createSocialOperationsRouter({ pool, getToken }) {
       if(row.platform!=="telegram"){await client.query("ROLLBACK");return res.status(503).json({ok:false,code:"PUBLISH_ADAPTER_NOT_READY",error:"آداپتور انتشار این شبکه هنوز فعال نیست؛ فقط تلگرام در این نسخه به صف انتشار واقعی متصل شده است."});}
       const scheduledAt=new Date(when).toISOString();
       await client.query("UPDATE suraya_social_posts SET status='scheduled',scheduled_at=$2,account_id=$3,updated_at=NOW() WHERE id=$1",[row.id,scheduledAt,row.account_id]);
-      await client.query("INSERT INTO suraya_social_jobs(job_type,post_id,status,run_after,idempotency_key,payload) VALUES('publish_post',$1,'queued',$2,$3,$4::jsonb) ON CONFLICT(idempotency_key) DO NOTHING",[row.id,scheduledAt,"publish:"+row.public_id,JSON.stringify({platform:row.platform})]);
+      await client.query("INSERT INTO suraya_social_jobs(job_type,post_id,status,run_after,max_attempts,idempotency_key,payload) VALUES('publish_post',$1,'queued',$2,1,$3,$4::jsonb) ON CONFLICT(idempotency_key) DO NOTHING",[row.id,scheduledAt,"publish:"+row.public_id,JSON.stringify({platform:row.platform})]);
       await audit(client,"operator","post.scheduled","social_post",id,"success",{platform:row.platform,scheduledAt});
       await client.query("COMMIT");
       res.json({ok:true,postId:id,status:"scheduled",scheduledAt,workerEnabled:true});
