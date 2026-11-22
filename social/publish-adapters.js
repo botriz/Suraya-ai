@@ -101,6 +101,39 @@ async function publishTikTok(token,post) {
   }
   throw new Error("TikTok publish job is still processing; verify its status in TikTok before retrying.");
 }
+
+async function refreshGoogleToken(token) {
+  if(!token.refresh_token)return token.access_token;
+  const response=await fetch("https://oauth2.googleapis.com/token",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:new URLSearchParams({client_id:process.env.SOCIAL_YOUTUBE_CLIENT_ID||"",client_secret:process.env.SOCIAL_YOUTUBE_CLIENT_SECRET||"",refresh_token:token.refresh_token,grant_type:"refresh_token"}),signal:AbortSignal.timeout(20000)});
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok||!data.access_token)throw new Error("Google access token refresh failed.");
+  return data.access_token;
+}
+async function publishYouTube(token,accountMetadata,post) {
+  if(!post.media_url||post.media_type!=="video")throw new Error("YouTube publishing requires a video media URL.");
+  const mediaUrl=new URL(post.media_url);
+  const allowed=(process.env.SURAYA_MEDIA_ALLOWED_HOSTS||"").split(",").map(x=>x.trim().toLowerCase()).filter(Boolean);
+  if(mediaUrl.protocol!=="https:"||!allowed.includes(mediaUrl.hostname.toLowerCase()))throw new Error("YouTube media URL host is not in SURAYA_MEDIA_ALLOWED_HOSTS.");
+  const media=await fetch(mediaUrl,{redirect:"error",signal:AbortSignal.timeout(60000)});
+  if(!media.ok||!media.body)throw new Error("Video source could not be retrieved from the approved media host.");
+  const size=Number(media.headers.get("content-length")||0),contentType=media.headers.get("content-type")||"video/mp4";
+  if(!size||size>1024*1024*1024||!contentType.startsWith("video/"))throw new Error("Video file size or media type is not supported.");
+  const accessToken=await refreshGoogleToken(token);
+  const title=String(post.title||"Suraya video").slice(0,100);
+  const description=[post.caption,post.hashtags].filter(Boolean).join("\n\n").slice(0,5000);
+  const metadata={snippet:{title,description,categoryId:"22"},status:{privacyStatus:"public",selfDeclaredMadeForKids:false}};
+  const init=await fetch("https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status",{
+    method:"POST",headers:{Authorization:"Bearer "+accessToken,"Content-Type":"application/json; charset=UTF-8","X-Upload-Content-Type":contentType,"X-Upload-Content-Length":String(size)},
+    body:JSON.stringify(metadata),signal:AbortSignal.timeout(30000)
+  });
+  if(!init.ok||!init.headers.get("location"))throw new Error("YouTube did not create a resumable upload session.");
+  const uploaded=await fetch(init.headers.get("location"),{method:"PUT",headers:{"Content-Type":contentType,"Content-Length":String(size)},body:media.body,duplex:"half",signal:AbortSignal.timeout(15*60*1000)});
+  const result=await uploaded.json().catch(()=>({}));
+  if(!uploaded.ok||!result.id)throw new Error("YouTube video upload failed.");
+  if(accountMetadata.channelId&&result.snippet?.channelId&&result.snippet.channelId!==accountMetadata.channelId)throw new Error("Uploaded video channel does not match the connected channel.");
+  return {externalPostId:String(result.id),publishedAt:new Date().toISOString()};
+}
+
 async function publishX(token,post) {
   if(post.media_url)throw new Error("X text publishing is enabled; media upload is not yet supported.");
   const text=[post.caption,post.hashtags].filter(Boolean).join("\n\n").trim()||post.title;
