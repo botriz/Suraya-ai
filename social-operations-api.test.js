@@ -57,9 +57,9 @@ test("media confirmation requires matching content type and exact object size",a
  const asset={id:9,public_url:"https://cdn.example.test/social/file.mp4",size_bytes:"1024",content_type:"video/mp4",status:"pending"};
  const pool={async query(sql){if(sql.includes("SELECT id,public_url,size_bytes,content_type,status"))return {rowCount:1,rows:[asset]};if(sql.includes("UPDATE suraya_social_media_assets"))return {rowCount:1,rows:[{...asset,status:"uploaded"}]};throw new Error("Unexpected SQL in test: "+sql);}};
  try{
-  globalThis.fetch=async()=>new Response(null,{status:200,headers:{"content-length":"1024","content-type":"video/mp4"}});
+  globalThis.fetch=async(url,options)=>String(url).startsWith("https://cdn.example.test/")?new Response(null,{status:200,headers:{"content-length":"1024","content-type":"video/mp4"}}):originalFetch(url,options);
   await withServer(async base=>{const response=await fetch(base+"/api/social/v1/media/9/confirm",{method:"POST",headers:{Authorization:"Bearer test-operator-token","Content-Type":"application/json"},body:"{}"});assert.equal(response.status,200);assert.equal((await response.json()).asset.status,"uploaded");},pool);
-  globalThis.fetch=async()=>new Response(null,{status:200,headers:{"content-length":"1024","content-type":"image/png"}});
+  globalThis.fetch=async(url,options)=>String(url).startsWith("https://cdn.example.test/")?new Response(null,{status:200,headers:{"content-length":"1024","content-type":"image/png"}}):originalFetch(url,options);
   await withServer(async base=>{const response=await fetch(base+"/api/social/v1/media/9/confirm",{method:"POST",headers:{Authorization:"Bearer test-operator-token","Content-Type":"application/json"},body:"{}"});assert.equal(response.status,409);},pool);
  }finally{globalThis.fetch=originalFetch;}
 });
