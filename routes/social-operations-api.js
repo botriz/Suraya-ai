@@ -168,7 +168,7 @@ export function createSocialOperationsRouter({ pool, getToken }) {
     const status=POST_STATES.has(req.query.status)?req.query.status:null;
     const limit=Math.min(100,Math.max(1,Number.parseInt(req.query.limit,10)||50));
     try {const r=await pool.query(
-      "SELECT public_id,platform,title,caption,hashtags,script,media_url,media_type,status,scheduled_at,published_at,created_at,updated_at FROM suraya_social_posts WHERE ($1::text IS NULL OR status=$1) ORDER BY created_at DESC LIMIT $2",[status,limit]);
+      "SELECT public_id,platform,title,caption,hashtags,script,media_url,media_type,status,scheduled_at,published_at,metadata,created_at,updated_at FROM suraya_social_posts WHERE ($1::text IS NULL OR status=$1) ORDER BY created_at DESC LIMIT $2",[status,limit]);
       res.json({ok:true,posts:r.rows});
     } catch(e){console.error("Social posts read failed:",e.message);res.status(500).json({ok:false,error:"دریافت محتواها ناموفق بود."});}
   });
