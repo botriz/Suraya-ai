@@ -1,9 +1,18 @@
 import express from "express";
+import { timingSafeEqual } from "node:crypto";
 import { createContentEngine } from "../ai/content-engine.js";
 import { createResearchEngine } from "../ai/research-engine.js";
 
-export function createCreatorRouter({ engine = createContentEngine(), researchEngine = createResearchEngine(), pool = null, rateLimit = (_req, _res, next) => next() } = {}) {
+export function createCreatorRouter({ engine = createContentEngine(), researchEngine = createResearchEngine(), pool = null, getOperatorToken = () => process.env.SURAYA_OPERATOR_TOKEN, rateLimit = (_req, _res, next) => next() } = {}) {
   const router = express.Router();
+  function requireOperator(req,res,next){
+    const expected=getOperatorToken();
+    const supplied=req.get("authorization")?.match(/^Bearer\\s+(.+)$/i)?.[1]||"";
+    const a=Buffer.from(supplied),b=Buffer.from(expected||"");
+    if(!expected||a.length!==b.length||!timingSafeEqual(a,b))return res.status(401).json({ok:false,error:"برای پژوهش منبع‌محور، ورود مدیر الزامی است."});
+    next();
+  }
+
   router.post("/draft", rateLimit, async (req, res) => {
     const topic = typeof req.body?.topic === "string" ? req.body.topic.trim() : "";
     const audience = typeof req.body?.audience === "string" ? req.body.audience.trim() : "";
@@ -32,7 +41,7 @@ export function createCreatorRouter({ engine = createContentEngine(), researchEn
     }
   });
 
-  router.post("/research-draft", rateLimit, async (req, res) => {
+  router.post("/research-draft", rateLimit, requireOperator, async (req, res) => {
     const topic=typeof req.body?.topic==="string"?req.body.topic.trim():"";
     const category=typeof req.body?.category==="string"?req.body.category:"general";
     const audience=typeof req.body?.audience==="string"?req.body.audience.trim():"";
