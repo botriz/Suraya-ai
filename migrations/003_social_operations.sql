@@ -153,3 +153,17 @@ CREATE TABLE IF NOT EXISTS suraya_social_oauth_states (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 CREATE INDEX IF NOT EXISTS suraya_social_oauth_states_expiry_idx ON suraya_social_oauth_states(expires_at);
+
+
+CREATE TABLE IF NOT EXISTS suraya_social_research_runs (
+  id BIGSERIAL PRIMARY KEY,
+  public_id TEXT NOT NULL UNIQUE DEFAULT ('SRES-' || upper(substr(md5(random()::text || clock_timestamp()::text),1,12))),
+  query_text VARCHAR(1200) NOT NULL,
+  topic_category VARCHAR(24) NOT NULL CHECK (topic_category IN ('general','science','health','law','finance','technology')),
+  provider VARCHAR(40) NOT NULL,
+  source_policy_passed BOOLEAN NOT NULL DEFAULT FALSE,
+  sources JSONB NOT NULL DEFAULT '[]'::jsonb,
+  generated_draft JSONB NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS suraya_social_research_created_idx ON suraya_social_research_runs(created_at DESC);
