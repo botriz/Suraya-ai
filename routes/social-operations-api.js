@@ -1,4 +1,5 @@
 import express from "express";
+import { timingSafeEqual } from "node:crypto";
 const PLATFORMS = ["instagram","youtube","telegram","rubika","facebook","x","tiktok","snapchat","whatsapp","eitaa"];
 const POST_STATES = new Set(["draft","in_review","approved","scheduled","publishing","published","failed","cancelled"]);
 
@@ -7,7 +8,8 @@ export function createSocialOperationsRouter({ pool, getToken }) {
   function authorize(req,res,next) {
     const expected=getToken();
     const supplied=req.get("authorization")?.match(/^Bearer\s+(.+)$/i)?.[1]||"";
-    if(!expected || supplied.length!==expected.length || !Buffer.from(supplied).equals(Buffer.from(expected))) {
+    const suppliedBuffer=Buffer.from(supplied), expectedBuffer=Buffer.from(expected||"");
+    if(!expected || suppliedBuffer.length!==expectedBuffer.length || !timingSafeEqual(suppliedBuffer,expectedBuffer)) {
       return res.status(401).json({ok:false,error:"دسترسی مدیر تأیید نشد."});
     }
     next();
@@ -111,7 +113,7 @@ export function createSocialOperationsRouter({ pool, getToken }) {
     const client=await pool.connect();
     try {
       await client.query("BEGIN");
-      const r=await client.query("SELECT p.id,p.platform,p.status,a.id AS account_id,a.connection_status FROM suraya_social_posts p LEFT JOIN suraya_social_accounts a ON a.id=p.account_id AND a.platform=p.platform WHERE p.public_id=$1 FOR UPDATE",[id]);
+      const r=await client.query("SELECT p.id,p.platform,p.status,a.id AS account_id,a.connection_status FROM suraya_social_posts p LEFT JOIN LATERAL (SELECT id,connection_status FROM suraya_social_accounts WHERE platform=p.platform AND connection_status='connected' ORDER BY connected_at DESC NULLS LAST LIMIT 1) a ON TRUE WHERE p.public_id=$1 FOR UPDATE",[id]);
       if(!r.rowCount){await client.query("ROLLBACK");return res.status(404).json({ok:false,error:"محتوا پیدا نشد."});}
       const row=r.rows[0];
       if(row.status!=="approved"){await client.query("ROLLBACK");return res.status(409).json({ok:false,error:"ابتدا باید محتوا تأیید شود."});}
