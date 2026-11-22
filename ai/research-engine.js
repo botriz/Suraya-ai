@@ -34,7 +34,7 @@ export function createResearchEngine({
       if(!this.isConfigured()){const error=new Error("برای پژوهش منبع‌محور، AI_API_KEY و TAVILY_API_KEY باید در تنظیمات امن سرور فعال باشند.");error.code="RESEARCH_NOT_CONFIGURED";throw error}
       if(typeof topic!=="string"||topic.trim().length<4||topic.length>1200)throw new Error("موضوع پژوهش معتبر نیست.");
       if(!Object.hasOwn(ALLOWED,category))throw new Error("حوزهٔ پژوهش پشتیبانی نمی‌شود.");
-      const search=await fetchImpl("https://api.tavily.com/search",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({api_key:tavilyApiKey,query:topic.trim(),search_depth:"basic",topic:category==="science"||category==="health"?"science":category==="finance"?"finance":"general",max_results:10,include_answer:false,include_raw_content:false}),signal:AbortSignal.timeout(30000)});
+      const search=await fetchImpl("https://api.tavily.com/search",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({api_key:tavilyApiKey,query:topic.trim(),search_depth:"basic",topic:category==="finance"?"finance":"general",max_results:10,include_answer:false,include_raw_content:false}),signal:AbortSignal.timeout(30000)});
       const searchData=await search.json().catch(()=>({}));
       if(!search.ok)throw new Error("جست‌وجوی منابع معتبر در حال حاضر پاسخ‌گو نیست.");
       const seen=new Set();
