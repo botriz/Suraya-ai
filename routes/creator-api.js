@@ -7,7 +7,7 @@ export function createCreatorRouter({ engine = createContentEngine(), researchEn
   const router = express.Router();
   function requireOperator(req,res,next){
     const expected=getOperatorToken();
-    const supplied=req.get("authorization")?.match(/^Bearer\\s+(.+)$/i)?.[1]||"";
+    const supplied=req.get("authorization")?.match(/^Bearer\s+(.+)$/i)?.[1]||"";
     const a=Buffer.from(supplied),b=Buffer.from(expected||"");
     if(!expected||a.length!==b.length||!timingSafeEqual(a,b))return res.status(401).json({ok:false,error:"برای پژوهش منبع‌محور، ورود مدیر الزامی است."});
     next();
