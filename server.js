@@ -67,7 +67,8 @@ function currentCapabilities() {
     socialOperationsReady,
     socialOAuthReady: isSocialEncryptionKeyValid() && ["instagram","facebook","youtube","tiktok","x"].some(platform => oauthConfigured(platform)),
     telegramPublishingReady: Boolean(process.env.SOCIAL_TELEGRAM_BOT_TOKEN && process.env.SOCIAL_TELEGRAM_CHAT_ID && isSocialEncryptionKeyValid()),
-    sourceGroundedResearchReady: researchEngine.isConfigured(),\n    mediaStorageReady: Boolean(process.env.SURAYA_S3_ENDPOINT && process.env.SURAYA_S3_PUBLIC_BASE_URL && process.env.SURAYA_S3_BUCKET && process.env.SURAYA_S3_ACCESS_KEY_ID && process.env.SURAYA_S3_SECRET_ACCESS_KEY)
+    sourceGroundedResearchReady: researchEngine.isConfigured(),
+    mediaStorageReady: Boolean(process.env.SURAYA_S3_ENDPOINT && process.env.SURAYA_S3_PUBLIC_BASE_URL && process.env.SURAYA_S3_BUCKET && process.env.SURAYA_S3_ACCESS_KEY_ID && process.env.SURAYA_S3_SECRET_ACCESS_KEY)
   });
 }
 
