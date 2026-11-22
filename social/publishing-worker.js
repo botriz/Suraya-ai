@@ -8,7 +8,7 @@ export function startSocialPublishingWorker({pool,intervalMs=5000,onError=error=
     try{
       await client.query("BEGIN");
       const selected=await client.query(
-        "SELECT j.id AS job_id,j.attempts,j.max_attempts,p.id AS post_id,p.public_id,p.platform,p.title,p.caption,p.hashtags,p.script,p.media_url,p.media_type,p.account_id,a.token_ciphertext FROM suraya_social_jobs j JOIN suraya_social_posts p ON p.id=j.post_id JOIN suraya_social_accounts a ON a.id=p.account_id WHERE j.status='queued' AND j.run_after<=NOW() AND p.status='scheduled' AND a.connection_status='connected' ORDER BY j.run_after,j.id LIMIT 1 FOR UPDATE OF j SKIP LOCKED");
+        "SELECT j.id AS job_id,j.attempts,j.max_attempts,p.id AS post_id,p.public_id,p.platform,p.title,p.caption,p.hashtags,p.script,p.media_url,p.media_type,p.account_id,a.token_ciphertext,a.account_metadata FROM suraya_social_jobs j JOIN suraya_social_posts p ON p.id=j.post_id JOIN suraya_social_accounts a ON a.id=p.account_id WHERE j.status='queued' AND j.run_after<=NOW() AND p.status='scheduled' AND a.connection_status='connected' ORDER BY j.run_after,j.id LIMIT 1 FOR UPDATE OF j SKIP LOCKED");
       if(!selected.rowCount){await client.query("COMMIT");return null}
       const job=selected.rows[0];
       await client.query("UPDATE suraya_social_jobs SET status='running',attempts=attempts+1,updated_at=NOW() WHERE id=$1",[job.job_id]);
@@ -47,7 +47,7 @@ export function startSocialPublishingWorker({pool,intervalMs=5000,onError=error=
       const job=await claimOne();
       if(!job)return;
       try{
-        const result=await publishSocialPost({platform:job.platform,tokenCiphertext:job.token_ciphertext,post:job});
+        const result=await publishSocialPost({platform:job.platform,tokenCiphertext:job.token_ciphertext,accountMetadata:job.account_metadata,post:job});
         await finish(job,result);
       }catch(error){await fail(job,error)}
     }catch(error){onError(error)}
