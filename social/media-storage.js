@@ -16,7 +16,7 @@ export function createPresignedMediaUpload({originalName,contentType,sizeBytes,e
   if(!Number.isSafeInteger(sizeBytes)||sizeBytes<1||sizeBytes>MAX_UPLOAD_BYTES)throw new Error("Media size must be between 1 byte and 500 MB.");
   const endpoint=new URL(env.SURAYA_S3_ENDPOINT||"");
   const publicBase=new URL(env.SURAYA_S3_PUBLIC_BASE_URL||"");
-  if(endpoint.protocol!=="https:"||publicBase.protocol!=="https:")throw new Error("S3 endpoint and public media base URL must use HTTPS.");
+  if(endpoint.protocol!=="https:"||publicBase.protocol!=="https:"||endpoint.pathname!=="/")throw new Error("S3 endpoint and public media base URL must use HTTPS; the S3 endpoint must not contain a path prefix.");
   const bucket=env.SURAYA_S3_BUCKET||"",region=env.SURAYA_S3_REGION||"auto";
   const accessKey=env.SURAYA_S3_ACCESS_KEY_ID||"",secretKey=env.SURAYA_S3_SECRET_ACCESS_KEY||"";
   if(!bucket||!accessKey||!secretKey)throw new Error("S3-compatible media storage is not configured.");
