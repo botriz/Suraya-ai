@@ -69,6 +69,48 @@ async function publishMetaPost(platform,token,accountMetadata,post) {
   return {externalPostId:String(published.id),publishedAt:new Date().toISOString()};
 }
 
+
+async function tiktokCall(path,token,body) {
+  const response=await fetch("https://open.tiktokapis.com"+path,{method:"POST",headers:{Authorization:"Bearer "+token.access_token,"Content-Type":"application/json"},body:JSON.stringify(body),signal:AbortSignal.timeout(30000)});
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok||data.error&&data.error.code!=="ok")throw new Error("TikTok publishing request failed.");
+  return data.data||{};
+}
+async function publishTikTok(token,post) {
+  if(!post.media_url||post.media_type!=="video")throw new Error("TikTok publishing requires a public video URL.");
+  const requiredHost=process.env.SOCIAL_TIKTOK_MEDIA_DOMAIN||"";
+  let mediaHost="";try{mediaHost=new URL(post.media_url).hostname}catch{}
+  if(!requiredHost||mediaHost!==requiredHost)throw new Error("TikTok PULL_FROM_URL requires a verified media domain configured by the owner.");
+  const creator=await tiktokCall("/v2/post/publish/creator_info/query/",token,{});
+  const options=creator.creator_info?.privacy_level_options||[];
+  const privacy=options.includes("PUBLIC_TO_EVERYONE")?"PUBLIC_TO_EVERYONE":options[0];
+  if(!privacy)throw new Error("TikTok creator privacy options are unavailable.");
+  const text=[post.caption,post.hashtags].filter(Boolean).join("\n\n").trim().slice(0,2200);
+  const init=await tiktokCall("/v2/post/publish/video/init/",token,{
+    post_info:{title:(text||post.title).slice(0,150),privacy_level:privacy,disable_comment:false,disable_duet:false,disable_stitch:false,video_cover_timestamp_ms:1000},
+    source_info:{source:"PULL_FROM_URL",video_url:post.media_url}
+  });
+  if(!init.publish_id)throw new Error("TikTok did not return a publish job identifier.");
+  let status="PROCESSING_DOWNLOAD";
+  for(let attempt=0;attempt<36;attempt++){
+    await new Promise(resolve=>setTimeout(resolve,5000));
+    const check=await tiktokCall("/v2/post/publish/status/fetch/",token,{publish_id:init.publish_id});
+    status=check.status||status;
+    if(status==="PUBLISH_COMPLETE")return {externalPostId:String(init.publish_id),publishedAt:new Date().toISOString()};
+    if(["FAILED","PUBLISH_FAILED"].includes(status))throw new Error("TikTok rejected or failed to publish the video.");
+  }
+  throw new Error("TikTok publish job is still processing; verify its status in TikTok before retrying.");
+}
+async function publishX(token,post) {
+  if(post.media_url)throw new Error("X text publishing is enabled; media upload is not yet supported.");
+  const text=[post.caption,post.hashtags].filter(Boolean).join("\n\n").trim()||post.title;
+  if(text.length>280)throw new Error("X text exceeds the 280-character limit for this adapter.");
+  const response=await fetch("https://api.x.com/2/tweets",{method:"POST",headers:{Authorization:"Bearer "+token.access_token,"Content-Type":"application/json"},body:JSON.stringify({text}),signal:AbortSignal.timeout(20000)});
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok||!data.data?.id)throw new Error("X post creation failed.");
+  return {externalPostId:String(data.data.id),publishedAt:new Date().toISOString()};
+}
+
 export async function publishSocialPost({platform,tokenCiphertext,post,accountMetadata={}}) {
   const token=decryptSocialToken(tokenCiphertext);
   if(platform==="instagram"||platform==="facebook")return publishMetaPost(platform,token,accountMetadata,post);
