@@ -15,6 +15,6 @@ export function buildCapabilities({
     cryptoWallet: false,
     personalWallet: false,
     persistentUserAccounts: false,
-    automaticPublishing: false
+    socialWorkspace: database && Boolean(socialOperationsReady) && Boolean(operatorTokenConfigured),\n    persistentSocialCalendar: database && Boolean(socialOperationsReady) && Boolean(operatorTokenConfigured),\n    socialAudienceInsights: false,\n    socialOAuth: false,\n    automaticPublishing: false,\n    liveAssistant: false
   };
 }
