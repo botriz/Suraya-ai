@@ -93,11 +93,11 @@ async function publishTikTok(token,post) {
   if(!init.publish_id)throw new Error("TikTok did not return a publish job identifier.");
   let status="PROCESSING_DOWNLOAD";
   for(let attempt=0;attempt<36;attempt++){
-    await new Promise(resolve=>setTimeout(resolve,5000));
     const check=await tiktokCall("/v2/post/publish/status/fetch/",token,{publish_id:init.publish_id});
     status=check.status||status;
     if(status==="PUBLISH_COMPLETE")return {externalPostId:String(init.publish_id),publishedAt:new Date().toISOString()};
     if(["FAILED","PUBLISH_FAILED"].includes(status))throw new Error("TikTok rejected or failed to publish the video.");
+    if(attempt<35)await new Promise(resolve=>setTimeout(resolve,5000));
   }
   throw new Error("TikTok publish job is still processing; verify its status in TikTok before retrying.");
 }
