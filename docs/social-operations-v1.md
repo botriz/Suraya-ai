@@ -129,3 +129,18 @@ For science, health, law and finance categories, the post API requires a valid r
 The allowlist validates source domains, not the truth of every statement on a page. Search snippets may be incomplete or outdated; editors must open and review sources, publication dates and context before approval. Health, legal and financial content remains informational and requires qualified human review. The system does not claim omniscience or guarantee that all scientific facts are correct.
 
 Required Render variable: `TAVILY_API_KEY`. No search or model key is embedded in browser code.
+
+
+## Direct media upload
+
+The social workspace supports browser-to-S3-compatible object storage uploads using short-lived SigV4 presigned PUT URLs. The API stores upload metadata, verifies the resulting public object with a HEAD request, and only then exposes its HTTPS URL for attachment to a post. Supported MIME types are JPEG, PNG, WebP, MP4, QuickTime MOV, WebM and MPEG video; the maximum size is 500 MB. The presigned URL expires after five minutes. Storage credentials remain server-side.
+
+Required Render variables:
+- `SURAYA_S3_ENDPOINT`: root HTTPS endpoint (for example the Cloudflare R2 S3 endpoint; no path prefix)
+- `SURAYA_S3_BUCKET`
+- `SURAYA_S3_REGION` (use the region expected by the S3-compatible provider)
+- `SURAYA_S3_ACCESS_KEY_ID`
+- `SURAYA_S3_SECRET_ACCESS_KEY`
+- `SURAYA_S3_PUBLIC_BASE_URL`: HTTPS public/CDN base URL serving uploaded objects
+
+Configure bucket CORS to allow PUT from the Suraya site origin with the Content-Type header, and configure public read access (or an equivalent CDN) so the social platform can fetch the media URL. Do not expose S3 credentials in the browser. Uploading media is separate from rendering a new clip; the app still needs a video-generation provider integration to create clips automatically.
