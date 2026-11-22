@@ -155,7 +155,7 @@ app.get("/api/capabilities", (_req, res) => {
 
 app.use("/api/world/v1", createWorldRouter({ pool, isDatabaseReady: () => worldDatabaseReady }));
 app.use("/api/operator/v1", createOperatorRouter({ pool, getToken: () => process.env.SURAYA_OPERATOR_TOKEN }));
-app.use("/api/creator/v1", createCreatorRouter({ engine: contentEngine, researchEngine, pool, rateLimit }));
+app.use("/api/creator/v1", createCreatorRouter({ engine: contentEngine, researchEngine, pool, getOperatorToken: () => process.env.SURAYA_OPERATOR_TOKEN, rateLimit }));
 app.use("/api/social/v1", createSocialOperationsRouter({ pool, getToken: () => process.env.SURAYA_OPERATOR_TOKEN }));
 
 app.get("/api/services", (_req, res) => {
