@@ -142,3 +142,8 @@ The old `setup.js`, `suraya-master-setup.js`, and `setup-revenue.js` bootstrappe
 - Reads `/api/status`, `/api/capabilities`, and `/api/services` to display server-reported health, enabled capabilities, and the active service catalogue.
 - Reports deterministic diagnostics for disabled capabilities; it does not run production repairs or claim autonomous AI control.
 - The Social Operations workspace is available at `/social-studio.html`.
+
+
+### Social Operations (in development)
+
+The social operations API and PostgreSQL schema are being developed on PR #42. The protected operator workspace uses `SURAYA_OPERATOR_TOKEN`; the editorial calendar and reviewed drafts are persisted in PostgreSQL. Platform OAuth, publishing workers, verified audience analytics, billing activation, video rendering/storage and live-stream control remain gated until their provider integrations and security reviews are complete. See [docs/social-operations-v1.md](docs/social-operations-v1.md).
