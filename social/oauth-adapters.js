@@ -56,7 +56,8 @@ export async function exchangeAndIdentify(platform,{code,codeVerifier,env=proces
   const c=configFor[platform]?.();if(!c)throw new Error("Unsupported OAuth provider.");
   const redirectUri=socialRedirectUri(platform,env);let token;
   if(c.kind==="meta"){
-    token=await fetchJson("https://graph.facebook.com/"+META_VERSION+"/oauth/access_token?"+form({client_id:c.id,client_secret:c.secret,redirect_uri:redirectUri,code}));
+    const shortToken=await fetchJson("https://graph.facebook.com/"+META_VERSION+"/oauth/access_token?"+form({client_id:c.id,client_secret:c.secret,redirect_uri:redirectUri,code}));
+    token=await fetchJson("https://graph.facebook.com/"+META_VERSION+"/oauth/access_token?"+form({grant_type:"fb_exchange_token",client_id:c.id,client_secret:c.secret,fb_exchange_token:shortToken.access_token}));
     const me=await fetchJson("https://graph.facebook.com/"+META_VERSION+"/me?"+form({fields:"id,name",access_token:token.access_token}));
     const pages=await fetchJson("https://graph.facebook.com/"+META_VERSION+"/me/accounts?"+form({fields:"id,name,access_token,instagram_business_account{id,username}",access_token:token.access_token}));
     const accounts=[];
@@ -65,7 +66,7 @@ export async function exchangeAndIdentify(platform,{code,codeVerifier,env=proces
       if(platform==="instagram"&&page.instagram_business_account)accounts.push({platform:"instagram",externalId:page.instagram_business_account.id,label:page.instagram_business_account.username||"Instagram Business",token:{...token,access_token:page.access_token||token.access_token},metadata:{pageId:page.id,instagramId:page.instagram_business_account.id}});
     }
     if(!accounts.length)throw new Error(platform==="instagram"?"No Instagram professional account was found on an authorized Facebook Page.":"No Facebook Page was granted to this application.");
-    return {accounts,scopes:(token.scope||"").split(",").filter(Boolean),expiresAt:token.expires_in?new Date(Date.now()+Number(token.expires_in)*1000):null,providerUser:{id:me.id,name:me.name}};
+    return {accounts,scopes:["pages_show_list","pages_read_engagement","pages_manage_posts","instagram_basic","instagram_content_publish","instagram_manage_insights"],expiresAt:token.expires_in?new Date(Date.now()+Number(token.expires_in)*1000):null,providerUser:{id:me.id,name:me.name}};
   }
   if(c.kind==="google"){
     token=await fetchJson("https://oauth2.googleapis.com/token",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:form({code,client_id:c.id,client_secret:c.secret,redirect_uri:redirectUri,grant_type:"authorization_code"})});
