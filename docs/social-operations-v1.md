@@ -67,3 +67,30 @@ The four plan definitions (Starter, Creator, Pro, Agency) currently define propo
 Audience segments store operator-defined criteria only. Real audience metrics and targeting remain disabled until official read scopes, platform policy review, user consent, retention limits and data-deletion flows are implemented. No scraping, inferred sensitive traits, or fabricated metrics are used.
 
 The job queue schema is present for the next worker phase; no worker claims jobs and no automatic post publishing or live-stream control is enabled in this release.
+
+
+## Provider adapters and configuration
+
+Implemented account authorization adapters:
+- Meta (Facebook Pages and Instagram professional accounts): `SOCIAL_META_CLIENT_ID`, `SOCIAL_META_CLIENT_SECRET`, `SOCIAL_META_API_VERSION`
+- YouTube / Google OAuth: `SOCIAL_YOUTUBE_CLIENT_ID`, `SOCIAL_YOUTUBE_CLIENT_SECRET`
+- TikTok OAuth: `SOCIAL_TIKTOK_CLIENT_KEY`, `SOCIAL_TIKTOK_CLIENT_SECRET`
+- X OAuth 2.0 with PKCE: `SOCIAL_X_CLIENT_ID`, `SOCIAL_X_CLIENT_SECRET`
+- Telegram Bot API: `SOCIAL_TELEGRAM_BOT_TOKEN`, `SOCIAL_TELEGRAM_CHAT_ID`
+
+Shared server configuration:
+- `SURAYA_PUBLIC_BASE_URL`: public HTTPS origin, for example `https://ata-ai.onrender.com`
+- `SURAYA_SOCIAL_TOKEN_ENCRYPTION_KEY`: exactly 32 bytes encoded as base64 (or 64 hex characters). Generate and store it only in the Render environment settings; never paste it into chat or browser fields.
+
+Register these exact callback paths with each provider:
+- `/api/social/v1/oauth/instagram/callback`
+- `/api/social/v1/oauth/facebook/callback`
+- `/api/social/v1/oauth/youtube/callback`
+- `/api/social/v1/oauth/tiktok/callback`
+- `/api/social/v1/oauth/x/callback`
+
+OAuth state values are single-use, hashed in PostgreSQL and expire after ten minutes. X authorization uses PKCE. Provider tokens are encrypted using AES-256-GCM before storage; API account listings never return token ciphertext. The current callback implementation exchanges tokens and verifies the selected provider profile/page/channel before marking an account connected.
+
+Telegram connection validates the bot using `getMe`, the destination using `getChat`, and bot membership/administrator permissions using `getChatMember`. Telegram is the only live publishing adapter in this phase. Approved Telegram posts can be scheduled into the PostgreSQL queue and published by the worker. A publish attempt is not automatically retried after an uncertain result, to avoid duplicate posts; such cases are marked failed for manual verification.
+
+Facebook/Instagram, YouTube, TikTok and X authorization are implemented, but their publishing/analytics adapters are not yet enabled. Snapchat, WhatsApp Business, Rubika and Eitaa still need separate provider approval and adapters. Connecting one provider does not grant access to the others.
