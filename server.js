@@ -10,6 +10,8 @@ import { createOperatorRouter } from "./routes/operator-api.js";
 import { createCreatorRouter } from "./routes/creator-api.js";
 import { createSocialOperationsRouter } from "./routes/social-operations-api.js";
 import { startSocialPublishingWorker } from "./social/publishing-worker.js";
+import { oauthConfigured } from "./social/oauth-adapters.js";
+import { isSocialEncryptionKeyValid } from "./social/token-crypto.js";
 import { createContentEngine } from "./ai/content-engine.js";
 import { buildCapabilities } from "./health/capabilities.js";
 
@@ -60,7 +62,9 @@ function currentCapabilities() {
     worldDatabaseReady,
     contentEngineReady: contentEngine.isConfigured(),
     operatorTokenConfigured: Boolean(process.env.SURAYA_OPERATOR_TOKEN),
-    socialOperationsReady
+    socialOperationsReady,
+    socialOAuthReady: isSocialEncryptionKeyValid() && ["instagram","facebook","youtube","tiktok","x"].some(platform => oauthConfigured(platform)),
+    telegramPublishingReady: Boolean(process.env.SOCIAL_TELEGRAM_BOT_TOKEN && process.env.SOCIAL_TELEGRAM_CHAT_ID && isSocialEncryptionKeyValid())
   });
 }
 
