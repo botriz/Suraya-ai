@@ -118,3 +118,14 @@ Additional Render environment settings:
 - `SOCIAL_TIKTOK_MEDIA_DOMAIN`: exact hostname verified in the TikTok developer application for URL-pull publishing.
 
 The app currently accepts public HTTPS media URLs; it does not yet upload files from a user's device into object storage or render a new clip. The creator model generates copy and a script, not a rendered video file.
+
+
+## Source-grounded research workflow
+
+The creator API includes a protected `POST /api/creator/v1/research-draft` endpoint. It requires the operator bearer token, `AI_API_KEY`, and `TAVILY_API_KEY`. The search results are filtered through category-specific domain allowlists for general topics, science, health, law, finance and technology. At least two independent allowed domains are required. The content model receives only the filtered source excerpts as untrusted data and must cite at least two sources inline using numbered references. The research run and exact generated draft are stored in PostgreSQL.
+
+For science, health, law and finance categories, the post API requires a valid research run. The post must match the stored generated title, caption, hashtags and script exactly, and the approval API checks the stored source-policy result before allowing approval. If the editor changes those fields, the research draft must be regenerated. This prevents a client from attaching unrelated citations to rewritten claims.
+
+The allowlist validates source domains, not the truth of every statement on a page. Search snippets may be incomplete or outdated; editors must open and review sources, publication dates and context before approval. Health, legal and financial content remains informational and requires qualified human review. The system does not claim omniscience or guarantee that all scientific facts are correct.
+
+Required Render variable: `TAVILY_API_KEY`. No search or model key is embedded in browser code.
