@@ -3,6 +3,7 @@ import { timingSafeEqual, randomBytes } from "node:crypto";
 import { oauthConfigured, createAuthorizationUrl, exchangeAndIdentify, revokeProviderAccess } from "../social/oauth-adapters.js";
 import { encryptSocialToken, decryptSocialToken, sha256, isSocialEncryptionKeyValid } from "../social/token-crypto.js";
 import { verifyTelegramDestination } from "../social/publish-adapters.js";
+import { fetchVerifiedAudienceSnapshot } from "../social/audience-adapters.js";
 const PLATFORMS = ["instagram","youtube","telegram","rubika","facebook","x","tiktok","snapchat","whatsapp","eitaa"];
 const POST_STATES = new Set(["draft","in_review","approved","scheduled","publishing","published","failed","cancelled"]);
 
@@ -110,6 +111,30 @@ export function createSocialOperationsRouter({ pool, getToken }) {
       const authorizationUrl=createAuthorizationUrl(platform,{state,codeVerifier});
       res.json({ok:true,authorizationUrl,expiresInSeconds:600,provider:platform});
     }catch(error){console.error("Social OAuth start failed:",platform,error.message);res.status(503).json({ok:false,error:"شروع اتصال امن این شبکه انجام نشد؛ تنظیمات OAuth را بررسی کن."});}
+  });
+
+  router.post("/accounts/:id/insights/sync",async(req,res)=>{
+    const id=Number.parseInt(req.params.id,10);
+    if(!Number.isSafeInteger(id)||id<1)return res.status(400).json({ok:false,error:"شناسهٔ حساب معتبر نیست."});
+    try{
+      const found=await pool.query("SELECT id,platform,external_account_id,token_ciphertext,connection_status FROM suraya_social_accounts WHERE id=$1",[id]);
+      if(!found.rowCount)return res.status(404).json({ok:false,error:"حساب پیدا نشد."});
+      const account=found.rows[0];
+      if(account.connection_status!=="connected"||!account.token_ciphertext)return res.status(409).json({ok:false,error:"حساب متصل یا توکن معتبر ندارد."});
+      const snapshot=await fetchVerifiedAudienceSnapshot(account,decryptSocialToken(account.token_ciphertext));
+      const saved=await pool.query("INSERT INTO suraya_social_audience_snapshots(account_id,source,verified,metrics,captured_at) VALUES($1,$2,TRUE,$3::jsonb,$4) RETURNING id,source,verified,metrics,captured_at",[id,snapshot.source,JSON.stringify(snapshot.metrics),snapshot.capturedAt]);
+      await pool.query("INSERT INTO suraya_social_audit_events(actor,action,resource_type,resource_id,outcome,details) VALUES('operator','audience.snapshot_synced','social_account',$1,'success',$2::jsonb)",[String(id),JSON.stringify({source:snapshot.source})]);
+      res.json({ok:true,snapshot:saved.rows[0],sourceVerified:true});
+    }catch(error){console.error("Social audience sync failed:",error.message);res.status(502).json({ok:false,error:"دریافت آمار رسمی این حساب انجام نشد؛ دسترسی analytics و مجوزهای برنامه را بررسی کن."});}
+  });
+
+  router.get("/accounts/:id/insights",async(req,res)=>{
+    const id=Number.parseInt(req.params.id,10);
+    if(!Number.isSafeInteger(id)||id<1)return res.status(400).json({ok:false,error:"شناسهٔ حساب معتبر نیست."});
+    try{
+      const r=await pool.query("SELECT id,source,verified,metrics,captured_at FROM suraya_social_audience_snapshots WHERE account_id=$1 ORDER BY captured_at DESC LIMIT 20",[id]);
+      res.json({ok:true,snapshots:r.rows});
+    }catch(error){console.error("Social audience snapshots read failed:",error.message);res.status(500).json({ok:false,error:"دریافت آمار ذخیره‌شده ناموفق بود."});}
   });
 
   router.post("/accounts/:id/disconnect",async(req,res)=>{
