@@ -118,5 +118,7 @@
   }catch{$("apiState").textContent="نامشخص";$("apiDetail").textContent="عدم دریافت وضعیت";$("aiState").textContent="نامشخص";$("aiDetail").textContent="خطای ارتباط";$("healthDetails").replaceChildren(el("div","خواندن وضعیت سرور ممکن نشد؛ بعداً دوباره تلاش کن.","empty"))}
  }
  $("refreshHealth").addEventListener("click",refreshHealth);
+ const connectionResult=new URLSearchParams(window.location.search).get("connection");
+ if(connectionResult){const messages={connected:"اتصال حساب اجتماعی تأیید شد؛ برای بارگذاری فهرست حساب‌ها دوباره وارد پنل مدیر شو.",provider_denied:"درخواست مجوز در صفحهٔ ارائه‌دهنده لغو شد.",invalid_callback:"پاسخ OAuth معتبر نبود.",invalid_or_expired_state:"درخواست اتصال منقضی یا قبلاً مصرف شده بود؛ دوباره تلاش کن.",database_unavailable:"پایگاه داده در دسترس نیست.",oauth_failed:"اتصال از سوی ارائه‌دهنده تکمیل نشد؛ تنظیمات و مجوزها را بررسی کن."};setStatus("operatorStatus",messages[connectionResult]||"نتیجهٔ اتصال: "+connectionResult,connectionResult!=="connected");document.querySelector('[data-tab="management"]').click();history.replaceState(null,"",location.pathname)}
  refreshHealth();
 })();
