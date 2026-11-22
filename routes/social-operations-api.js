@@ -223,9 +223,10 @@ export function createSocialOperationsRouter({ pool, getToken }) {
       const row=r.rows[0];
       if(row.status!=="approved"){await client.query("ROLLBACK");return res.status(409).json({ok:false,error:"ابتدا باید محتوا تأیید شود."});}
       if(!row.account_id||row.connection_status!=="connected"){await client.query("ROLLBACK");return res.status(409).json({ok:false,code:"ACCOUNT_NOT_CONNECTED",error:"برای زمان‌بندی انتشار، ابتدا حساب رسمی این شبکه باید متصل شود."});}
-      if(!["telegram","facebook","instagram","tiktok","x"].includes(row.platform)){await client.query("ROLLBACK");return res.status(503).json({ok:false,code:"PUBLISH_ADAPTER_NOT_READY",error:"آداپتور انتشار این شبکه هنوز فعال نیست."});}
+      if(!["telegram","facebook","instagram","youtube","tiktok","x"].includes(row.platform)){await client.query("ROLLBACK");return res.status(503).json({ok:false,code:"PUBLISH_ADAPTER_NOT_READY",error:"آداپتور انتشار این شبکه هنوز فعال نیست."});}
       if(row.platform==="instagram"&&(!row.media_url||!["image","video"].includes(row.media_type))){await client.query("ROLLBACK");return res.status(400).json({ok:false,code:"INSTAGRAM_MEDIA_REQUIRED",error:"انتشار اینستاگرام به پیوند عمومی تصویر یا ویدئو نیاز دارد."});}
       if(row.platform==="tiktok"&&(!row.media_url||row.media_type!=="video")){await client.query("ROLLBACK");return res.status(400).json({ok:false,code:"TIKTOK_VIDEO_REQUIRED",error:"انتشار TikTok به پیوند عمومی ویدئو و دامنهٔ تأییدشده نیاز دارد."});}
+      if(row.platform==="youtube"&&(!row.media_url||row.media_type!=="video")){await client.query("ROLLBACK");return res.status(400).json({ok:false,code:"YOUTUBE_VIDEO_REQUIRED",error:"انتشار YouTube به پیوند ویدئوی HTTPS روی میزبان مجاز نیاز دارد."});}
       if(row.platform==="x"&&(row.media_url||([row.caption,row.hashtags].filter(Boolean).join("\\n\\n").trim()||row.title).length>280)){await client.query("ROLLBACK");return res.status(400).json({ok:false,code:"X_TEXT_ONLY",error:"این نسخهٔ آداپتور X فقط متن تا ۲۸۰ نویسه را منتشر می‌کند."});}
       const scheduledAt=new Date(when).toISOString();
       await client.query("UPDATE suraya_social_posts SET status='scheduled',scheduled_at=$2,account_id=$3,updated_at=NOW() WHERE id=$1",[row.id,scheduledAt,row.account_id]);
