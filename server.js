@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import pg from "pg";
-import { readFile } from "node:fs/promises";
 import { createWorldRouter } from "./world/world-api.js";
 import { createHealthRouter } from "./health/health-router.js";
 import { createOperatorRouter } from "./routes/operator-api.js";
@@ -15,6 +14,7 @@ import { isSocialEncryptionKeyValid } from "./social/token-crypto.js";
 import { createContentEngine } from "./ai/content-engine.js";
 import { createResearchEngine } from "./ai/research-engine.js";
 import { buildCapabilities } from "./health/capabilities.js";
+import { runMigrations } from "./db/migrations.js";
 
 dotenv.config();
 
@@ -88,22 +88,14 @@ async function initializeDatabase() {
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
       )
     `);
-    await pool.query(await readFile(path.join(__dirname, "migrations", "002_revenue_operations.sql"), "utf8"));
-    await pool.query(await readFile(path.join(__dirname, "migrations", "003_social_operations.sql"), "utf8"));
+    await runMigrations(pool, { migrationsDir: path.join(__dirname, "migrations") });
     socialOperationsReady = true;
+    worldDatabaseReady = true;
     databaseReady = true;
     databaseError = "";
     console.log("Suraya order database ready");
 
-    try {
-      const worldMigration = await readFile(path.join(__dirname, "migrations", "001_world_foundation.sql"), "utf8");
-      await pool.query(worldMigration);
-      worldDatabaseReady = true;
-      console.log("Suraya digital world schema ready");
-    } catch (worldError) {
-      worldDatabaseReady = false;
-      console.error("Suraya digital world initialization failed:", worldError.message);
-    }
+    console.log("Suraya digital world schema ready");
   } catch (error) {
     databaseReady = false;
     databaseError = error.message;
