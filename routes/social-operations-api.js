@@ -1,7 +1,7 @@
 import express from "express";
 import { timingSafeEqual, randomBytes } from "node:crypto";
 import { oauthConfigured, createAuthorizationUrl, exchangeAndIdentify } from "../social/oauth-adapters.js";
-import { encryptSocialToken, sha256 } from "../social/token-crypto.js";
+import { encryptSocialToken, sha256, isSocialEncryptionKeyValid } from "../social/token-crypto.js";
 import { verifyTelegramDestination } from "../social/publish-adapters.js";
 const PLATFORMS = ["instagram","youtube","telegram","rubika","facebook","x","tiktok","snapchat","whatsapp","eitaa"];
 const POST_STATES = new Set(["draft","in_review","approved","scheduled","publishing","published","failed","cancelled"]);
@@ -88,7 +88,7 @@ export function createSocialOperationsRouter({ pool, getToken }) {
     if(!PLATFORMS.includes(platform)) return res.status(400).json({ok:false,error:"سکوی اجتماعی معتبر نیست."});
     if(platform==="telegram"){
       const botToken=process.env.SOCIAL_TELEGRAM_BOT_TOKEN||"",chatId=process.env.SOCIAL_TELEGRAM_CHAT_ID||"";
-      if(!botToken||!chatId||!process.env.SURAYA_SOCIAL_TOKEN_ENCRYPTION_KEY) return res.status(503).json({ok:false,code:"TELEGRAM_NOT_CONFIGURED",error:"توکن ربات و شناسهٔ کانال تلگرام و کلید رمزنگاری باید در تنظیمات امن سرور پیکربندی شوند."});
+      if(!botToken||!chatId||!isSocialEncryptionKeyValid()) return res.status(503).json({ok:false,code:"TELEGRAM_NOT_CONFIGURED",error:"توکن ربات و شناسهٔ کانال تلگرام و کلید رمزنگاری باید در تنظیمات امن سرور پیکربندی شوند."});
       try{
         const verified=await verifyTelegramDestination(botToken,chatId);
         const encrypted=encryptSocialToken({botToken,chatId:String(verified.chat.id)});
@@ -100,7 +100,7 @@ export function createSocialOperationsRouter({ pool, getToken }) {
       }catch(error){console.error("Telegram connection verification failed:",error.message);return res.status(502).json({ok:false,code:"TELEGRAM_VERIFY_FAILED",error:"اتصال ربات به مقصد تلگرام تأیید نشد؛ دسترسی ربات و شناسهٔ مقصد را بررسی کن."});}
     }
     if(!["instagram","facebook","youtube","tiktok","x"].includes(platform)) return res.status(501).json({ok:false,code:"OAUTH_ADAPTER_UNAVAILABLE",error:"اتصال رسمی این شبکه هنوز آداپتور قابل انتشار ندارد."});
-    if(!oauthConfigured(platform)) return res.status(503).json({ok:false,code:"OAUTH_NOT_CONFIGURED",error:"اعتبارنامهٔ برنامهٔ توسعه‌دهنده، نشانی HTTPS سایت و کلید رمزنگاری ۳۲ بایتی سمت سرور باید در تنظیمات امن Render پیکربندی شوند."});
+    if(!oauthConfigured(platform)||!isSocialEncryptionKeyValid()) return res.status(503).json({ok:false,code:"OAUTH_NOT_CONFIGURED",error:"اعتبارنامهٔ برنامهٔ توسعه‌دهنده، نشانی HTTPS سایت و کلید رمزنگاری ۳۲ بایتی سمت سرور باید در تنظیمات امن Render پیکربندی شوند."});
     try{
       const state=randomBytes(32).toString("base64url");
       const codeVerifier=platform==="x"?randomBytes(48).toString("base64url"):null;
