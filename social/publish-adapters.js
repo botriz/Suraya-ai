@@ -147,6 +147,9 @@ async function publishX(token,post) {
 export async function publishSocialPost({platform,tokenCiphertext,post,accountMetadata={}}) {
   const token=decryptSocialToken(tokenCiphertext);
   if(platform==="instagram"||platform==="facebook")return publishMetaPost(platform,token,accountMetadata,post);
+  if(platform==="youtube")return publishYouTube(token,accountMetadata,post);
+  if(platform==="tiktok")return publishTikTok(token,post);
+  if(platform==="x")return publishX(token,post);
   if(platform!=="telegram") throw new Error("No verified publishing adapter is available for this platform.");
   const text=[post.caption,post.hashtags].filter(Boolean).join("\n\n").trim()||post.title;
   let result;
