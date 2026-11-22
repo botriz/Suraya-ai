@@ -5,7 +5,8 @@ export function buildCapabilities({
   operatorTokenConfigured = false,
   socialOperationsReady = false,
   socialOAuthReady = false,
-  telegramPublishingReady = false
+  telegramPublishingReady = false,
+  sourceGroundedResearchReady = false
 } = {}) {
   const database = Boolean(databaseReady);
   const socialReady = database && Boolean(socialOperationsReady) && Boolean(operatorTokenConfigured);
@@ -16,7 +17,8 @@ export function buildCapabilities({
     digitalWorldReadApi: database && Boolean(worldDatabaseReady),
     socialWorkspace: socialReady,
     persistentSocialCalendar: socialReady,
-    socialAudienceInsights: Boolean(socialOAuthReady) && socialReady,\n    sourceGroundedResearch: Boolean(sourceGroundedResearchReady) && socialReady,
+    socialAudienceInsights: Boolean(socialOAuthReady) && socialReady,
+    sourceGroundedResearch: Boolean(sourceGroundedResearchReady) && socialReady,
     socialOAuth: Boolean(socialOAuthReady) && socialReady,
     telegramPublishing: Boolean(telegramPublishingReady) && socialReady,
     payments: false,
