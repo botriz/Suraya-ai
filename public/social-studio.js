@@ -31,7 +31,7 @@
   const copy=el("button","کپی بستهٔ محتوا","btn secondary");copy.addEventListener("click",()=>navigator.clipboard?.writeText(Object.entries(draft).map(([k,v])=>k+": "+v).join("\n\n")));
   const schedule=el("button","افزودن عنوان به تقویم","btn secondary");schedule.addEventListener("click",()=>{$("planTitle").value=draft.title;document.querySelector('[data-tab="calendar"]').click();$("planDate").focus()});
   const save=el("button","ذخیرهٔ پیش‌نویس در سرور","btn");save.disabled=!operatorToken;save.title=operatorToken?"":"ابتدا در بخش مدیریت وارد شو";
-  save.addEventListener("click",async()=>{save.disabled=true;try{const r=await authFetch("/api/social/v1/posts",{method:"POST",body:JSON.stringify({platform:$("platform").value,title:draft.title,caption:draft.caption,hashtags:draft.hashtags,script:draft.script,mediaType:"none"})});setStatus("draftStatus","پیش‌نویس با شناسهٔ "+r.post.public_id+" در PostgreSQL ذخیره شد.");await loadPosts()}catch(e){setStatus("draftStatus",e.message,true)}finally{save.disabled=!operatorToken}});
+  save.addEventListener("click",async()=>{save.disabled=true;try{const r=await authFetch("/api/social/v1/posts",{method:"POST",body:JSON.stringify({platform:$("platform").value,title:draft.title,caption:draft.caption,hashtags:draft.hashtags,script:draft.script,mediaType:$("mediaType").value,mediaUrl:$("mediaUrl").value.trim()}})});setStatus("draftStatus","پیش‌نویس با شناسهٔ "+r.post.public_id+" در PostgreSQL ذخیره شد.");await loadPosts()}catch(e){setStatus("draftStatus",e.message,true)}finally{save.disabled=!operatorToken}});
   actions.append(copy,schedule,save);host.append(actions);
  }
  $("draftForm").addEventListener("submit",async e=>{
@@ -72,7 +72,7 @@
  }
  async function loadAccounts(){
   const host=$("connectedAccounts");try{const d=await authFetch("/api/social/v1/accounts");host.replaceChildren();
-   PLATFORMS.forEach(p=>{const found=d.accounts.filter(a=>a.platform===p),row=el("div",undefined,"entry"),left=el("span"),name=el("b",PLATFORM_LABELS[p]),status=el("small",found.length?found.map(a=>a.connection_status).join(", "):"متصل نشده");left.append(name,status);const connect=el("button","اتصال رسمی","btn secondary");connect.addEventListener("click",async()=>{connect.disabled=true;try{await authFetch("/api/social/v1/accounts/"+p+"/connect",{method:"POST",body:"{}"})}catch(e){setStatus("operatorStatus",PLATFORM_LABELS[p]+": "+e.message,true)}finally{connect.disabled=false}});row.append(left,connect);host.append(row)});
+   PLATFORMS.forEach(p=>{const found=d.accounts.filter(a=>a.platform===p),row=el("div",undefined,"entry"),left=el("span"),name=el("b",PLATFORM_LABELS[p]),status=el("small",found.length?found.map(a=>a.connection_status).join(", "):"متصل نشده");left.append(name,status);const connect=el("button","اتصال رسمی","btn secondary");connect.addEventListener("click",async()=>{connect.disabled=true;try{const result=await authFetch("/api/social/v1/accounts/"+p+"/connect",{method:"POST",body:"{}"});if(result.authorizationUrl){window.location.assign(result.authorizationUrl);return}await loadAccounts();setStatus("operatorStatus",PLATFORM_LABELS[p]+" با موفقیت بررسی و متصل شد.")}catch(e){setStatus("operatorStatus",PLATFORM_LABELS[p]+": "+e.message,true)}finally{connect.disabled=false}});row.append(left,connect);host.append(row)});
   }catch(e){host.replaceChildren(el("div",e.message,"empty"))}
  }
  async function loadPosts(){
@@ -80,6 +80,7 @@
    if(!d.posts.length){host.append(el("div","هنوز پیش‌نویسی در سرور ثبت نشده است.","empty"));return}
    d.posts.forEach(p=>{const row=el("div",undefined,"entry"),left=el("span"),title=el("b",p.title),meta=el("small",(PLATFORM_LABELS[p.platform]||p.platform)+" · "+p.status+" · "+p.public_id);left.append(title,meta);row.append(left);
     if(["draft","in_review"].includes(p.status)){const approve=el("button","تأیید محتوا","btn secondary");approve.addEventListener("click",async()=>{approve.disabled=true;try{await authFetch("/api/social/v1/posts/"+p.public_id+"/approve",{method:"POST",body:"{}"});await loadPosts()}catch(e){setStatus("operatorStatus",e.message,true);approve.disabled=false}});row.append(approve)}
+    if(p.status==="approved"){const when=el("input");when.type="datetime-local";when.setAttribute("aria-label","زمان انتشار");when.style.maxWidth="180px";const schedule=el("button","زمان‌بندی","btn secondary");schedule.addEventListener("click",async()=>{if(!when.value){setStatus("operatorStatus","زمان انتشار را انتخاب کن.",true);return}schedule.disabled=true;try{await authFetch("/api/social/v1/posts/"+p.public_id+"/schedule",{method:"POST",body:JSON.stringify({scheduledAt:new Date(when.value).toISOString()})});await loadPosts()}catch(e){setStatus("operatorStatus",e.message,true);schedule.disabled=false}});row.append(when,schedule)}
     host.append(row);
    });
   }catch(e){host.replaceChildren(el("div",e.message,"empty"))}
