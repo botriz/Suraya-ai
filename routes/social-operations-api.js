@@ -1,6 +1,4 @@
 import express from "express";
-import { randomUUID } from "node:crypto";
-
 const PLATFORMS = ["instagram","youtube","telegram","rubika","facebook","x","tiktok","snapchat","whatsapp","eitaa"];
 const POST_STATES = new Set(["draft","in_review","approved","scheduled","publishing","published","failed","cancelled"]);
 
@@ -142,6 +140,41 @@ export function createSocialOperationsRouter({ pool, getToken }) {
     const limit=Math.min(100,Math.max(1,Number.parseInt(req.query.limit,10)||50));
     try {const r=await pool.query("SELECT actor,action,resource_type,resource_id,outcome,details,created_at FROM suraya_social_audit_events ORDER BY created_at DESC LIMIT $1",[limit]);res.json({ok:true,events:r.rows});}
     catch(e){console.error("Social audit read failed:",e.message);res.status(500).json({ok:false,error:"دریافت گزارش ممیزی ناموفق بود."});}
+  });
+
+  router.get("/calendar",async(req,res)=>{
+    const from=typeof req.query.from==="string"?req.query.from:null;
+    const to=typeof req.query.to==="string"?req.query.to:null;
+    try {
+      const r=await pool.query(
+        "SELECT id,title,platform,scheduled_for,notes,post_public_id,status,created_at,updated_at FROM suraya_social_calendar_items WHERE ($1::timestamptz IS NULL OR scheduled_for >= $1) AND ($2::timestamptz IS NULL OR scheduled_for < $2) ORDER BY scheduled_for ASC LIMIT 500",
+        [from,to]);
+      res.json({ok:true,items:r.rows,storage:"postgresql"});
+    } catch(e){console.error("Social calendar read failed:",e.message);res.status(500).json({ok:false,error:"دریافت تقویم ناموفق بود."});}
+  });
+
+  router.post("/calendar",async(req,res)=>{
+    const title=typeof req.body?.title==="string"?req.body.title.trim():"";
+    const platform=String(req.body?.platform||"").toLowerCase();
+    const notes=typeof req.body?.notes==="string"?req.body.notes.trim():"";
+    const when=Date.parse(req.body?.scheduledFor);
+    if(title.length<2||title.length>240||!PLATFORMS.includes(platform)||!Number.isFinite(when)||when<Date.now()-86400000||notes.length>2000) return res.status(400).json({ok:false,error:"عنوان، شبکه، تاریخ یا یادداشت معتبر نیست."});
+    try {
+      const r=await pool.query(
+        "INSERT INTO suraya_social_calendar_items(title,platform,scheduled_for,notes) VALUES($1,$2,$3,$4) RETURNING id,title,platform,scheduled_for,notes,status,created_at",
+        [title,platform,new Date(when).toISOString(),notes]);
+      res.status(201).json({ok:true,item:r.rows[0],storage:"postgresql",publishingScheduled:false});
+    } catch(e){console.error("Social calendar create failed:",e.message);res.status(500).json({ok:false,error:"ثبت در تقویم ناموفق بود."});}
+  });
+
+  router.delete("/calendar/:id",async(req,res)=>{
+    const id=Number.parseInt(req.params.id,10);
+    if(!Number.isSafeInteger(id)||id<1) return res.status(400).json({ok:false,error:"شناسهٔ تقویم معتبر نیست."});
+    try {
+      const r=await pool.query("DELETE FROM suraya_social_calendar_items WHERE id=$1 RETURNING id",[id]);
+      if(!r.rowCount) return res.status(404).json({ok:false,error:"مورد تقویم پیدا نشد."});
+      res.json({ok:true,deletedId:id});
+    } catch(e){console.error("Social calendar delete failed:",e.message);res.status(500).json({ok:false,error:"حذف مورد تقویم ناموفق بود."});}
   });
 
   return router;
