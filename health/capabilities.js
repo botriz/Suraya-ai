@@ -2,19 +2,25 @@ export function buildCapabilities({
   databaseReady = false,
   worldDatabaseReady = false,
   contentEngineReady = false,
-  operatorTokenConfigured = false
+  operatorTokenConfigured = false,
+  socialOperationsReady = false
 } = {}) {
   const database = Boolean(databaseReady);
+  const socialReady = database && Boolean(socialOperationsReady) && Boolean(operatorTokenConfigured);
   return {
     orderIntake: database,
     contentGeneration: Boolean(contentEngineReady),
     operatorDesk: database && Boolean(operatorTokenConfigured),
     digitalWorldReadApi: database && Boolean(worldDatabaseReady),
+    socialWorkspace: socialReady,
+    persistentSocialCalendar: socialReady,
+    socialAudienceInsights: false,
     payments: false,
     socialOAuth: false,
     cryptoWallet: false,
     personalWallet: false,
     persistentUserAccounts: false,
-    socialWorkspace: database && Boolean(socialOperationsReady) && Boolean(operatorTokenConfigured),\n    persistentSocialCalendar: database && Boolean(socialOperationsReady) && Boolean(operatorTokenConfigured),\n    socialAudienceInsights: false,\n    socialOAuth: false,\n    automaticPublishing: false,\n    liveAssistant: false
+    automaticPublishing: false,
+    liveAssistant: false
   };
 }
