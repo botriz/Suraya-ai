@@ -128,3 +128,17 @@ CREATE TABLE IF NOT EXISTS suraya_customer_subscriptions (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 CREATE INDEX IF NOT EXISTS suraya_customer_subscriptions_lookup_idx ON suraya_customer_subscriptions(customer_ref,status);
+
+
+CREATE TABLE IF NOT EXISTS suraya_social_calendar_items (
+  id BIGSERIAL PRIMARY KEY,
+  title VARCHAR(240) NOT NULL,
+  platform VARCHAR(32) NOT NULL,
+  scheduled_for TIMESTAMPTZ NOT NULL,
+  notes TEXT NOT NULL DEFAULT '',
+  post_public_id TEXT REFERENCES suraya_social_posts(public_id) ON DELETE SET NULL,
+  status VARCHAR(20) NOT NULL DEFAULT 'planned' CHECK (status IN ('planned','drafted','ready','cancelled')),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS suraya_social_calendar_date_idx ON suraya_social_calendar_items(scheduled_for,status);
