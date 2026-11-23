@@ -171,7 +171,7 @@ app.post("/api/order", rateLimit, async (req, res) => {
   if (name.length < 2 || name.length > 120) {
     return res.status(400).json({ ok: false, error: "نام باید بین ۲ تا ۱۲۰ نویسه باشد." });
   }
-  if (email && (email.length > 254 || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email))) {
+  if (email && (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))) {
     return res.status(400).json({ ok: false, error: "نشانی ایمیل معتبر نیست." });
   }
   if (!Object.hasOwn(services, serviceCode)) {
