@@ -16,7 +16,7 @@ function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&l
 function money(amount,currency){return Number(amount).toLocaleString("fa-IR")+" "+(currency==="IRT"?"تومان":"ریال")}
 async function api(path,options={}){return fetch(path,{...options,headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json",...(options.headers||{})}})}
 async function load(){token=$("token").value.trim();if(!token){$("status").textContent="توکن مدیر را وارد کن.";return}
- $("status").textContent="در حال دریافت…";$("payments").innerHTML="";
+ $("status").className="status";$("status").textContent="در حال دریافت…";$("payments").innerHTML="";
  try{const response=await api("/api/payments/admin/manual");const data=await response.json();if(!response.ok||!data.ok)throw new Error(data.error||"دریافت ناموفق بود.");
  $("status").textContent=data.payments.length+" پرداخت ثبت‌شده";
  if(!data.payments.length){$("payments").innerHTML="<p>پرداختی ثبت نشده است.</p>";return}
