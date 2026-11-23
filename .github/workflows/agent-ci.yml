@@ -1,0 +1,25 @@
+name: Suraya Agent CI
+on:
+  pull_request:
+    branches:
+      - feat/botriz-autonomous-creator-studio
+  workflow_dispatch:
+permissions:
+  contents: read
+  pull-requests: read
+concurrency:
+  group: suraya-agent-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  test:
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.head_ref, 'suraya-agent/')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm install
+      - run: npm run check
