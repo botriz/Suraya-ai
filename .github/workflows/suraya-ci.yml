@@ -21,6 +21,22 @@ jobs:
   syntax-and-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: suraya
+          POSTGRES_PASSWORD: suraya_ci_password
+          POSTGRES_DB: suraya_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U suraya -d suraya_ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://suraya:suraya_ci_password@localhost:5432/suraya_ci
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
