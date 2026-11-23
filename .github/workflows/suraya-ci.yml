@@ -71,3 +71,6 @@ jobs:
 
       - name: Build deployment container
         run: docker build -t suraya-public-services:ci .
+
+      - name: Validate single-host Compose configuration
+        run: POSTGRES_PASSWORD=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef SURAYA_OPERATOR_TOKEN=ci-only-token docker compose config --quiet
