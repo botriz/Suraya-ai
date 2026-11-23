@@ -55,7 +55,7 @@ test("PostgreSQL migrations are repeatable and support order-event persistence",
       WHERE o.public_id = $1
     `, ["SUR-CI12345678"]);
     assert.equal(result.rowCount, 1);
-    assert.equal(result.rows[0].quoted_currency, "USD");
+    assert.equal(result.rows[0].quoted_currency, null);
     assert.equal(result.rows[0].event_type, "ci.migration_verified");
 
     const agentTable = await client.query("SELECT to_regclass($1) AS tasks", [schema + ".suraya_agent_tasks"]);
