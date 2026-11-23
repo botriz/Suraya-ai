@@ -74,7 +74,7 @@ export function createAutonomousAgent({ pool, env = process.env, fetchImpl = glo
   }
 
   async function readContext() {
-    const ref = await github(`/repos/${owner}/${name}/git/ref/heads/${encodeURIComponent(baseBranch)}`);
+    const ref = await github(`/repos/${owner}/${name}/git/ref/heads/${refPath(baseBranch)}`);
     const commit = await github(`/repos/${owner}/${name}/git/commits/${ref.object.sha}`);
     const tree = await github(`/repos/${owner}/${name}/git/trees/${commit.tree.sha}?recursive=1`);
     const candidates = tree.tree.filter(item => item.type === "blob" && safePath(item.path) &&
@@ -123,7 +123,7 @@ export function createAutonomousAgent({ pool, env = process.env, fetchImpl = glo
         tree: nextTree.sha, parents: [context.baseSha]
       })
     });
-    await github(`/repos/${owner}/${name}/git/refs/heads/${encodeURIComponent(branch)}`, {
+    await github(`/repos/${owner}/${name}/git/refs/heads/${refPath(branch)}`, {
       method: "PATCH", body: JSON.stringify({ sha: commit.sha, force: false })
     });
     const pr = await github(`/repos/${owner}/${name}/pulls`, {
