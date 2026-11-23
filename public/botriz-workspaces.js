@@ -33,6 +33,6 @@
  function refreshGroups(){const catalog=window.surayaCatalog||{};const items=Object.entries(catalog);groupRows(serviceList,".service-row","service-group-title",items);groupRows(drawer,".drawer-service","drawer-group-title",items)}
  [serviceList,drawer].forEach(host=>{if(host)new MutationObserver(()=>refreshGroups()).observe(host,{childList:true})});
  refreshGroups();
- const serviceIntro=document.querySelector("#services .stage-tag");if(serviceIntro)serviceIntro.textContent="۷ روز استفاده رایگان";
- const paywall=$("paywallOverlay");if(paywall){const p=paywall.querySelector("p");if(p)p.textContent="با تهیهٔ اشتراک و پرداخت هزینهٔ اشتراک، دورهٔ ۷ روزهٔ استفاده فعال می‌شود."}
+ const serviceIntro=document.querySelector("#services .stage-tag");if(serviceIntro)serviceIntro.textContent="خدمات ثریا";
+ const paywall=$("paywallOverlay");if(paywall){const p=paywall.querySelector("p");if(p)p.textContent="خرید اشتراک و دورهٔ آزمایشی هنوز فعال نیست. فعلاً می‌توانی درخواست خدمت ثبت کنی؛ فعال‌سازی پرداخت پس از تکمیل اتصال رسمی اعلام می‌شود."}
 })();
