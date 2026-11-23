@@ -19,8 +19,8 @@ const { Pool } = pg;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
-const PORT = Number(process.env.PORT) || 10000;
-const HOST = "0.0.0.0";
+const PORT = process.env.PORT === undefined ? 10000 : Number(process.env.PORT);
+const HOST = process.env.HOST || "0.0.0.0";
 
 app.disable("x-powered-by");
 app.set("trust proxy", 1);
@@ -28,12 +28,12 @@ app.use(express.json({ limit: "32kb" }));
 app.use(express.urlencoded({ extended: false, limit: "32kb" }));
 
 const services = {
-  social_content: { title: "بسته محتوای شبکه‌های اجتماعی", price: 5, currency: "USD", billing: "one_time" },
-  business_content: { title: "بسته محتوای کسب‌وکار", price: 10, currency: "USD", billing: "one_time" },
-  product_descriptions: { title: "توضیحات محصولات فروشگاه", price: 5, currency: "USD", billing: "one_time" },
-  social_monthly: { title: "مدیریت ماهانه محتوای شبکه اجتماعی", price: 29, currency: "USD", billing: "monthly", description: "تقویم محتوایی، طراحی و آماده‌سازی پست و گزارش ماهانه؛ انتشار فقط با دسترسی و تأیید مشتری." },
-  subscription_ops: { title: "راه‌اندازی و مدیریت عملیات اشتراک", price: 19, currency: "USD", billing: "monthly", description: "طراحی پلن‌ها، پیگیری تمدیدها و گزارش اشتراک؛ بدون دریافت رمز عبور یا انجام پرداخت از طرف مشتری." },
-  store_launch: { title: "راه‌اندازی محتوایی فروشگاه آنلاین", price: 49, currency: "USD", billing: "one_time", description: "ساختار دسته‌بندی، محتوای صفحات کلیدی و بسته اولیه توضیحات محصول." }
+  social_content: { title: "بسته محتوای شبکه‌های اجتماعی", price: null, billing: "quote" },
+  business_content: { title: "بسته محتوای کسب‌وکار", price: null, billing: "quote" },
+  product_descriptions: { title: "توضیحات محصولات فروشگاه", price: null, billing: "quote" },
+  social_monthly: { title: "مدیریت ماهانه محتوای شبکه اجتماعی", price: null, billing: "quote", description: "تقویم محتوایی، طراحی و آماده‌سازی پست و گزارش ماهانه؛ انتشار فقط با دسترسی و تأیید مشتری." },
+  subscription_ops: { title: "راه‌اندازی و مدیریت عملیات اشتراک", price: null, billing: "quote", description: "طراحی پلن‌ها، پیگیری تمدیدها و گزارش اشتراک؛ بدون دریافت رمز عبور یا انجام پرداخت از طرف مشتری." },
+  store_launch: { title: "راه‌اندازی محتوایی فروشگاه آنلاین", price: null, billing: "quote", description: "ساختار دسته‌بندی، محتوای صفحات کلیدی و بسته اولیه توضیحات محصول." }
 };
 
 const contentEngine = createContentEngine();
@@ -213,11 +213,26 @@ app.use((_req, res) => {
   res.status(404).json({ ok: false, error: "Not found" });
 });
 
+let stopAutonomousAgent = () => {};
 await initializeDatabase();
-if (databaseReady) await autonomousAgent.start();
-app.listen(PORT, HOST, () => {
-  console.log(`Suraya running on ${HOST}:${PORT}`);
+if (databaseReady) stopAutonomousAgent = await autonomousAgent.start();
+const server = app.listen(PORT, HOST, () => {
+  console.log(`Suraya listening on ${HOST}:${server.address().port}`);
 });
+
+function shutdown(signal) {
+  console.log(signal + " received; closing Suraya services");
+  stopAutonomousAgent();
+  server.close(async () => {
+    try { if (pool) await pool.end(); } catch (error) {
+      console.error("Database shutdown failed:", error.message);
+    }
+    process.exit(0);
+  });
+  setTimeout(() => process.exit(1), 10000).unref();
+}
+process.once("SIGTERM", () => shutdown("SIGTERM"));
+process.once("SIGINT", () => shutdown("SIGINT"));
 
 if (pool) {
   pool.on("error", (error) => {
