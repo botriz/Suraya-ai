@@ -9,7 +9,7 @@
 <meta property="og:description" content="روایتی چهار فصل از بسم‌الله، توحید، پیام و ولایت؛ برای شناخت وظیفه امروز.">
 <meta property="og:type" content="website">
 <title>بت‌ریز | از آگاهی تا مسئولیت</title>
-<link rel="icon" href="/botriz-mark.svg" type="image/svg+xml">
+<link rel="icon" href="/botriz-mark.svg" type="image/svg+xml"><link rel="manifest" href="/botriz.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -88,4 +88,5 @@ footer{border-top:1px solid var(--line);padding:25px 0 35px;color:#91a5a4;font-s
 form.addEventListener("submit",event=>{event.preventDefault();const selected=[...form.querySelectorAll('input[name="interest"]:checked')].map(input=>input.value);try{localStorage.setItem(key,JSON.stringify(selected));status.textContent="انتخاب‌ها فقط روی همین دستگاه ذخیره شد."}catch{status.textContent="ذخیره‌سازی مرورگر در دسترس نیست؛ انتخاب‌ها ذخیره نشد."}});
 })();
 </script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
 </body></html>

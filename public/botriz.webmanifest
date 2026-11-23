@@ -1,0 +1,16 @@
+{
+  "id": "/botriz.html",
+  "name": "بت‌ریز | از آگاهی تا مسئولیت",
+  "short_name": "بت‌ریز",
+  "description": "رسانه آگاهی دینی، قرآن، حدیث، مهدویت و مسئولیت امروز",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "/botriz.html",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#07131f",
+  "theme_color": "#07131f",
+  "icons": [{"src": "/botriz-mark.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable"}]
+}
