@@ -107,6 +107,21 @@ export function createManualPaymentsRouter({ pool, getToken, rateLimit = (_req, 
         await client.query("ROLLBACK");
         return res.status(409).json({ ok: false, error: "مبلغ یا واحد پول با فاکتور سفارش مطابقت ندارد." });
       }
+      const existingPayment = await client.query(
+        `SELECT id, status FROM suraya_manual_payments
+         WHERE public_id = $1 AND status IN ('pending_review', 'confirmed')
+         ORDER BY created_at DESC LIMIT 1 FOR UPDATE`,
+        [publicId]
+      );
+      if (existingPayment.rowCount) {
+        await client.query("ROLLBACK");
+        return res.status(409).json({
+          ok: false,
+          error: existingPayment.rows[0].status === "confirmed"
+            ? "پرداخت این سفارش قبلاً تأیید شده است."
+            : "یک پرداخت برای این سفارش در انتظار بررسی مدیر است."
+        });
+      }
       const inserted = await client.query(
         `INSERT INTO suraya_manual_payments
           (public_id, payer_name, amount, currency, reference_code, paid_at, status)
