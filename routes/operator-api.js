@@ -46,12 +46,13 @@ export function createOperatorRouter({ pool, getToken }) {
     const note = typeof req.body?.operatorNote === "string" ? req.body.operatorNote.trim() : null;
     const amount = req.body?.quotedAmount === null || req.body?.quotedAmount === undefined || req.body?.quotedAmount === ""
       ? null : Number(req.body.quotedAmount);
-    const currency = typeof req.body?.quotedCurrency === "string" ? req.body.quotedCurrency.trim().toUpperCase() : "USD";
+    const currency = typeof req.body?.quotedCurrency === "string" ? req.body.quotedCurrency.trim().toUpperCase() : null;
     if (!/^SUR-[A-F0-9]{10}$/.test(publicId)) return res.status(400).json({ ok: false, error: "کد سفارش معتبر نیست." });
     if (!allowedStatuses.has(status)) return res.status(400).json({ ok: false, error: "وضعیت سفارش معتبر نیست." });
     if (note !== null && note.length > 2000) return res.status(400).json({ ok: false, error: "یادداشت بیش از حد طولانی است." });
     if (amount !== null && (!Number.isFinite(amount) || amount <= 0 || amount > 1000000000)) return res.status(400).json({ ok: false, error: "مبلغ پیشنهادی معتبر نیست." });
-    if (!["USD", "IRR", "IRT", "EUR"].includes(currency)) return res.status(400).json({ ok: false, error: "واحد پول پشتیبانی نمی‌شود." });
+    if (amount !== null && !currency) return res.status(400).json({ ok: false, error: "برای ثبت مبلغ، واحد پول را صریح انتخاب کنید." });
+    if (currency && !["USD", "IRR", "IRT", "EUR"].includes(currency)) return res.status(400).json({ ok: false, error: "واحد پول پشتیبانی نمی‌شود." });
 
     const client = await pool.connect();
     try {
