@@ -1,5 +1,5 @@
-const CACHE_NAME = "suraya-shell-v1";
-const APP_SHELL = ["/", "/creator.html", "/manifest.webmanifest", "/app-icon.svg"];
+const CACHE_NAME = "suraya-shell-v2";
+const APP_SHELL = ["/", "/creator.html", "/manifest.webmanifest", "/app-icon.svg", "/botriz.html", "/botriz-mark.svg", "/botriz.webmanifest"];
 
 self.addEventListener("install", event => {
   event.waitUntil(
