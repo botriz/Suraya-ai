@@ -1,4 +1,5 @@
 import express from "express";
+import { timingSafeEqual } from "node:crypto";
 
 const allowedStatuses = new Set(["pending", "quoted", "accepted", "in_progress", "delivered", "cancelled"]);
 
@@ -8,8 +9,10 @@ export function createOperatorRouter({ pool, getToken }) {
   function authorize(req, res, next) {
     const expected = getToken();
     const supplied = req.get("authorization")?.match(/^Bearer\s+(.+)$/i)?.[1] || "";
-    if (!expected || supplied.length !== expected.length ||
-        !Buffer.from(supplied).equals(Buffer.from(expected))) {
+    const actualBuffer = Buffer.from(supplied);
+    const expectedBuffer = Buffer.from(expected || "");
+    if (!expected || actualBuffer.length !== expectedBuffer.length || actualBuffer.length === 0 ||
+        !timingSafeEqual(actualBuffer, expectedBuffer)) {
       return res.status(401).json({ ok: false, error: "دسترسی مدیر تأیید نشد." });
     }
     next();
