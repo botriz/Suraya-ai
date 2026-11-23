@@ -62,14 +62,14 @@ footer{border-top:1px solid var(--line);padding:25px 0 35px;color:#91a5a4;font-s
 <section class="section" id="community">
 <div class="section-head"><div><div class="eyebrow">A LEARNING PATH THAT YOU CHOOSE</div><h2>مسیر یادگیری را خودت انتخاب کن</h2><p>علاقه‌ات را داوطلبانه اعلام کن تا پیشنهادهای محتوایی مرتبط‌تری ببینی.</p></div></div>
 <div class="consent-layout">
-<article class="consent-card"><h2>موضوعات مورد علاقه</h2><p>این انتخاب اختیاری است و فقط در همین مرورگر ذخیره می‌شود. از آن برای حدس‌زدن شخصیت، عقاید خصوصی یا ویژگی‌های اخلاقی تو استفاده نمی‌کنیم.</p>
+<article class="consent-card"><h2>موضوعات مورد علاقه</h2><p>این انتخاب اختیاری است. فقط پس از تأیید تو، یک کوکیِ اول‌شخص برای نگهداری موضوعات موردعلاقه در همین مرورگر ثبت می‌شود؛ نه برای ردیابی بین سایت‌ها یا حدس‌زدن شخصیت و عقاید خصوصی.</p>
 <form id="interestForm"><div class="interest-list">
 <label><input type="checkbox" name="interest" value="quran"> قرآن و تفسیر</label>
 <label><input type="checkbox" name="interest" value="hadith"> حدیث و سیره</label>
 <label><input type="checkbox" name="interest" value="history"> تاریخ اسلام</label>
 <label><input type="checkbox" name="interest" value="mahdism"> مهدویت و انتظار</label>
 <label><input type="checkbox" name="interest" value="ethics"> اخلاق و مسئولیت اجتماعی</label>
-</div><button class="btn" type="submit">ذخیره انتخاب من</button><div class="status" id="interestStatus" role="status" aria-live="polite"></div></form></article>
+</div><label style="display:flex;align-items:flex-start;gap:8px;margin:12px 0;font-size:11px;color:#c8d6d1"><input type="checkbox" id="interestConsent" required style="width:auto;margin-top:7px;accent-color:#8ed8b9">با ذخیره این انتخاب‌ها برای پیشنهاد محتوای مرتبط در همین سایت موافقم.</label><button class="btn" type="submit">ذخیره انتخاب من</button><div class="status" id="interestStatus" role="status" aria-live="polite"></div></form></article>
 <article class="consent-card"><h2>ارتباط با بت‌ریز</h2><p>در شبکه‌های رسمی همراه ما باش، پرسش بفرست و در گفت‌وگوهای آموزشی مشارکت کن. هیچ حسابی به‌صورت خودکار عضو کانال یا گروه نمی‌شود.</p><div class="socials">
 <a href="https://www.instagram.com/bot_riz/" target="_blank" rel="noopener">اینستاگرام</a>
 <a href="https://youtube.com/@botriz12" target="_blank" rel="noopener">یوتیوب</a>
@@ -84,8 +84,8 @@ footer{border-top:1px solid var(--line);padding:25px 0 35px;color:#91a5a4;font-s
 <footer><span>بت‌ریز · معرفت، انتظار، مسئولیت</span><span>محتوای دینی با ارجاع به منابع و بازبینی انسانی منتشر می‌شود.</span><a href="/">بازگشت به جهان ثریا</a></footer>
 </div>
 <script>
-(()=>{const key="botriz_interest_preferences";const form=document.getElementById("interestForm");const status=document.getElementById("interestStatus");try{const saved=JSON.parse(localStorage.getItem(key)||"[]");for(const input of form.querySelectorAll('input[name="interest"]'))input.checked=saved.includes(input.value)}catch{}
-form.addEventListener("submit",event=>{event.preventDefault();const selected=[...form.querySelectorAll('input[name="interest"]:checked')].map(input=>input.value);try{localStorage.setItem(key,JSON.stringify(selected));status.textContent="انتخاب‌ها فقط روی همین دستگاه ذخیره شد."}catch{status.textContent="ذخیره‌سازی مرورگر در دسترس نیست؛ انتخاب‌ها ذخیره نشد."}});
+(()=>{const key="botriz_interest_preferences";const form=document.getElementById("interestForm");const status=document.getElementById("interestStatus");const readCookie=()=>{const item=document.cookie.split("; ").find(value=>value.startsWith(key+"="));if(!item)return [];try{return JSON.parse(decodeURIComponent(item.slice(key.length+1)))}catch{return []}};try{const saved=readCookie();for(const input of form.querySelectorAll('input[name="interest"]'))input.checked=saved.includes(input.value)}catch{}
+form.addEventListener("submit",event=>{event.preventDefault();if(!document.getElementById("interestConsent").checked){status.textContent="برای ذخیره انتخاب‌ها، ابتدا رضایت خود را اعلام کن.";return}const selected=[...form.querySelectorAll('input[name="interest"]:checked')].map(input=>input.value);try{document.cookie=key+"="+encodeURIComponent(JSON.stringify(selected))+"; Path=/; Max-Age=15552000; SameSite=Lax; Secure";status.textContent="انتخاب‌ها با رضایت تو، فقط در همین سایت و مرورگر ذخیره شد."}catch{status.textContent="مرورگر اجازه ذخیره کوکی را نداد؛ انتخاب‌ها ذخیره نشد."}});
 })();
 </script>
 <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
