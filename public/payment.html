@@ -39,7 +39,7 @@ async function init(){
   if(!orderResponse.ok||!data.ok)throw new Error(data.error||"سفارش پیدا نشد.");
   order=data.order;
   $("orderInfo").innerHTML="<div class='line'><span>کد سفارش</span><strong>"+order.public_id+"</strong></div><div class='line'><span>خدمت</span><strong>"+escapeHtml(order.service_title)+"</strong></div><div class='line'><span>نام مشتری</span><strong>"+escapeHtml(order.customer_name)+"</strong></div>";
-  if(order.quoted_amount!==null){$("quote").classList.remove("hidden");$("quoteAmount").textContent=money(order.quoted_amount,order.quoted_currency)}
+  if(order.quoted_amount!==null){$("quote").classList.remove("hidden");$("quoteAmount").textContent=money(order.quoted_amount,order.quoted_currency);$("currency").value=order.quoted_currency==="IRR"?"IRR":"IRT"}
   else{$("orderStatus").textContent="مبلغ نهایی هنوز توسط مدیر اعلام نشده است. این صفحه را بعداً دوباره باز کن.";$("paymentForm").classList.add("hidden")}
   if(data.latestPayment){$("orderStatus").textContent="آخرین اعلام پرداخت: "+({pending_review:"در انتظار بررسی مدیر",confirmed:"پرداخت تأیید شده",rejected:"پرداخت رد شده"}[data.latestPayment.status]||data.latestPayment.status);if(data.latestPayment.status==="pending_review")$("paymentForm").classList.add("hidden")}
   if(bank.ok){
