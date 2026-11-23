@@ -11,7 +11,12 @@ const GH = "https://api.github.com";
 function safePath(path) {
   return typeof path === "string" && path.length <= 180 &&
     ALLOWED_PATH.test(path) && !path.split("/").some(part => !part || part === "." || part === "..") &&
-    !/(?:\.env|secret|credential|\.pem|\.key|lock$)/i.test(path);
+    !/(?:\.env|secret|credential|\.pem|\.key|lock$)/i.test(path) &&
+    !["ai/autonomous-agent.js", "routes/agent-api.js", "routes/operator-api.js", "server.js", "package.json"].includes(path) &&
+    !path.startsWith("migrations/");
+}
+function refPath(value) {
+  return value.split("/").map(encodeURIComponent).join("/");
 }
 function jsonFromModel(text) {
   const raw = String(text || "").trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "");
@@ -86,7 +91,7 @@ export function createAutonomousAgent({ pool, env = process.env, fetchImpl = glo
     const context = [];
     for (const item of candidates) {
       if (item.size > MAX_FILE_BYTES) continue;
-      const file = await github(`/repos/${owner}/${name}/contents/${encodeURIComponent(item.path).replace(/%2F/g,"/")}?ref=${encodeURIComponent(baseBranch)}`);
+      const file = await github(`/repos/${owner}/${name}/contents/${encodeURIComponent(item.path).replace(/%2F/g,"/")}?ref=${refPath(baseBranch)}`);
       if (file.encoding === "base64" && file.content) {
         context.push({ path: item.path, sha: file.sha, content: Buffer.from(file.content, "base64").toString("utf8").slice(0, 18000) });
       }
