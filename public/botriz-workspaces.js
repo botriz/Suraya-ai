@@ -22,9 +22,12 @@
  const groups={content:"محتوا و خلاقیت",growth:"مدیریت و رشد کسب‌وکار"};
  const groupFor=code=>["social_content","business_content","product_descriptions"].includes(code)?"content":"growth";
  function groupRows(host,selector,headingClass,items){
-  if(!host)return;host.querySelectorAll("."+headingClass).forEach(n=>n.remove());
-  const rows=Array.from(host.querySelectorAll(":scope > "+selector));let previous="";
+  if(!host)return;const rows=Array.from(host.querySelectorAll(":scope > "+selector));
+  const signature=rows.map((row,index)=>row.dataset.serviceCode||items[index]?.[0]||"").join("|");
+  if(host.dataset[headingClass+"Signature"]===signature)return;
+  host.querySelectorAll("."+headingClass).forEach(n=>n.remove());let previous="";
   rows.forEach((row,index)=>{const code=row.dataset.serviceCode||items[index]?.[0]||"";row.dataset.serviceCode=code;const group=groupFor(code);if(group!==previous){const h=document.createElement("div");h.className=headingClass;h.textContent=groups[group];host.insertBefore(h,row);previous=group}});
+  host.dataset[headingClass+"Signature"]=signature;
  }
  const serviceList=$("serviceList"),drawer=$("drawerServices");
  function refreshGroups(){const catalog=window.surayaCatalog||{};const items=Object.entries(catalog);groupRows(serviceList,".service-row","service-group-title",items);groupRows(drawer,".drawer-service","drawer-group-title",items)}
