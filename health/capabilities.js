@@ -2,7 +2,8 @@ export function buildCapabilities({
   databaseReady = false,
   worldDatabaseReady = false,
   contentEngineReady = false,
-  operatorTokenConfigured = false
+  operatorTokenConfigured = false,
+  autonomousAgentConfigured = false
 } = {}) {
   const database = Boolean(databaseReady);
   return {
@@ -15,6 +16,7 @@ export function buildCapabilities({
     cryptoWallet: false,
     personalWallet: false,
     persistentUserAccounts: false,
-    automaticPublishing: false
+    automaticPublishing: false,
+    autonomousDevelopment: Boolean(autonomousAgentConfigured)
   };
 }
