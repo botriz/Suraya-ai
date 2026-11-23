@@ -60,7 +60,8 @@ function currentCapabilities() {
     databaseReady,
     worldDatabaseReady,
     contentEngineReady: contentEngine.isConfigured(),
-    operatorTokenConfigured: Boolean(process.env.SURAYA_OPERATOR_TOKEN)
+    operatorTokenConfigured: Boolean(process.env.SURAYA_OPERATOR_TOKEN),
+    autonomousAgentConfigured: autonomousAgent.isConfigured()
   });
 }
 
