@@ -41,7 +41,7 @@ const contentEngine = createContentEngine();
 const pool = process.env.DATABASE_URL
   ? new Pool({
       connectionString: process.env.DATABASE_URL,
-      ssl: process.env.DATABASE_SSL === "true" ? { rejectUnauthorized: false } : undefined,
+      ssl: process.env.DATABASE_SSL === "true" ? { rejectUnauthorized: true } : undefined,
       max: 5,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 5000
