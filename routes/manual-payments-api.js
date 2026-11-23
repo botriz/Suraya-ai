@@ -1,4 +1,5 @@
 import express from "express";
+import { timingSafeEqual } from "node:crypto";
 
 const publicIdPattern = /^SUR-[A-F0-9]{10}$/;
 const currencies = new Set(["IRR", "IRT"]);
@@ -6,15 +7,8 @@ const currencies = new Set(["IRR", "IRT"]);
 function safeEqual(left, right) {
   const a = Buffer.from(String(left || ""));
   const b = Buffer.from(String(right || ""));
-  return a.length === b.length && a.length > 0 && requireTimingSafeEqual(a, b);
+  return a.length === b.length && a.length > 0 && timingSafeEqual(a, b);
 }
-
-function requireTimingSafeEqual(a, b) {
-  // Buffer lengths are checked before timingSafeEqual to avoid its length exception.
-  return (awaitlessTimingSafeEqual)(a, b);
-}
-
-import { timingSafeEqual as awaitlessTimingSafeEqual } from "node:crypto";
 
 export function createManualPaymentsRouter({ pool, getToken, rateLimit = (_req, _res, next) => next() }) {
   const router = express.Router();
