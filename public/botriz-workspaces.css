@@ -1,0 +1,47 @@
+/* Botriz workspace refresh — Render-inspired, responsive and user-configurable. */
+:root{--br-border:rgba(174,205,238,.17);--br-panel:rgba(14,27,46,.88);--br-muted:#9eafc5;--br-accent:#8debd5}
+.suraya-appearance-tools{display:flex;align-items:center;gap:7px;margin-inline-start:auto}
+.suraya-mode-switch{display:flex;align-items:center;gap:3px;padding:4px;border:1px solid var(--br-border);border-radius:13px;background:#081321b8}
+.suraya-mode-switch button,.suraya-wallpaper-button{border:1px solid transparent;border-radius:9px;background:transparent;color:#bdcce0;padding:7px 10px;font:inherit;font-size:11px;cursor:pointer;white-space:nowrap}
+.suraya-mode-switch button[aria-pressed=true]{background:linear-gradient(130deg,#7ce6d126,#9aabff24);border-color:#8debd54d;color:#d8fff4}
+.suraya-wallpaper-button{border-color:var(--br-border);background:#ffffff09}
+.suraya-mode-switch button:focus-visible,.suraya-wallpaper-button:focus-visible{outline:2px solid var(--br-accent);outline-offset:2px}
+.suraya-wallpaper-layer{position:fixed;inset:0;z-index:-2;pointer-events:none;background-position:center;background-size:cover;background-repeat:no-repeat;opacity:.32;transition:opacity .25s}
+body[data-suraya-wallpaper=true] .suraya-wallpaper-layer{opacity:.48}
+body[data-suraya-mode=simple] .suraya-mode-switch [data-mode=professional]{opacity:.72}
+body[data-suraya-mode=professional] .workspace-tabs{position:fixed;z-index:1100;right:0;top:72px;bottom:0;width:218px;display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;gap:7px;padding:22px 12px calc(18px + env(safe-area-inset-bottom));border-top:0;border-left:1px solid var(--br-border);background:rgba(7,17,31,.94);backdrop-filter:blur(24px);overflow-y:auto}
+body[data-suraya-mode=professional] .workspace-tabs button{width:100%;min-width:0;justify-content:flex-start;text-align:right;padding:12px 14px;border:1px solid transparent;border-radius:12px;font-size:12px}
+body[data-suraya-mode=professional] .workspace-tabs button.active{border-color:#8cebd74d;background:linear-gradient(110deg,#173b3b99,#1d2941)}
+body[data-suraya-mode=professional] .workspace-tabs button .tab-icon{width:25px;text-align:center}
+body[data-suraya-mode=professional] .app-view-host{margin-right:218px}
+body[data-suraya-mode=professional] .app-view{padding:22px clamp(18px,3vw,42px) 34px}
+body[data-suraya-mode=professional] #view-services{padding-top:30px}
+body[data-suraya-mode=professional] .service-world{grid-template-columns:minmax(0,1fr) minmax(340px,.9fr);gap:18px}
+body[data-suraya-mode=professional] .service-list-panel,body[data-suraya-mode=professional] .stage,body[data-suraya-mode=professional] .story-shell,body[data-suraya-mode=professional] .order-card,body[data-suraya-mode=professional] .invoice-card{border-color:var(--br-border);box-shadow:0 22px 65px #0005}
+body[data-suraya-mode=professional] .service-list-panel{padding:22px}
+body[data-suraya-mode=professional] .service-row{grid-template-columns:62px minmax(0,1fr) 20px;padding:13px 8px}
+body[data-suraya-mode=professional] .stage{min-height:510px}
+body[data-suraya-mode=professional] .workspace-tabs button:hover{transform:translateX(-2px)}
+body[data-suraya-mode=simple] .app-view-host{margin:0}
+body[data-suraya-mode=simple] .workspace-tabs{position:relative;right:auto;top:auto;bottom:auto;width:100%}
+.service-group-title,.drawer-group-title{display:flex;align-items:center;gap:10px;margin:15px 4px 5px;padding:7px 10px;border-right:2px solid var(--br-accent);color:#c8f8ec;font-size:11px;font-weight:800;letter-spacing:.01em;background:linear-gradient(90deg,transparent,#8debd50c);border-radius:0 8px 8px 0}
+.service-group-title:first-child,.drawer-group-title:first-child{margin-top:3px}
+.drawer-group-title{margin:13px 4px 5px}
+.drawer-quota{display:none!important}
+#services .stage-tag{white-space:nowrap}
+@media(max-width:900px){
+ body[data-suraya-mode=professional] .workspace-tabs{top:auto;right:0;left:0;bottom:0;width:100%;height:auto;flex-direction:row;justify-content:space-around;gap:3px;padding:7px 5px max(7px,env(safe-area-inset-bottom));border-left:0;border-top:1px solid var(--br-border)}
+ body[data-suraya-mode=professional] .workspace-tabs button{width:auto;min-width:0;flex:1;flex-direction:column;justify-content:center;gap:3px;padding:6px 2px;font-size:9px;text-align:center}
+ body[data-suraya-mode=professional] .workspace-tabs button .tab-icon{width:auto}
+ body[data-suraya-mode=professional] .app-view-host{margin-right:0;padding-bottom:65px}
+ body[data-suraya-mode=professional] .service-world{grid-template-columns:minmax(0,1fr)}
+ body[data-suraya-mode=professional] .app-view{padding:14px 14px 28px}
+}
+@media(max-width:650px){
+ .suraya-appearance-tools{gap:4px}
+ .suraya-mode-switch button,.suraya-wallpaper-button{padding:6px 7px;font-size:9px}
+ .suraya-wallpaper-button{max-width:94px;overflow:hidden;text-overflow:ellipsis}
+ .wrap>.nav{flex-wrap:wrap;gap:8px}
+ .suraya-appearance-tools{order:3;width:100%;justify-content:flex-start;margin:0}
+}
+@media(prefers-reduced-motion:reduce){.suraya-wallpaper-layer{transition:none}}
