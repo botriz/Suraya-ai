@@ -30,11 +30,14 @@ test("PostgreSQL migrations are repeatable and support order-event persistence",
 
     const revenueMigration = await readFile(new URL("../migrations/002_revenue_operations.sql", import.meta.url), "utf8");
     const worldMigration = await readFile(new URL("../migrations/001_world_foundation.sql", import.meta.url), "utf8");
+    const agentMigration = await readFile(new URL("../migrations/004_autonomous_agent.sql", import.meta.url), "utf8");
 
     await client.query(revenueMigration);
     await client.query(worldMigration);
+    await client.query(agentMigration);
     await client.query(revenueMigration);
     await client.query(worldMigration);
+    await client.query(agentMigration);
 
     const inserted = await client.query(
       "INSERT INTO suraya_orders (public_id, customer_name, service_code, service_title) VALUES ($1, $2, $3, $4) RETURNING public_id",
@@ -54,6 +57,9 @@ test("PostgreSQL migrations are repeatable and support order-event persistence",
     assert.equal(result.rowCount, 1);
     assert.equal(result.rows[0].quoted_currency, "USD");
     assert.equal(result.rows[0].event_type, "ci.migration_verified");
+
+    const agentTable = await client.query("SELECT to_regclass($1) AS tasks", [schema + ".suraya_agent_tasks"]);
+    assert.ok(agentTable.rows[0].tasks);
 
     const worldTables = await client.query(
       "SELECT to_regclass($1) AS regions, to_regclass($2) AS events",
