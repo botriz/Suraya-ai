@@ -580,6 +580,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #9af1dc;outline-offset:3p
 
 .social-studio-link{display:inline-flex;align-items:center;justify-content:center;margin-top:14px;padding:9px 13px;border:1px solid #8debd54a;border-radius:11px;background:#8debd511;color:#a8f2df;font-size:11px;font-weight:800;transition:transform .2s,border-color .2s}.social-studio-link:hover{transform:translateY(-2px);border-color:#8debd5}
 </style><link rel="stylesheet" href="/dashboard-theme.css">
+<link rel="stylesheet" href="/botriz-workspaces.css">
 </head>
 <body><div class="wrap">
 <nav class="nav"><a class="brand" href="/"><span class="brand-mark">ث</span><span><b>ثریا</b><small>جهان خدمات هوشمند · SURAYA</small></span></a><div class="nav-links"><a href="/creator.html">استودیو سازندگان</a><a href="/world/">جهان دیجیتال</a></div><button class="nav-cta" id="navAccount" type="button">حساب کاربری</button></nav>
@@ -919,7 +920,7 @@ fetch("/api/services").then(r=>{if(!r.ok)throw new Error("catalog unavailable");
 </script>
 <button class="user-hub-trigger" id="userHubOpen" aria-label="مدیریت حساب کاربری" title="حساب کاربری"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="3.5"/><path d="M4.8 20c.7-4 3.1-6 7.2-6s6.5 2 7.2 6" stroke-linecap="round"/></svg></button>
 <button class="service-dock-trigger" id="serviceDockOpen" aria-label="باز کردن فهرست خدمات" title="خدمات ثریا"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/><circle cx="8" cy="6" r="1" fill="currentColor"/><circle cx="15" cy="12" r="1" fill="currentColor"/><circle cx="10" cy="18" r="1" fill="currentColor"/></svg></button>
-<aside class="service-drawer" id="serviceDrawer" aria-label="فهرست خدمات"><div class="drawer-head"><div><strong>خدمات قابل استفاده</strong><small>یک خدمت را انتخاب کن تا توضیحات و سهمیه‌اش را ببینی</small></div><button class="hub-close" id="serviceDrawerClose" aria-label="بستن">×</button></div><div id="drawerServices"></div><div class="drawer-detail" id="drawerDetail"><h4 id="drawerDetailTitle"></h4><p id="drawerDetailText"></p><button class="hub-action" id="drawerUseService">انتخاب این خدمت</button></div><p class="hub-note">سهمیه‌های فعلی در این مرحله روی همین مرورگر ذخیره می‌شوند؛ برای اعمال قطعی روی همه دستگاه‌ها باید حساب کاربری و سرور احراز هویت فعال شوند.</p></aside>
+<aside class="service-drawer" id="serviceDrawer" aria-label="فهرست خدمات"><div class="drawer-head"><div><strong>خدمات قابل استفاده</strong><small>برای مشاهده و انتخاب هر خدمت، آن را باز کن</small></div><button class="hub-close" id="serviceDrawerClose" aria-label="بستن">×</button></div><div id="drawerServices"></div><div class="drawer-detail" id="drawerDetail"><h4 id="drawerDetailTitle"></h4><p id="drawerDetailText"></p><button class="hub-action" id="drawerUseService">انتخاب این خدمت</button></div></aside>
 <div class="hub-overlay" id="userHubOverlay" role="dialog" aria-modal="true" aria-labelledby="hubTitle"><section class="hub-window"><div class="hub-head"><h2 id="hubTitle">مرکز مدیریت حساب</h2><button class="hub-close" id="hubClose" aria-label="بستن">×</button></div>
 <div class="hub-profile"><div class="hub-avatar" id="hubAvatar">☺</div><div><strong id="hubDisplayName">کاربر ثریا</strong><small id="hubPhoneLabel">شماره تلفن تأیید نشده</small><div class="hub-actions"><button class="hub-action" id="chooseAvatar">انتخاب عکس مخاطب</button><button class="hub-action" id="shareAvatar">اشتراک‌گذاری عکس</button></div></div></div>
 <input type="file" id="hubAvatarFile" accept="image/*" hidden>
@@ -927,7 +928,7 @@ fetch("/api/services").then(r=>{if(!r.ok)throw new Error("catalog unavailable");
 <div class="hub-section"><h3>اعتبار و پاداش‌ها</h3><div class="hub-field"><label>سکه‌های ثریا<input value="۰ سکه" readonly></label><label>وضعیت احراز هویت<input value="تأییدنشده" readonly></label></div><p class="hub-note">پس از اتصال احراز هویت واقعی، پاداش سکه و خدمات اضافه برای تأییدهای تکمیلی فعال می‌شود. سکه‌ها فعلاً ارزش مالی یا قابلیت خرج‌کردن ندارند.</p></div>
 <div class="hub-section"><h3>حریم خصوصی و اعلان‌ها</h3><div class="hub-field"><label>اعلان‌ها<select id="hubNotifications"><option value="on">روشن</option><option value="off">خاموش</option></select></label><label>نمایش عمومی عکس<select id="hubPhotoVisibility"><option value="private">فقط خودم</option><option value="public">قابل مشاهده با لینک اشتراک</option></select></label></div><div class="hub-actions"><button class="hub-action" id="saveHubSettings">ذخیره تنظیمات این دستگاه</button></div></div>
 </section></div>
-<div class="paywall-overlay" id="paywallOverlay" role="dialog" aria-modal="true"><section class="paywall-card"><h3>سهمیهٔ رایگان این خدمت تمام شده است</h3><p>برای ادامهٔ استفاده، اشتراک مناسب را انتخاب کن. در این نسخه فقط پنجرهٔ معرفی اشتراک نمایش داده می‌شود؛ پرداخت تا اتصال درگاه رسمی فعال نیست.</p><button class="hub-action" id="paywallPlans">مشاهدهٔ پلن‌های اشتراک</button><button class="hub-action" id="paywallClose">فعلاً نه</button></section></div>
+<div class="paywall-overlay" id="paywallOverlay" role="dialog" aria-modal="true"><section class="paywall-card"><h3>۷ روز استفاده رایگان</h3><p>با تهیهٔ اشتراک و پرداخت هزینهٔ اشتراک، دورهٔ ۷ روزهٔ استفاده فعال می‌شود.</p><button class="hub-action" id="paywallPlans">مشاهدهٔ پلن‌های اشتراک</button><button class="hub-action" id="paywallClose">فعلاً نه</button></section></div>
 
 <script>
 (function(){
@@ -939,7 +940,7 @@ let usage=load(usageKey,{}),profile=load(profileKey,{});
 let chosenCode=null,avatarData="";
 const persist=()=>{try{localStorage.setItem(usageKey,JSON.stringify(usage))}catch{}};
 const saveProfile=()=>{try{localStorage.setItem(profileKey,JSON.stringify(profile))}catch{}};
-const count=code=>Number(usage[code]||0),limit=code=>easyServices.has(code)?5:1;
+const count=code=>Number(usage[code]||0),limit=code=>1;
 const services=()=>window.surayaCatalog||{};
 window.surayaCanUse=code=>{if(count(code)>=limit(code)){open($("paywallOverlay"));return false}return true};
 const serviceNames={"social_content":"محتوای شبکه‌های اجتماعی","business_content":"محتوای کسب‌وکار","product_descriptions":"توضیحات محصول","social_monthly":"مدیریت ماهانه شبکه اجتماعی","subscription_ops":"مدیریت اشتراک","store_launch":"راه‌اندازی فروشگاه"};
@@ -951,7 +952,7 @@ function renderDrawer(){
   const left=document.createElement("span"),name=document.createElement("b"),desc=document.createElement("small");
   name.textContent=s.title||serviceNames[code]||code;desc.textContent=s.description||"برای مشاهدهٔ توضیحات و شرایط استفاده لمس کن.";
   left.append(name,desc);const q=document.createElement("span");q.className="drawer-quota";
-  q.textContent=count(code)>=limit(code)?"نیازمند اشتراک":(limit(code)-count(code)).toLocaleString("fa-IR")+" استفادهٔ رایگان";
+  q.textContent="";q.hidden=true;
   row.append(left,q);row.addEventListener("click",()=>showDetail(code,s));host.append(row);
  });
  if(!host.children.length){host.textContent="فهرست خدمات هنوز بارگذاری نشده است."}
@@ -959,7 +960,7 @@ function renderDrawer(){
 function showDetail(code,s){
  chosenCode=code;$("drawerDetailTitle").textContent=s.title||serviceNames[code]||code;
  const left=Math.max(0,limit(code)-count(code));
- $("drawerDetailText").textContent=(s.description||"این خدمت برای انجام بخشی از کارهای روزمرهٔ شما طراحی شده است.")+" سهمیهٔ آغازین: "+limit(code)+" بار رایگان؛ باقی‌مانده: "+left+" بار.";
+ $("drawerDetailText").textContent=s.description||"این خدمت برای انجام بخشی از کارهای روزمرهٔ شما طراحی شده است.";
  $("drawerDetail").classList.add("open");
 }
 $("serviceDockOpen").addEventListener("click",()=>{renderDrawer();open($("serviceDrawer"))});
@@ -1360,4 +1361,5 @@ html,body{width:100%;max-width:100%;min-width:0}
 })();
 </script>
 
+<script src="/botriz-workspaces.js" defer></script>
 </body></html>
