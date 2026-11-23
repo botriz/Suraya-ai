@@ -10,6 +10,8 @@ import { createOperatorRouter } from "./routes/operator-api.js";
 import { createCreatorRouter } from "./routes/creator-api.js";
 import { createContentEngine } from "./ai/content-engine.js";
 import { buildCapabilities } from "./health/capabilities.js";
+import { createAutonomousAgent } from "./ai/autonomous-agent.js";
+import { createAgentRouter } from "./routes/agent-api.js";
 
 dotenv.config();
 
@@ -46,6 +48,8 @@ const pool = process.env.DATABASE_URL
     })
   : null;
 
+const autonomousAgent = createAutonomousAgent({ pool });
+
 let databaseReady = false;
 let databaseError = "DATABASE_URL is not configured";
 let worldDatabaseReady = false;
@@ -77,6 +81,7 @@ async function initializeDatabase() {
       )
     `);
     await pool.query(await readFile(path.join(__dirname, "migrations", "002_revenue_operations.sql"), "utf8"));
+    await pool.query(await readFile(path.join(__dirname, "migrations", "004_autonomous_agent.sql"), "utf8"));
     databaseReady = true;
     databaseError = "";
     console.log("Suraya order database ready");
@@ -143,6 +148,7 @@ app.get("/api/capabilities", (_req, res) => {
 app.use("/api/world/v1", createWorldRouter({ pool, isDatabaseReady: () => worldDatabaseReady }));
 app.use("/api/operator/v1", createOperatorRouter({ pool, getToken: () => process.env.SURAYA_OPERATOR_TOKEN }));
 app.use("/api/creator/v1", createCreatorRouter({ engine: contentEngine, rateLimit }));
+app.use("/api/agent/v1", createAgentRouter({ agent: autonomousAgent, getToken: () => process.env.SURAYA_OPERATOR_TOKEN }));
 
 app.get("/api/services", (_req, res) => {
   res.json({ ok: true, services });
@@ -207,6 +213,7 @@ app.use((_req, res) => {
 });
 
 await initializeDatabase();
+if (databaseReady) await autonomousAgent.start();
 app.listen(PORT, HOST, () => {
   console.log(`Suraya running on ${HOST}:${PORT}`);
 });
