@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080e1c"><title>پرداخت سفارش | ثریا</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#080e1c;--panel:#111d30;--line:#ffffff20;--ink:#f5f7ff;--muted:#a8b5c9;--mint:#7ce6d1;--gold:#ffd28a}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 10% 5%,#2c6a7550,transparent 35%),linear-gradient(145deg,#070d18,#0c1728 60%,#11162a);color:var(--ink);font:14px/2 Vazirmatn,system-ui;padding:24px}
+main{width:min(760px,100%);margin:30px auto}.brand{color:var(--mint);font-weight:800;letter-spacing:.04em}.card{border:1px solid var(--line);border-radius:22px;background:linear-gradient(150deg,#172940,#0c1728);padding:22px;margin:16px 0;box-shadow:0 20px 55px #0005}h1{font-size:25px;margin:7px 0}h2{font-size:17px;margin:0 0 8px}.muted{color:var(--muted);font-size:12px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{margin-top:10px}.field.full{grid-column:1/-1}label{display:block;font-size:11px;color:#dce8f6;margin-bottom:4px}input,select{width:100%;border:1px solid #a8c8ec35;border-radius:11px;background:#081321;color:#fff;padding:11px;font:inherit}.btn{width:100%;border:0;border-radius:12px;background:linear-gradient(110deg,#80ead1,#a5c5ff);color:#0a1723;font:700 13px Vazirmatn;padding:12px;margin-top:16px;cursor:pointer}.btn:disabled{opacity:.55;cursor:wait}.line{display:flex;justify-content:space-between;gap:15px;padding:8px 0;border-bottom:1px dashed #ffffff20;font-size:12px}.line strong{color:var(--mint)}.bank-item{padding:8px 0;border-bottom:1px solid #ffffff12;font-size:12px;overflow-wrap:anywhere}.bank-item b{color:#c4d4e6;display:inline-block;min-width:125px}.notice{border:1px solid #ffd28a45;background:#ffd28a0d;color:#ffe1ae;border-radius:12px;padding:12px;font-size:11px;margin-top:14px}.status{font-size:12px;min-height:28px;color:var(--mint);margin-top:12px}.status.error{color:#ffaaa9}.hidden{display:none!important}a{color:var(--mint)}@media(max-width:560px){body{padding:12px}main{margin:12px auto}.card{padding:16px}.grid{grid-template-columns:1fr}.field.full{grid-column:auto}h1{font-size:22px}}
+</style>
+</head>
+<body><main>
+<div class="brand">SURAYA · ثریا</div><h1>پرداخت و ثبت اطلاعات واریز</h1><p class="muted">کد سفارش را بررسی کن؛ پس از اعلام مبلغ نهایی، انتقال بانکی را انجام بده و کد پیگیری را ثبت کن.</p>
+<section class="card"><h2>وضعیت سفارش</h2><div id="orderInfo" class="muted">در حال دریافت اطلاعات سفارش…</div><div id="quote" class="line hidden"><span>مبلغ قابل پرداخت</span><strong id="quoteAmount"></strong></div><div id="orderStatus" class="status" role="status"></div></section>
+<section class="card"><h2>اطلاعات حساب دریافت‌کننده</h2><div id="bankInfo" class="muted">در حال بارگذاری اطلاعات حساب…</div><div class="notice">فقط به حسابی واریز کن که مشخصات آن در همین صفحه نمایش داده شده است. ثبت کد پیگیری به معنی تأیید پرداخت نیست؛ پرداخت پس از بررسی گردش حساب توسط مدیر تأیید می‌شود.</div></section>
+<section class="card" id="paymentCard"><h2>ثبت مشخصات واریز</h2><p class="muted">مبلغ و واحد پول باید دقیقاً مطابق مبلغ اعلام‌شده برای سفارش باشد. فعلاً بارگذاری فایل رسید فعال نیست؛ کد پیگیری بانکی را ثبت کن.</p>
+<form id="paymentForm"><div class="grid">
+<div class="field"><label for="payerName">نام پرداخت‌کننده</label><input id="payerName" name="payerName" minlength="2" maxlength="120" required></div>
+<div class="field"><label for="amount">مبلغ واریزی</label><input id="amount" name="amount" type="number" min="1" step="1" required></div>
+<div class="field"><label for="currency">واحد مبلغ</label><select id="currency" name="currency"><option value="IRT">تومان</option><option value="IRR">ریال</option></select></div>
+<div class="field"><label for="paidAt">تاریخ واریز</label><input id="paidAt" name="paidAt" type="date" required></div>
+<div class="field full"><label for="referenceCode">شماره پیگیری / شناسه تراکنش بانکی</label><input id="referenceCode" name="referenceCode" minlength="4" maxlength="100" required></div>
+</div><button class="btn" id="submitButton" type="submit">ثبت اطلاعات واریز برای بررسی</button><div id="result" class="status" role="status" aria-live="polite"></div></form></section>
+<p class="muted"><a href="/">بازگشت به ثریا</a></p>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const params=new URLSearchParams(location.search);
+const orderId=(params.get("order")||"").trim().toUpperCase();
+const money=(value,currency)=>Number(value).toLocaleString("fa-IR")+" "+(currency==="IRT"?"تومان":"ریال");
+let order=null;
+function showError(message){$("orderStatus").className="status error";$("orderStatus").textContent=message;$("paymentForm").classList.add("hidden")}
+async function init(){
+ if(!/^SUR-[A-F0-9]{10}$/.test(orderId)){showError("کد سفارش در نشانی صفحه معتبر نیست.");return}
+ try{
+  const [orderResponse,bankResponse]=await Promise.all([fetch("/api/payments/orders/"+encodeURIComponent(orderId)),fetch("/api/payments/instructions")]);
+  const data=await orderResponse.json();const bank=await bankResponse.json();
+  if(!orderResponse.ok||!data.ok)throw new Error(data.error||"سفارش پیدا نشد.");
+  order=data.order;
+  $("orderInfo").innerHTML="<div class='line'><span>کد سفارش</span><strong>"+order.public_id+"</strong></div><div class='line'><span>خدمت</span><strong>"+escapeHtml(order.service_title)+"</strong></div><div class='line'><span>نام مشتری</span><strong>"+escapeHtml(order.customer_name)+"</strong></div>";
+  if(order.quoted_amount!==null){$("quote").classList.remove("hidden");$("quoteAmount").textContent=money(order.quoted_amount,order.quoted_currency);$("currency").value=order.quoted_currency==="IRR"?"IRR":"IRT"}
+  else{$("orderStatus").textContent="مبلغ نهایی هنوز توسط مدیر اعلام نشده است. این صفحه را بعداً دوباره باز کن.";$("paymentForm").classList.add("hidden")}
+  if(data.latestPayment){$("orderStatus").textContent="آخرین اعلام پرداخت: "+({pending_review:"در انتظار بررسی مدیر",confirmed:"پرداخت تأیید شده",rejected:"پرداخت رد شده"}[data.latestPayment.status]||data.latestPayment.status);if(["pending_review","confirmed"].includes(data.latestPayment.status))$("paymentForm").classList.add("hidden")}
+  if(bank.ok){
+   const entries=[["بانک",bank.bank.name],["صاحب حساب",bank.bank.accountHolder],["شماره کارت",bank.bank.cardNumber],["شماره شبا",bank.bank.iban],["شماره حساب",bank.bank.accountNumber]].filter(item=>item[1]);
+   $("bankInfo").innerHTML=entries.length?entries.map(([label,value])=>"<div class='bank-item'><b>"+label+"</b>"+escapeHtml(value)+"</div>").join(""):"<div class='notice'>اطلاعات حساب هنوز توسط مدیر سامانه در تنظیمات امن سرور ثبت نشده است؛ فعلاً وجهی واریز نکن.</div>";
+   if(!entries.length)$("paymentForm").classList.add("hidden");
+  }
+ }catch(error){showError(error.message||"خطا در دریافت اطلاعات سفارش")}
+}
+function escapeHtml(value){return String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]))}
+$("paymentForm").addEventListener("submit",async event=>{
+ event.preventDefault();if(!order)return;
+ const button=$("submitButton"),result=$("result");button.disabled=true;result.className="status";result.textContent="در حال ثبت…";
+ const payload=Object.fromEntries(new FormData(event.currentTarget));payload.orderId=orderId;
+ try{const response=await fetch("/api/payments/manual",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});const data=await response.json();if(!response.ok||!data.ok)throw new Error(data.error||"ثبت اطلاعات ناموفق بود.");result.textContent=data.message;$("paymentForm").classList.add("hidden");$("orderStatus").textContent="اطلاعات واریز ثبت شده و در انتظار بررسی مدیر است."}
+ catch(error){result.className="status error";result.textContent=error.message||"ارتباط با سامانه برقرار نشد."}
+ finally{button.disabled=false}
+});
+init();
+</script></body></html>

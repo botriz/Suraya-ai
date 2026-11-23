@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>مدیریت پرداخت‌ها | ثریا</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;padding:20px;background:#091321;color:#f3f7ff;font:14px/2 Vazirmatn,system-ui}main{max-width:1050px;margin:20px auto}.card{background:#142238;border:1px solid #ffffff20;border-radius:18px;padding:18px;margin:14px 0}h1{font-size:23px;margin:0}h2{font-size:16px;margin:0 0 10px}p,small{color:#aebed0}input,button{font:inherit;border-radius:10px;padding:10px;border:1px solid #ffffff2b}input{background:#081321;color:white;width:min(550px,100%)}button{cursor:pointer;background:#7ce6d1;color:#09202a;border:0;font-weight:700}button.secondary{background:#33445d;color:white}button:disabled{opacity:.5}.toolbar{display:flex;gap:9px;flex-wrap:wrap}.payment{border:1px solid #ffffff1b;border-radius:13px;padding:14px;margin:10px 0;background:#0d1a2b}.payment-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.pill{font-size:10px;border:1px solid #ffd28a66;color:#ffd28a;padding:2px 9px;border-radius:99px}.meta{display:grid;grid-template-columns:1fr 1fr;gap:4px 14px;font-size:12px;margin:10px 0}.meta b{color:#dce8f6}.actions{display:flex;gap:8px;flex-wrap:wrap}.actions button.reject{background:#6e3440;color:white}.status{font-size:12px;color:#7ce6d1;min-height:24px}.error{color:#ffaaa9}@media(max-width:560px){body{padding:10px}.meta{grid-template-columns:1fr}}
+</style></head>
+<body><main>
+<h1>مدیریت پرداخت‌های دستی ثریا</h1><p>برای مشاهده و بررسی پرداخت‌ها، توکن مدیر را از تنظیمات امن Render وارد کن. توکن در مرورگر ذخیره نمی‌شود.</p>
+<section class="card"><h2>احراز دسترسی مدیر</h2><div class="toolbar"><input id="token" type="password" autocomplete="off" placeholder="SURAYA_OPERATOR_TOKEN"><button id="load">دریافت پرداخت‌ها</button><button class="secondary" id="clear">پاک‌کردن توکن</button></div><div id="status" class="status" role="status"></div></section>
+<section class="card"><h2>فهرست پرداخت‌ها</h2><div id="payments"><p>برای دریافت فهرست، توکن مدیر را وارد کن.</p></div></section>
+</main>
+<script>
+const $=id=>document.getElementById(id);let token="";
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function money(amount,currency){return Number(amount).toLocaleString("fa-IR")+" "+(currency==="IRT"?"تومان":"ریال")}
+async function api(path,options={}){return fetch(path,{...options,headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json",...(options.headers||{})}})}
+async function load(){token=$("token").value.trim();if(!token){$("status").textContent="توکن مدیر را وارد کن.";return}
+ $("status").className="status";$("status").textContent="در حال دریافت…";$("payments").innerHTML="";
+ try{const response=await api("/api/payments/admin/manual");const data=await response.json();if(!response.ok||!data.ok)throw new Error(data.error||"دریافت ناموفق بود.");
+ $("status").textContent=data.payments.length+" پرداخت ثبت‌شده";
+ if(!data.payments.length){$("payments").innerHTML="<p>پرداختی ثبت نشده است.</p>";return}
+ $("payments").innerHTML=data.payments.map(p=>'<article class="payment"><div class="payment-head"><strong>'+esc(p.public_id)+' · '+esc(p.service_title)+'</strong><span class="pill">'+esc(p.status)+'</span></div><div class="meta"><div>مشتری: <b>'+esc(p.customer_name)+'</b></div><div>پرداخت‌کننده: <b>'+esc(p.payer_name)+'</b></div><div>مبلغ: <b>'+money(p.amount,p.currency)+'</b></div><div>شماره پیگیری: <b>'+esc(p.reference_code)+'</b></div><div>تاریخ واریز: <b>'+esc(p.paid_at)+'</b></div><div>شناسه پرداخت: <b>'+esc(p.id)+'</b></div></div>'+(p.status==="pending_review"?'<div class="actions"><button data-action="confirm" data-id="'+p.id+'">تأیید پس از بررسی گردش حساب</button><button class="reject" data-action="reject" data-id="'+p.id+'">رد پرداخت</button></div>':"")+'</article>').join("");
+ }catch(error){$("status").className="status error";$("status").textContent=error.message||"خطا در دریافت فهرست"}
+}
+$("load").addEventListener("click",load);$("clear").addEventListener("click",()=>{$("token").value="";token="";$("payments").innerHTML="<p>توکن پاک شد.</p>";$("status").textContent=""});
+$("payments").addEventListener("click",async event=>{const button=event.target.closest("[data-action]");if(!button)return;const action=button.dataset.action;const note=prompt(action==="confirm"?"یادداشت تأیید (اختیاری):":"دلیل رد پرداخت:")||"";if(action==="reject"&&!note.trim()){alert("برای رد پرداخت، دلیل را وارد کن.");return}
+ button.disabled=true;try{const response=await api("/api/payments/admin/manual/"+button.dataset.id,{method:"PATCH",body:JSON.stringify({action,note})});const data=await response.json();if(!response.ok||!data.ok)throw new Error(data.error||"عملیات ناموفق بود.");await load()}catch(error){$("status").className="status error";$("status").textContent=error.message||"خطا"}finally{button.disabled=false}});
+</script></body></html>

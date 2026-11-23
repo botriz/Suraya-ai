@@ -7,6 +7,7 @@ import { readFile } from "node:fs/promises";
 import { createWorldRouter } from "./world/world-api.js";
 import { createHealthRouter } from "./health/health-router.js";
 import { createOperatorRouter } from "./routes/operator-api.js";
+import { createManualPaymentsRouter } from "./routes/manual-payments-api.js";
 import { createCreatorRouter } from "./routes/creator-api.js";
 import { createContentEngine } from "./ai/content-engine.js";
 import { buildCapabilities } from "./health/capabilities.js";
@@ -77,9 +78,10 @@ async function initializeDatabase() {
       )
     `);
     await pool.query(await readFile(path.join(__dirname, "migrations", "002_revenue_operations.sql"), "utf8"));
+    await pool.query(await readFile(path.join(__dirname, "migrations", "004_manual_bank_payments.sql"), "utf8"));
     databaseReady = true;
     databaseError = "";
-    console.log("Suraya order database ready");
+    console.log("Suraya order and manual payment database ready");
 
     try {
       const worldMigration = await readFile(path.join(__dirname, "migrations", "001_world_foundation.sql"), "utf8");
@@ -142,6 +144,11 @@ app.get("/api/capabilities", (_req, res) => {
 
 app.use("/api/world/v1", createWorldRouter({ pool, isDatabaseReady: () => worldDatabaseReady }));
 app.use("/api/operator/v1", createOperatorRouter({ pool, getToken: () => process.env.SURAYA_OPERATOR_TOKEN }));
+app.use("/api/payments", createManualPaymentsRouter({
+  pool,
+  getToken: () => process.env.SURAYA_OPERATOR_TOKEN,
+  rateLimit
+}));
 app.use("/api/creator/v1", createCreatorRouter({ engine: contentEngine, rateLimit }));
 
 app.get("/api/services", (_req, res) => {
@@ -187,8 +194,9 @@ app.post("/api/order", rateLimit, async (req, res) => {
     return res.status(201).json({
       ok: true,
       orderId: inserted.rows[0].public_id,
+      paymentUrl: `/payment.html?order=${encodeURIComponent(inserted.rows[0].public_id)}`,
       createdAt: inserted.rows[0].created_at,
-      message: "درخواست شما با موفقیت در سامانه ثبت شد. تیم ثریا برای هماهنگی با شما تماس می‌گیرد."
+      message: "درخواست شما با موفقیت در سامانه ثبت شد. پس از اعلام مبلغ نهایی، می‌توانید اطلاعات واریز را در صفحه پرداخت ثبت کنید."
     });
   } catch (error) {
     console.error("Order persistence failed:", error.message);
