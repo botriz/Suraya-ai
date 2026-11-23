@@ -61,8 +61,13 @@ jobs:
           node --check world/world-api.js
           test -s migrations/001_world_foundation.sql
           test -s migrations/002_revenue_operations.sql
+          test -s migrations/004_autonomous_agent.sql
           grep -q 'world_regions' migrations/001_world_foundation.sql
           grep -q 'world_events' migrations/001_world_foundation.sql
           grep -q 'suraya_order_events' migrations/002_revenue_operations.sql
+          grep -q 'suraya_agent_tasks' migrations/004_autonomous_agent.sql
           grep -q 'api/world/v1' server.js
           grep -q 'autonomousActions: false' world/world-api.js
+
+      - name: Build deployment container
+        run: docker build -t suraya-public-services:ci .
