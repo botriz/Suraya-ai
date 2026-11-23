@@ -12,3 +12,10 @@ build/
 *.seed.enc
 _admin_secret/
 _private/
+
+# Local runtime state and secrets
+.env.*
+!.env.example
+data/
+*.sqlite
+*.db
