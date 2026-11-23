@@ -1,1 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="t d"><title id="t">نشان بت‌ریز</title><desc id="d">شمسه‌ای چهارلایه با ستاره مرکزی و حلقه‌های پیوسته، نماد معرفت و حرکت به سوی حقیقت</desc><defs><radialGradient id="g"><stop stop-color="#fff7d6"/><stop offset=".28" stop-color="#f2ce7d"/><stop offset=".62" stop-color="#277a68"/><stop offset="1" stop-color="#071c27"/></radialGradient><linearGradient id="gold" x2="1" y2="1"><stop stop-color="#fff0b7"/><stop offset=".5" stop-color="#d9a64c"/><stop offset="1" stop-color="#8b5d27"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><rect width="512" height="512" rx="112" fill="#07131f"/><circle cx="256" cy="256" r="218" fill="none" stroke="url(#gold)" stroke-width="5"/><circle cx="256" cy="256" r="195" fill="none" stroke="#5fc6a7" stroke-opacity=".65" stroke-width="2" stroke-dasharray="4 10"/><g transform="translate(256 256)" fill="none" stroke="url(#gold)" stroke-width="5"><path d="M0-174 30-74 112-132 74-30 174 0 74 30 132 112 30 74 0 174-30 74-112 132-74 30-174 0-74-30-132-112-30-74Z"/><circle r="140" stroke="#76cdb2" stroke-width="3"/><circle r="112" stroke="#d8b56e" stroke-width="3" stroke-dasharray="5 8"/></g><g filter="url(#glow)"><path d="m256 158 26 72 72 26-72 26-26 72-26-72-72-26 72-26Z" fill="url(#g)" stroke="#ffe7a5" stroke-width="4"/><circle cx="256" cy="256" r="25" fill="#fff1c4" stroke="#b27a36" stroke-width="5"/></g><g fill="#f2d58e"><circle cx="256" cy="48" r="5"/><circle cx="464" cy="256" r="5"/><circle cx="256" cy="464" r="5"/><circle cx="48" cy="256" r="5"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="t d">
+<title id="t">نشان بت‌ریز</title><desc id="d">چهار حلقهٔ پیوسته پیرامون سنگی شکافته که نور از میان آن می‌گذرد؛ نماد شکستن جهل و پیوند معرفت، توحید، پیام و ولایت.</desc>
+<defs>
+ <radialGradient id="bg"><stop stop-color="#183c3b"/><stop offset=".72" stop-color="#0a1c29"/><stop offset="1" stop-color="#06111b"/></radialGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0bb"/><stop offset=".45" stop-color="#e8bd68"/><stop offset="1" stop-color="#94612d"/></linearGradient>
+ <linearGradient id="ray" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff7d8" stop-opacity="0"/><stop offset=".5" stop-color="#fff1b8"/><stop offset="1" stop-color="#f3c86f" stop-opacity="0"/></linearGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="512" height="512" rx="112" fill="url(#bg)"/>
+<g fill="none" stroke="url(#gold)">
+ <circle cx="256" cy="256" r="214" stroke-width="5"/>
+ <circle cx="256" cy="256" r="192" stroke-width="2" stroke-dasharray="3 11" opacity=".8"/>
+ <circle cx="256" cy="256" r="162" stroke-width="3" opacity=".65"/>
+ <path d="M256 52 286 137 375 93 331 182 416 212 331 242 375 331 286 287 256 372 226 287 137 331 181 242 96 212 181 182 137 93 226 137Z" stroke-width="4" opacity=".9"/>
+</g>
+<g fill="#e9c47b"><circle cx="256" cy="46" r="5"/><circle cx="466" cy="256" r="5"/><circle cx="256" cy="466" r="5"/><circle cx="46" cy="256" r="5"/></g>
+<path d="M256 68 277 174 300 221 281 255 310 302 256 442 202 302 231 255 212 221 235 174Z" fill="url(#ray)" filter="url(#glow)" opacity=".95"/>
+<!-- Broken stone/idol of ignorance: two dark halves, separated by the light of knowledge. -->
+<g stroke="#d6b16b" stroke-width="3" stroke-linejoin="round">
+ <path d="m181 180 60 13 20 44-18 37-45-9-31-43Z" fill="#101a20"/>
+ <path d="m331 180-60 13-20 44 18 37 45-9 31-43Z" fill="#101a20"/>
+ <path d="m194 275 47 7 14 38-26 47-55-27 7-39Z" fill="#13272a"/>
+ <path d="m318 275-47 7-14 38 26 47 55-27-7-39Z" fill="#13272a"/>
+</g>
+<g fill="none" stroke="url(#gold)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)">
+ <path d="m248 192-18 35 25 21-17 31 18 27"/>
+ <path d="m264 192 18 35-25 21 17 31-18 27"/>
+ <path d="M256 112v72m0 158v64"/>
+</g>
+<path d="m256 153 23 63 63 23-63 23-23 63-23-63-63-23 63-23Z" fill="#f7e5ac" stroke="#b77b36" stroke-width="5" filter="url(#glow)"/>
+<circle cx="256" cy="239" r="14" fill="#fff8d9"/>
+<g fill="none" stroke="#86d9ba" stroke-width="3" opacity=".9">
+ <path d="M128 256c30-38 55-57 86-68M384 256c-30-38-55-57-86-68M128 256c30 38 55 57 86 68M384 256c-30 38-55 57-86 68"/>
+</g>
+</svg>
