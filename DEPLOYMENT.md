@@ -37,6 +37,22 @@ The Docker image runs as the unprivileged `node` user. Do not mount source-contr
 
 Never commit secrets or put them in frontend code. The autonomous agent is disabled by default and cannot merge, deploy, or publish.
 
+## Single-host Docker Compose
+
+For a VPS deployment, copy `.env.example` to `.env`, generate a URL-safe PostgreSQL password with `openssl rand -hex 32`, and set a long random `SURAYA_OPERATOR_TOKEN`. Then run:
+
+```bash
+cp .env.example .env
+# Edit .env and set POSTGRES_PASSWORD and SURAYA_OPERATOR_TOKEN.
+docker compose config --quiet
+docker compose up -d --build
+docker compose ps
+curl -fsS http://127.0.0.1:10000/health
+curl -fsS http://127.0.0.1:10000/ready
+```
+
+The application port is bound to loopback only. Put an HTTPS reverse proxy in front of it; do not expose port 10000 directly to the internet. PostgreSQL is not published to the host and uses the named persistent volume `suraya_pgdata`. Back up this volume/database before upgrades and test restoration. Keep `.env` outside source control.
+
 ## Database
 
 Use managed PostgreSQL or a separately operated PostgreSQL service with persistent storage and tested backups. The app creates the base order table and applies:
