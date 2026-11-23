@@ -10,6 +10,8 @@ import { createOperatorRouter } from "./routes/operator-api.js";
 import { createCreatorRouter } from "./routes/creator-api.js";
 import { createContentEngine } from "./ai/content-engine.js";
 import { buildCapabilities } from "./health/capabilities.js";
+import { createAutonomousAgent } from "./ai/autonomous-agent.js";
+import { createAgentRouter } from "./routes/agent-api.js";
 
 dotenv.config();
 
@@ -17,8 +19,8 @@ const { Pool } = pg;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
-const PORT = Number(process.env.PORT) || 10000;
-const HOST = "0.0.0.0";
+const PORT = process.env.PORT === undefined ? 10000 : Number(process.env.PORT);
+const HOST = process.env.HOST || "0.0.0.0";
 
 app.disable("x-powered-by");
 app.set("trust proxy", 1);
@@ -26,12 +28,12 @@ app.use(express.json({ limit: "32kb" }));
 app.use(express.urlencoded({ extended: false, limit: "32kb" }));
 
 const services = {
-  social_content: { title: "بسته محتوای شبکه‌های اجتماعی", price: 5, currency: "USD", billing: "one_time" },
-  business_content: { title: "بسته محتوای کسب‌وکار", price: 10, currency: "USD", billing: "one_time" },
-  product_descriptions: { title: "توضیحات محصولات فروشگاه", price: 5, currency: "USD", billing: "one_time" },
-  social_monthly: { title: "مدیریت ماهانه محتوای شبکه اجتماعی", price: 29, currency: "USD", billing: "monthly", description: "تقویم محتوایی، طراحی و آماده‌سازی پست و گزارش ماهانه؛ انتشار فقط با دسترسی و تأیید مشتری." },
-  subscription_ops: { title: "راه‌اندازی و مدیریت عملیات اشتراک", price: 19, currency: "USD", billing: "monthly", description: "طراحی پلن‌ها، پیگیری تمدیدها و گزارش اشتراک؛ بدون دریافت رمز عبور یا انجام پرداخت از طرف مشتری." },
-  store_launch: { title: "راه‌اندازی محتوایی فروشگاه آنلاین", price: 49, currency: "USD", billing: "one_time", description: "ساختار دسته‌بندی، محتوای صفحات کلیدی و بسته اولیه توضیحات محصول." }
+  social_content: { title: "بسته محتوای شبکه‌های اجتماعی", price: null, billing: "quote" },
+  business_content: { title: "بسته محتوای کسب‌وکار", price: null, billing: "quote" },
+  product_descriptions: { title: "توضیحات محصولات فروشگاه", price: null, billing: "quote" },
+  social_monthly: { title: "مدیریت ماهانه محتوای شبکه اجتماعی", price: null, billing: "quote", description: "تقویم محتوایی، طراحی و آماده‌سازی پست و گزارش ماهانه؛ انتشار فقط با دسترسی و تأیید مشتری." },
+  subscription_ops: { title: "راه‌اندازی و مدیریت عملیات اشتراک", price: null, billing: "quote", description: "طراحی پلن‌ها، پیگیری تمدیدها و گزارش اشتراک؛ بدون دریافت رمز عبور یا انجام پرداخت از طرف مشتری." },
+  store_launch: { title: "راه‌اندازی محتوایی فروشگاه آنلاین", price: null, billing: "quote", description: "ساختار دسته‌بندی، محتوای صفحات کلیدی و بسته اولیه توضیحات محصول." }
 };
 
 const contentEngine = createContentEngine();
@@ -39,12 +41,14 @@ const contentEngine = createContentEngine();
 const pool = process.env.DATABASE_URL
   ? new Pool({
       connectionString: process.env.DATABASE_URL,
-      ssl: process.env.DATABASE_SSL === "true" ? { rejectUnauthorized: false } : undefined,
+      ssl: process.env.DATABASE_SSL === "true" ? { rejectUnauthorized: true } : undefined,
       max: 5,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 5000
     })
   : null;
+
+const autonomousAgent = createAutonomousAgent({ pool });
 
 let databaseReady = false;
 let databaseError = "DATABASE_URL is not configured";
@@ -56,7 +60,8 @@ function currentCapabilities() {
     databaseReady,
     worldDatabaseReady,
     contentEngineReady: contentEngine.isConfigured(),
-    operatorTokenConfigured: Boolean(process.env.SURAYA_OPERATOR_TOKEN)
+    operatorTokenConfigured: Boolean(process.env.SURAYA_OPERATOR_TOKEN),
+    autonomousAgentConfigured: autonomousAgent.isConfigured()
   });
 }
 
@@ -77,6 +82,7 @@ async function initializeDatabase() {
       )
     `);
     await pool.query(await readFile(path.join(__dirname, "migrations", "002_revenue_operations.sql"), "utf8"));
+    await pool.query(await readFile(path.join(__dirname, "migrations", "004_autonomous_agent.sql"), "utf8"));
     databaseReady = true;
     databaseError = "";
     console.log("Suraya order database ready");
@@ -143,6 +149,7 @@ app.get("/api/capabilities", (_req, res) => {
 app.use("/api/world/v1", createWorldRouter({ pool, isDatabaseReady: () => worldDatabaseReady }));
 app.use("/api/operator/v1", createOperatorRouter({ pool, getToken: () => process.env.SURAYA_OPERATOR_TOKEN }));
 app.use("/api/creator/v1", createCreatorRouter({ engine: contentEngine, rateLimit }));
+app.use("/api/agent/v1", createAgentRouter({ agent: autonomousAgent, getToken: () => process.env.SURAYA_OPERATOR_TOKEN }));
 
 app.get("/api/services", (_req, res) => {
   res.json({ ok: true, services });
@@ -206,10 +213,26 @@ app.use((_req, res) => {
   res.status(404).json({ ok: false, error: "Not found" });
 });
 
+let stopAutonomousAgent = () => {};
 await initializeDatabase();
-app.listen(PORT, HOST, () => {
-  console.log(`Suraya running on ${HOST}:${PORT}`);
+if (databaseReady) stopAutonomousAgent = await autonomousAgent.start();
+const server = app.listen(PORT, HOST, () => {
+  console.log(`Suraya listening on ${HOST}:${server.address().port}`);
 });
+
+function shutdown(signal) {
+  console.log(signal + " received; closing Suraya services");
+  stopAutonomousAgent();
+  server.close(async () => {
+    try { if (pool) await pool.end(); } catch (error) {
+      console.error("Database shutdown failed:", error.message);
+    }
+    process.exit(0);
+  });
+  setTimeout(() => process.exit(1), 10000).unref();
+}
+process.once("SIGTERM", () => shutdown("SIGTERM"));
+process.once("SIGINT", () => shutdown("SIGINT"));
 
 if (pool) {
   pool.on("error", (error) => {

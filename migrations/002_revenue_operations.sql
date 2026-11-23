@@ -1,9 +1,13 @@
 ALTER TABLE suraya_orders
   ADD COLUMN IF NOT EXISTS quoted_amount NUMERIC(14,2),
-  ADD COLUMN IF NOT EXISTS quoted_currency VARCHAR(8) NOT NULL DEFAULT 'USD',
+  ADD COLUMN IF NOT EXISTS quoted_currency VARCHAR(8),
   ADD COLUMN IF NOT EXISTS operator_note TEXT NOT NULL DEFAULT '',
   ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   ADD COLUMN IF NOT EXISTS delivered_at TIMESTAMPTZ;
+
+ALTER TABLE suraya_orders ALTER COLUMN quoted_currency DROP DEFAULT;
+ALTER TABLE suraya_orders ALTER COLUMN quoted_currency DROP NOT NULL;
+UPDATE suraya_orders SET quoted_currency = NULL WHERE quoted_amount IS NULL;
 
 CREATE TABLE IF NOT EXISTS suraya_order_events (
   id BIGSERIAL PRIMARY KEY,

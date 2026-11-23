@@ -6,11 +6,11 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "check": "node --check server.js && node --check world/world-api.js && node --test && node --check public/social-studio.js && node --check public/control-center.js",
+    "check": "node --check server.js && node --check ai/autonomous-agent.js && node --check routes/agent-api.js && node --check world/world-api.js && node --test && node --check public/social-studio.js && node --check public/control-center.js",
     "dev": "node --watch server.js"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "dependencies": {
     "express": "^4.21.2",
