@@ -28,7 +28,7 @@ test("Render pull request previews do not connect to inherited production resour
       child.stderr.setEncoding("utf8");
       child.stdout.on("data", chunk => {
         output += chunk;
-        const match = output.match(/Suraya listening on 127\\.0\\.0\\.1:(\\d+)/);
+        const match = output.match(/Suraya listening on 127\.0\.0\.1:(\d+)/);
         if (match) {
           clearTimeout(timeout);
           resolve(Number(match[1]));
