@@ -1,0 +1,80 @@
+name: Encrypted Suraya PostgreSQL backup
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Type BACKUP to start a one-time encrypted database export"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: suraya-postgres-backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    if: inputs.confirm == 'BACKUP'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      DATABASE_URL: ${{ secrets.SURAYA_DATABASE_URL }}
+      BACKUP_ENCRYPTION_KEY: ${{ secrets.SURAYA_BACKUP_ENCRYPTION_KEY }}
+    steps:
+      - name: Check out reviewed backup scripts
+        uses: actions/checkout@v4
+
+      - name: Validate required secrets without printing them
+        shell: bash
+        run: |
+          if [[ -z "$DATABASE_URL" ]]; then
+            echo "::error::Add the SURAYA_DATABASE_URL Actions secret."
+            exit 1
+          fi
+          if [[ ! "$BACKUP_ENCRYPTION_KEY" =~ ^[A-Fa-f0-9]{64}$ ]]; then
+            echo "::error::SURAYA_BACKUP_ENCRYPTION_KEY must be exactly 64 hexadecimal characters."
+            exit 1
+          fi
+
+      - name: Dump PostgreSQL 18 and verify archive
+        shell: bash
+        run: |
+          mkdir -p backup
+          docker run --rm \
+            -e DATABASE_URL \
+            -e PGSSLMODE=require \
+            -v "$PWD/backup:/backup" \
+            postgres:18-alpine sh -ec '
+              pg_dump --dbname="$DATABASE_URL" --format=custom --no-owner --no-privileges --file=/backup/suraya.dump
+              pg_restore --list /backup/suraya.dump >/dev/null
+            '
+          test -s backup/suraya.dump
+
+      - name: Encrypt archive with AES-256-GCM
+        run: |
+          node scripts/backup/encrypt.mjs backup/suraya.dump backup/suraya.dump.enc
+          rm -f backup/suraya.dump
+          test -s backup/suraya.dump.enc
+
+      - name: Verify encrypted archive can be decrypted and restored
+        shell: bash
+        run: |
+          node scripts/backup/decrypt.mjs backup/suraya.dump.enc /tmp/suraya-verify.dump
+          docker run --rm \
+            -v /tmp:/backup:ro \
+            postgres:18-alpine sh -ec 'pg_restore --list /backup/suraya-verify.dump >/dev/null'
+          rm -f /tmp/suraya-verify.dump
+          sha256sum backup/suraya.dump.enc > backup/SHA256SUMS
+
+      - name: Upload encrypted backup only
+        uses: actions/upload-artifact@v4
+        with:
+          name: suraya-postgres-encrypted-backup-${{ github.run_id }}
+          path: |
+            backup/suraya.dump.enc
+            backup/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 30
