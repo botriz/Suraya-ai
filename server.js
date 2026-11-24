@@ -21,6 +21,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT === undefined ? 10000 : Number(process.env.PORT);
 const HOST = process.env.HOST || "0.0.0.0";
+const isPullRequestPreview = process.env.IS_PULL_REQUEST === "true";
 
 app.disable("x-powered-by");
 app.set("trust proxy", 1);
@@ -36,11 +37,14 @@ const services = {
   store_launch: { title: "راه‌اندازی محتوایی فروشگاه آنلاین", price: null, billing: "quote", description: "ساختار دسته‌بندی، محتوای صفحات کلیدی و بسته اولیه توضیحات محصول." }
 };
 
-const contentEngine = createContentEngine();
+const contentEngine = createContentEngine({
+  apiKey: isPullRequestPreview ? "" : process.env.AI_API_KEY
+});
 
-const pool = process.env.DATABASE_URL
+const databaseUrl = isPullRequestPreview ? "" : process.env.DATABASE_URL;
+const pool = databaseUrl
   ? new Pool({
-      connectionString: process.env.DATABASE_URL,
+      connectionString: databaseUrl,
       ssl: process.env.DATABASE_SSL === "true" ? { rejectUnauthorized: true } : undefined,
       max: 5,
       idleTimeoutMillis: 30000,
@@ -60,8 +64,8 @@ function currentCapabilities() {
     databaseReady,
     worldDatabaseReady,
     contentEngineReady: contentEngine.isConfigured(),
-    operatorTokenConfigured: Boolean(process.env.SURAYA_OPERATOR_TOKEN),
-    autonomousAgentConfigured: autonomousAgent.isConfigured()
+    operatorTokenConfigured: !isPullRequestPreview && Boolean(process.env.SURAYA_OPERATOR_TOKEN),
+    autonomousAgentConfigured: !isPullRequestPreview && autonomousAgent.isConfigured()
   });
 }
 
@@ -147,9 +151,9 @@ app.get("/api/capabilities", (_req, res) => {
 });
 
 app.use("/api/world/v1", createWorldRouter({ pool, isDatabaseReady: () => worldDatabaseReady }));
-app.use("/api/operator/v1", createOperatorRouter({ pool, getToken: () => process.env.SURAYA_OPERATOR_TOKEN }));
+app.use("/api/operator/v1", createOperatorRouter({ pool, getToken: () => isPullRequestPreview ? "" : process.env.SURAYA_OPERATOR_TOKEN }));
 app.use("/api/creator/v1", createCreatorRouter({ engine: contentEngine, rateLimit }));
-app.use("/api/agent/v1", createAgentRouter({ agent: autonomousAgent, getToken: () => process.env.SURAYA_OPERATOR_TOKEN }));
+app.use("/api/agent/v1", createAgentRouter({ agent: autonomousAgent, getToken: () => isPullRequestPreview ? "" : process.env.SURAYA_OPERATOR_TOKEN }));
 
 app.get("/api/services", (_req, res) => {
   res.json({ ok: true, services });
