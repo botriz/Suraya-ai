@@ -72,5 +72,22 @@ jobs:
       - name: Build deployment container
         run: docker build -t suraya-public-services:ci .
 
-      - name: Validate single-host Compose configuration
-        run: POSTGRES_PASSWORD=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef SURAYA_OPERATOR_TOKEN=ci-only-token docker compose config --quiet
+      - name: Validate actual VPS Compose topology
+        env:
+          POSTGRES_PASSWORD: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+          SURAYA_OPERATOR_TOKEN: ci-only-token
+          APP_PORT: 10000
+        run: |
+          docker compose config --format json > /tmp/suraya-compose.json
+          node -e '
+            const c = require("/tmp/suraya-compose.json");
+            const fail = message => { console.error(message); process.exit(1); };
+            if (!c.services?.app || !c.services?.db) fail("Compose must define app and db services");
+            if (c.services.chain) fail("Legacy chain service must not be exposed by the VPS stack");
+            if (c.services.app.depends_on?.db?.condition !== "service_healthy") fail("App must wait for healthy PostgreSQL");
+            if (!c.services.app.ports?.some(p => p.host_ip === "127.0.0.1" && String(p.published) === "10000")) fail("App port must bind to loopback only");
+            if (c.services.app.read_only !== true) fail("App container must use a read-only root filesystem");
+            if (!c.volumes?.suraya_pgdata) fail("Persistent PostgreSQL volume is required");
+            if (c.services.app.environment?.SURAYA_AGENT_ENABLED !== "false") fail("Autonomous agent must remain disabled");
+            console.log("VPS Compose topology verified");
+          '
